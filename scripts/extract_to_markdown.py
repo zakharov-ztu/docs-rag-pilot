@@ -404,19 +404,45 @@ def _find_title_anchor_parts(text: str) -> tuple[str, str] | None:
     return None
 
 
+def _looks_like_split_logo_or_code(line: str) -> bool:
+    """The institution's logo ("Житомирська" / "політехніка") sometimes
+    extracts as its own line, alone or glued to a document-control code
+    ("Житомирська П 18.00 - 05 - 2019") — STANDALONE_NOISE_LINES only
+    catches the bare-word case. Treat a line as this kind of noise if it's
+    just one of those two words, or if one of them appears alongside at
+    least two digits (a document code fragment sharing the line)."""
+    low = line.lower().strip()
+    if low in {"житомирська", "політехніка"}:
+        return True
+    words = set(re.findall(r"[а-яіїєґ]+", low))
+    digit_count = sum(ch.isdigit() for ch in line)
+    return bool(words & {"житомирська", "політехніка"}) and digit_count >= 2
+
+
 def guess_title(text: str) -> str:
     found = _find_title_anchor_parts(text)
     if found:
         return found[1]
 
-    # Fallback: first substantial line that isn't a repeated ALL-CAPS header
-    # or a bare document-code fragment (digits/dots/dashes only).
+    # Fallback: first substantial line that isn't a repeated header, a TOC
+    # dot-leader entry, or a bare document-code fragment. Some documents in
+    # this corpus never carry a ЗАТВЕРДЖЕНО block at all — no naказ, no
+    # "ПОЛОЖЕННЯ" anchor line — so this is genuinely the best available
+    # signal for them. RUNNING_HEADER_PATTERNS is written for strip_boilerplate,
+    # where case is the ALL-CAPS-vs-title-case signal that distinguishes
+    # boilerplate from real content; here we match it case-insensitively,
+    # since some documents render "Міністерство освіти і науки України" in
+    # title case instead of the more common ALL-CAPS, and that boilerplate
+    # is just as unhelpful as a title either way.
     lines = [ln.strip() for ln in _approval_slice(text).split("\n")]
     for line in lines:
         if (
             len(line) >= 8
             and not _is_mostly_uppercase(line)
             and any(ch.isalpha() for ch in line)
+            and not RE_DOT_LEADER.search(line)
+            and not _looks_like_split_logo_or_code(line)
+            and not any(re.search(p.pattern, line, re.IGNORECASE) for p in RUNNING_HEADER_PATTERNS)
         ):
             return line[:200]
     return ""
