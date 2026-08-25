@@ -7,6 +7,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro pervynnu profspilkovu orhanizaciju vykladachiv i spivrobitnykiv.pdf
+category: Управління персоналом
 ---
 
 Міністерство освіти і науки України П – 03.01 –

@@ -5,6 +5,7 @@ status: невідомо
 order_number: 570/од
 order_date: '2019-12-26'
 source_pdf: nove polozhennja pro specializovanu vchenu radu k 14.052.03 (1)-2.pdf
+category: Наукова, науково-технічна та інноваційна діяльність
 ---
 
 Міністерство освіти і науки України П-14.03-01-

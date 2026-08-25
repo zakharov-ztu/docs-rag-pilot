@@ -4,6 +4,8 @@ status: невідомо
 order_number: 36/од
 order_date: ''
 source_pdf: polozhennja pro viddil monitorynhu ta zabezpechennja jakosti.pdf
+category: Структурні підрозділи
+subgroup: Відділи
 ---
 
 Міністерство освіти і науки України П-25.00-

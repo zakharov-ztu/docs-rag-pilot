@@ -5,6 +5,8 @@ status: невідомо
 order_number: 284/од
 order_date: '2020-06-26'
 source_pdf: polozhennja centr perekladiv.pdf
+category: Структурні підрозділи
+subgroup: Центри
 ---
 
 політехніка Система управління якістю відповідає ДСТУ ІЯО 9001:2015 2020

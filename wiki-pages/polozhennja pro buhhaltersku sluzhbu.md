@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro buhhaltersku sluzhbu.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України

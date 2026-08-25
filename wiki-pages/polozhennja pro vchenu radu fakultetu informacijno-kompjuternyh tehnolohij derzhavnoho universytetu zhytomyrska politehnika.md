@@ -5,6 +5,7 @@ order_number: ''
 order_date: ''
 source_pdf: polozhennja pro vchenu radu fakultetu informacijno-kompjuternyh tehnolohij
   derzhavnoho universytetu zhytomyrska politehnika.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П1 – 22.00 – 04

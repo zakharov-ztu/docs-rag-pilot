@@ -4,6 +4,7 @@ status: невідомо
 order_number: '76'
 order_date: '2018-08-31'
 source_pdf: polozhennja pro pidhotovku ta provedennja naukovyh konferencij.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П 12.01 – 2019

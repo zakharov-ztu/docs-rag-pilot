@@ -5,6 +5,7 @@ status: невідомо
 order_number: 639/од
 order_date: '2025-12-18'
 source_pdf: instrukcija - bzhd-pid chas zymovyh kanikul_2025.pdf
+category: Охорона праці, безпека життєдіяльності, пожежна безпека
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

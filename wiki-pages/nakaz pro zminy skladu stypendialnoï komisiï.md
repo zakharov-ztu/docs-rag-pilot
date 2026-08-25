@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: '2026-07-29'
 source_pdf: nakaz pro zminy skladu stypendialnoï komisiï.pdf
+category: Фінансово-економічна діяльність
 ---
 
 Ф-05.01-04.04-248/агп-2026

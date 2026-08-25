@@ -4,6 +4,7 @@ status: невідомо
 order_number: 183/од
 order_date: ''
 source_pdf: 2024_polozhennja pro predmetni komisiï aspir.pdf
+category: Наукова, науково-технічна та інноваційна діяльність
 ---
 
 Міністерство освіти і науки України

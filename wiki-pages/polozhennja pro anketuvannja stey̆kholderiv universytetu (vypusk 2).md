@@ -5,6 +5,7 @@ status: невідомо
 order_number: 327/од
 order_date: '2025-09-15'
 source_pdf: polozhennja pro anketuvannja stey̆kholderiv universytetu (vypusk 2).pdf
+category: Система управління якістю
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

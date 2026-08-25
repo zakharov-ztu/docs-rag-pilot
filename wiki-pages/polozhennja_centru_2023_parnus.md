@@ -5,6 +5,7 @@ status: невідомо
 order_number: 141/од
 order_date: '2023-03-31'
 source_pdf: polozhennja_centru_2023_parnus.pdf
+category: Міжнародна діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

@@ -5,6 +5,7 @@ order_number: ''
 order_date: '2025-02-24'
 source_pdf: polozhennja pro perevedennja zdobuvachiv vyshchoï osvity za rahunok koshtiv
   derzh bjudzhetu.pdf
+category: Освітня діяльність
 ---
 
 Екземпляр Nel | | Ape 14/1

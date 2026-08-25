@@ -6,6 +6,7 @@ status: невідомо
 order_number: 494/од
 order_date: '2022-10-03'
 source_pdf: instrukcija z op_voyennyj stan-nova.pdf
+category: Охорона праці, безпека життєдіяльності, пожежна безпека
 ---
 
 I-17.03-07.08

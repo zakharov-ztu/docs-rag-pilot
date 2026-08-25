@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: '2022-09-16'
 source_pdf: polozhennja_pro_centr_hendernoi_osvity.pdf
+category: Загальна нормативна база
 ---
 
 ЗАТВЕРДЖЕНО |

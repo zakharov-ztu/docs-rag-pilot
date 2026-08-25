@@ -5,6 +5,8 @@ status: невідомо
 order_number: 442/од
 order_date: '2022-09-16'
 source_pdf: polozhennja pro vrfakultetu_chernysh.pdf
+category: Структурні підрозділи
+subgroup: Вчена рада факультету
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ ТА ПОРЯДОК ВИБОРІВ ДО

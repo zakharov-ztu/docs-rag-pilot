@@ -5,6 +5,8 @@ status: невідомо
 order_number: 640/од
 order_date: '2025-12-18'
 source_pdf: porjadok_orhanizaciï_roboty_sposterihachiv_ta_akredytaciï_predstavnykiv.pdf
+category: Колегіальні органи
+subgroup: Вибори ректора 2026
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

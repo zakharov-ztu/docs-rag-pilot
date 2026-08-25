@@ -4,6 +4,7 @@ status: невідомо
 order_number: 284/од
 order_date: '2020-06-26'
 source_pdf: kodeks_korporatyvnoi_kul_tury.pdf
+category: Доброчесність та антикорупція
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

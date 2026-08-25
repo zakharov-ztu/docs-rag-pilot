@@ -4,6 +4,7 @@ status: невідомо
 order_number: 156/од
 order_date: '2021-03-30'
 source_pdf: polozhennja nmr nove.pdf
+category: Загальна нормативна база
 ---
 
 щодо навчально-методичної роботи;

@@ -1,0 +1,64 @@
+{% comment %}
+  Renders a tabbed table of documents, grouped by `subgroup`.
+  Params: groupid (unique DOM id), subgroups (ordered list of subgroup
+  names), docs (all documents in the category), general (documents in the
+  category with no subgroup, shown as an extra "Загальне" tab if non-empty).
+{% endcomment %}
+<div class="doc-tabs" id="{{ include.groupid }}">
+  <div class="tab-buttons">
+    {% assign tab_index = 0 %}
+    {% if include.general.size > 0 %}
+    <button class="{% if tab_index == 0 %}active{% endif %}" onclick="docTabShow('{{ include.groupid }}', 0)">Загальне</button>
+    {% assign tab_index = 1 %}
+    {% endif %}
+    {% for sub in include.subgroups %}
+    {% assign sub_docs = include.docs | where: "subgroup", sub %}
+    {% if sub_docs.size > 0 %}
+    <button class="{% if tab_index == 0 %}active{% endif %}" onclick="docTabShow('{{ include.groupid }}', {{ tab_index }})">{{ sub }}</button>
+    {% assign tab_index = tab_index | plus: 1 %}
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  {% assign tab_index = 0 %}
+  {% if include.general.size > 0 %}
+  <div class="tab-panel {% if tab_index == 0 %}active{% endif %}">
+    <table class="doc-index">
+      <thead><tr><th>Документ</th><th>Статус</th><th>№ наказу</th><th>Дата наказу</th></tr></thead>
+      <tbody>
+        {% for doc in include.general %}
+        <tr>
+          <td><a href="{{ doc.url | relative_url }}">{{ doc.title }}</a></td>
+          <td><span class="status">{{ doc.status }}</span></td>
+          <td>{{ doc.order_number }}</td>
+          <td>{{ doc.order_date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% assign tab_index = 1 %}
+  {% endif %}
+
+  {% for sub in include.subgroups %}
+  {% assign sub_docs = include.docs | where: "subgroup", sub %}
+  {% if sub_docs.size > 0 %}
+  <div class="tab-panel {% if tab_index == 0 %}active{% endif %}">
+    <table class="doc-index">
+      <thead><tr><th>Документ</th><th>Статус</th><th>№ наказу</th><th>Дата наказу</th></tr></thead>
+      <tbody>
+        {% for doc in sub_docs %}
+        <tr>
+          <td><a href="{{ doc.url | relative_url }}">{{ doc.title }}</a></td>
+          <td><span class="status">{{ doc.status }}</span></td>
+          <td>{{ doc.order_number }}</td>
+          <td>{{ doc.order_date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% assign tab_index = tab_index | plus: 1 %}
+  {% endif %}
+  {% endfor %}
+</div>

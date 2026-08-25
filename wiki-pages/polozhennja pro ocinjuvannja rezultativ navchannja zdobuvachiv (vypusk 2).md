@@ -6,6 +6,7 @@ order_number: 327/од
 order_date: '2025-09-15'
 source_pdf: polozhennja pro ocinjuvannja rezultativ navchannja zdobuvachiv (vypusk
   2).pdf
+category: Освітня діяльність
 ---
 
 Укладачі:

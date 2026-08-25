@@ -4,6 +4,7 @@ status: невідомо
 order_number: 814/од
 order_date: '2023-12-30'
 source_pdf: antykorupciy̆na prohrama-2024-2026.pdf
+category: Доброчесність та антикорупція
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

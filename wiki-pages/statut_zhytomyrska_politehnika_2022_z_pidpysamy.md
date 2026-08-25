@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: statut_zhytomyrska_politehnika_2022_z_pidpysamy.pdf
+category: Фінансово-економічна діяльність
 ---
 
 ### 12. Наукове товариство студентів, аспірантів, докторантів і молодих вчених 29

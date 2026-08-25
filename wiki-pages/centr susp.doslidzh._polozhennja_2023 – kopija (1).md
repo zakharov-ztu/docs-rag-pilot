@@ -5,6 +5,8 @@ status: невідомо
 order_number: 655/од1
 order_date: '2023-10-30'
 source_pdf: centr susp.doslidzh._polozhennja_2023 – kopija (1).pdf
+category: Структурні підрозділи
+subgroup: Центри
 ---
 
 VIІ. СТРУКТУРА, ШТАТНИЙ РОЗПИС ТА РЕСУРСНЕ

@@ -4,6 +4,7 @@ status: невідомо
 order_number: 718/од
 order_date: '2020-12-29'
 source_pdf: polozhennja pro debatnyj klub(1).pdf
+category: Позанавчальна діяльність. Студентське самоврядування
 ---
 
 П-

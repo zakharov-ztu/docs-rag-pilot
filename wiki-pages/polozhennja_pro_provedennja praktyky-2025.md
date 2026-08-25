@@ -5,6 +5,7 @@ status: невідомо
 order_number: 563/од
 order_date: '2025-11-17'
 source_pdf: polozhennja_pro_provedennja praktyky-2025.pdf
+category: Освітня діяльність
 ---
 
 ### 1. МЕТА ТА ЗМІСТ ПРАКТИКИ

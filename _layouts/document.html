@@ -8,6 +8,9 @@ layout: default
 
   <table class="doc-meta">
     <tr><th>Статус</th><td><span class="status">{{ page.status }}</span></td></tr>
+    {% if page.category and page.category != "" %}
+    <tr><th>Категорія</th><td>{{ page.category }}{% if page.subgroup %} / {{ page.subgroup }}{% endif %}</td></tr>
+    {% endif %}
     {% if page.order_number and page.order_number != "" %}
     <tr><th>№ наказу</th><td>{{ page.order_number }}</td></tr>
     {% endif %}

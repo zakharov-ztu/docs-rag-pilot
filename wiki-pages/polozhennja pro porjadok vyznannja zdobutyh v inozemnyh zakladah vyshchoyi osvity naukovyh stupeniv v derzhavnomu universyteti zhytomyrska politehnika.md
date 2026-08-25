@@ -5,6 +5,7 @@ order_number: '1'
 order_date: '1992-09-01'
 source_pdf: polozhennja pro porjadok vyznannja zdobutyh v inozemnyh zakladah vyshchoyi
   osvity naukovyh stupeniv v derzhavnomu universyteti zhytomyrska politehnika.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П -05.02-32 -

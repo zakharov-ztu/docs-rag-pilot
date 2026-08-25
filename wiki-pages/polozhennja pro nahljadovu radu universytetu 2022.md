@@ -4,6 +4,7 @@ status: невідомо
 order_number: 122/од
 order_date: '2022-03-23'
 source_pdf: polozhennja pro nahljadovu radu universytetu 2022.pdf
+category: Колегіальні органи
 ---
 
 ДЕРЖАВНИЙ УНІВЕРСИТЕТ «ЖИТОМИРСЬКА

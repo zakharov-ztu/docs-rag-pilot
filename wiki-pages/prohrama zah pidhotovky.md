@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: '2013-06-26'
 source_pdf: prohrama zah pidhotovky.pdf
+category: Охорона праці, безпека життєдіяльності, пожежна безпека
 ---
 
 загальної підготовки працівників до дій у надзвичайних ситуаціях

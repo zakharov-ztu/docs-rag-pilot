@@ -5,6 +5,7 @@ order_number: 159/агп
 order_date: '2025-07-31'
 source_pdf: prohrama vstupnoho instruktazhu z bezpeky zhyttyedijalnosti dlja zdobuvachiv
   osvity.pdf
+category: Охорона праці, безпека життєдіяльності, пожежна безпека
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

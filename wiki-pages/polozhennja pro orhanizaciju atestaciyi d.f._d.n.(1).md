@@ -5,6 +5,7 @@ status: невідомо
 order_number: 161/од
 order_date: '2022-05-13'
 source_pdf: polozhennja pro orhanizaciju atestaciyi d.f._d.n.(1).pdf
+category: Наукова, науково-технічна та інноваційна діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

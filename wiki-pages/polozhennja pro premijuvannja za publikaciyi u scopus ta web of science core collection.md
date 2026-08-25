@@ -7,6 +7,7 @@ order_number: 571/од
 order_date: '2020-11-04'
 source_pdf: polozhennja pro premijuvannja za publikaciyi u scopus ta web of science
   core collection.pdf
+category: Наукова, науково-технічна та інноваційна діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

@@ -6,6 +6,8 @@ order_number: 289/од
 order_date: '2025-08-29'
 source_pdf: polozhennja pro centr akademichnoï doskonalosti ta rozvytku ljudskoho
   potencialu (1).pdf
+category: Структурні підрозділи
+subgroup: Центри
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

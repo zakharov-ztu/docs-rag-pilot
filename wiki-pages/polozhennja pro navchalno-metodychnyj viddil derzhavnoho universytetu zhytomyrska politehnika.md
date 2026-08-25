@@ -5,6 +5,8 @@ order_number: 19/од
 order_date: '2019-05-31'
 source_pdf: polozhennja pro navchalno-metodychnyj viddil derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+category: Структурні підрозділи
+subgroup: Відділи
 ---
 
 Міністерство освіти і науки України П – 10.00 – 01 – 02 –

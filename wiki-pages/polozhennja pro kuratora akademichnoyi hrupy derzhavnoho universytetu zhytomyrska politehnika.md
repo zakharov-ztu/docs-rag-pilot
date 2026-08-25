@@ -6,6 +6,7 @@ order_number: 284/од
 order_date: '2020-06-26'
 source_pdf: polozhennja pro kuratora akademichnoyi hrupy derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+category: Позанавчальна діяльність. Студентське самоврядування
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

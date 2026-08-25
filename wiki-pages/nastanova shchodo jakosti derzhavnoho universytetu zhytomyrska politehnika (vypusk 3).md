@@ -5,6 +5,7 @@ order_number: 667/од
 order_date: '2023-11-01'
 source_pdf: nastanova shchodo jakosti derzhavnoho universytetu zhytomyrska politehnika
   (vypusk 3).pdf
+category: Система управління якістю
 ---
 
 ### 1. СФЕРА ЗАСТОСУВАННЯ

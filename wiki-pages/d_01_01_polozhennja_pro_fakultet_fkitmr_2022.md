@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: d_01_01_polozhennja_pro_fakultet_fkitmr_2022.pdf
+category: Наукова, науково-технічна та інноваційна діяльність
 ---
 
 ДЕРЖАВНИЙ УНІВЕРСИТЕТ «ЖИТОМИРСЬКА 01.01-03-

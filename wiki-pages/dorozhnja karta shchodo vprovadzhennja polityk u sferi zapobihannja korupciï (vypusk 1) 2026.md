@@ -5,6 +5,7 @@ order_number: 74/од
 order_date: '2026-04-02'
 source_pdf: dorozhnja karta shchodo vprovadzhennja polityk u sferi zapobihannja korupciï
   (vypusk 1) 2026.pdf
+category: Доброчесність та антикорупція
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

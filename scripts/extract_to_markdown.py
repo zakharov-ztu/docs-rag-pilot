@@ -526,21 +526,25 @@ def link_cross_references(body: str, own_stem: str, registry: dict[str, LinkSpec
 # Markdown assembly
 # --------------------------------------------------------------------------
 
-def read_existing_status(out_path: Path) -> str:
-    """Re-running the script must not clobber a status a human already set
-    on a previous .md output (e.g. 'затверджено'). Only brand-new files get
-    the 'невідомо' default."""
-    if not out_path.exists():
-        return "невідомо"
-    try:
-        raw = out_path.read_text(encoding="utf-8")
-        if not raw.startswith("---\n"):
-            return "невідомо"
-        fm_text = raw.split("---\n", 2)[1]
-        existing = yaml.safe_load(fm_text) or {}
-        return existing.get("status") or "невідомо"
-    except Exception:
-        return "невідомо"
+def read_existing_frontmatter(out_path: Path) -> dict:
+    """Re-running the script must not clobber fields a human or a later
+    pipeline step (e.g. scripts/categorize.py) already set on a previous
+    .md output — status, category, subgroup. Only brand-new files get
+    status 'невідомо' and no category."""
+    if out_path.exists():
+        try:
+            raw = out_path.read_text(encoding="utf-8")
+            if raw.startswith("---\n"):
+                fm_text = raw.split("---\n", 2)[1]
+                existing = yaml.safe_load(fm_text) or {}
+                return {
+                    "status": existing.get("status") or "невідомо",
+                    "category": existing.get("category"),
+                    "subgroup": existing.get("subgroup"),
+                }
+        except Exception:
+            pass
+    return {"status": "невідомо", "category": None, "subgroup": None}
 
 
 @dataclass
@@ -549,6 +553,8 @@ class DocRecord:
     out_path: Path
     result: ExtractionResult
     existing_status: str
+    existing_category: str | None
+    existing_subgroup: str | None
     title: str
     order_number: str
     order_date: str
@@ -581,12 +587,15 @@ def analyze_document(source_path: Path, stats: RunStats) -> DocRecord | None:
 
     out_path = OUTPUT_DIR / f"{source_path.stem}.md"
     body = split_into_blocks(strip_boilerplate(result.text))
+    existing = read_existing_frontmatter(out_path)
 
     return DocRecord(
         source_path=source_path,
         out_path=out_path,
         result=result,
-        existing_status=read_existing_status(out_path),
+        existing_status=existing["status"],
+        existing_category=existing["category"],
+        existing_subgroup=existing["subgroup"],
         title=guess_title(result.text),
         order_number=guess_order_number(result.text) or "",
         order_date=guess_order_date(result.text) or "",
@@ -609,6 +618,10 @@ def write_record(record: DocRecord, registry: dict[str, LinkSpec]) -> int:
         "order_date": record.order_date,
         "source_pdf": record.source_path.name,
     }
+    if record.existing_category:
+        frontmatter["category"] = record.existing_category
+    if record.existing_subgroup:
+        frontmatter["subgroup"] = record.existing_subgroup
     fm_yaml = yaml.dump(frontmatter, allow_unicode=True, sort_keys=False, default_flow_style=False)
     md = f"---\n{fm_yaml}---\n\n{linked_body}"
     record.out_path.write_text(md, encoding="utf-8")

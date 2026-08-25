@@ -5,6 +5,7 @@ status: невідомо
 order_number: 538/од
 order_date: '2022-10-21'
 source_pdf: instrukcija_nov.__prohod._praktyky.pdf
+category: Охорона праці, безпека життєдіяльності, пожежна безпека
 ---
 
 I-17.03-07.10

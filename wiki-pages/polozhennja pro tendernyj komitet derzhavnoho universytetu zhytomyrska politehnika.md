@@ -5,6 +5,7 @@ order_number: ''
 order_date: ''
 source_pdf: polozhennja pro tendernyj komitet derzhavnoho universytetu zhytomyrska
   politehnika.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П – 06.02 - 02 -

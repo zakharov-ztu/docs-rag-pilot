@@ -4,6 +4,7 @@ status: невідомо
 order_number: 369/од
 order_date: '2024-06-26'
 source_pdf: polozhennja_pro_studentske_samovrjaduvannja_06_2024.pdf
+category: Позанавчальна діяльність. Студентське самоврядування
 ---
 
 IV ПОРЯДОК ВНЕСЕННЯ ЗМІН ТА ДОПОВНЕНЬ 38

@@ -5,6 +5,7 @@ order_number: '15'
 order_date: '2001-08-01'
 source_pdf: polozhennja pro navchannja instruktazh i perevirku znan z pytan ohorony
   praci pracivnykiv ta studentiv derzhavnoho universytetu zhytomyrska politehnika.pdf
+category: Охорона праці, безпека життєдіяльності, пожежна безпека
 ---
 
 Міністерство освіти і науки України П – 17.03 –

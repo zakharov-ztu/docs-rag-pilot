@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro vchenu radu fkit mr.pdf
+category: Загальна нормативна база
 ---
 
 П – 20.00 – 04 –

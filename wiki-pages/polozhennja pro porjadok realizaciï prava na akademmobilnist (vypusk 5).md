@@ -6,6 +6,7 @@ order_number: 563/од
 order_date: '2025-11-17'
 source_pdf: polozhennja pro porjadok realizaciï prava na akademmobilnist (vypusk
   5).pdf
+category: Міжнародна діяльність
 ---
 
 Укладачі:

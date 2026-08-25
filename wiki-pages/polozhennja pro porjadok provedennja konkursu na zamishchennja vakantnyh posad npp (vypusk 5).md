@@ -6,6 +6,7 @@ order_number: 666/од
 order_date: '2023-11-01'
 source_pdf: polozhennja pro porjadok provedennja konkursu na zamishchennja vakantnyh
   posad npp (vypusk 5).pdf
+category: Управління персоналом
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

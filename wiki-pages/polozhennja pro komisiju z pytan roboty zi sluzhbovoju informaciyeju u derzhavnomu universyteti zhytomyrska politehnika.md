@@ -5,6 +5,7 @@ order_number: ''
 order_date: ''
 source_pdf: polozhennja pro komisiju z pytan roboty zi sluzhbovoju informaciyeju u
   derzhavnomu universyteti zhytomyrska politehnika.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України

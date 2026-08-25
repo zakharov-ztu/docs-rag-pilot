@@ -4,6 +4,7 @@ status: невідомо
 order_number: 196/од
 order_date: '2020-05-22'
 source_pdf: porjadok reyestraciyi nakaziv universytetu 2020.pdf
+category: Система управління якістю
 ---
 
 ### 1. СФЕРА ЗАСТОСУВАННЯ

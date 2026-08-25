@@ -4,6 +4,8 @@ status: невідомо
 order_number: 517/од
 order_date: '2021-09-01'
 source_pdf: polozhennja pro doslidnyckyj centr ekolohichnoho rozvytku_zi_zminamy.pdf
+category: Структурні підрозділи
+subgroup: Центри
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

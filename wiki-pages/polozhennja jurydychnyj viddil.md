@@ -4,6 +4,8 @@ status: невідомо
 order_number: 19/од
 order_date: '2019-05-31'
 source_pdf: polozhennja jurydychnyj viddil.pdf
+category: Структурні підрозділи
+subgroup: Відділи
 ---
 
 Міністерство освіти і науки України

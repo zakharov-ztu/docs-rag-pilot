@@ -5,6 +5,8 @@ status: невідомо
 order_number: 405/од
 order_date: '2022-09-08'
 source_pdf: polozhennja_pro_navchal_no-naukovyj_centr__innovacijnyj_hab_zhytomyrs_koi_politehniky_.pdf
+category: Структурні підрозділи
+subgroup: Центри
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

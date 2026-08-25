@@ -5,6 +5,8 @@ status: невідомо
 order_number: 161/од
 order_date: '2022-05-13'
 source_pdf: polozhennja pro razovi specrady universytetu.pdf
+category: Колегіальні органи
+subgroup: Вчена рада університету
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

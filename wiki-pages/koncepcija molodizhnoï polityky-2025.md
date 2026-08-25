@@ -4,6 +4,7 @@ status: невідомо
 order_number: 128/од
 order_date: '2025-04-28'
 source_pdf: koncepcija molodizhnoï polityky-2025.pdf
+category: Позанавчальна діяльність. Студентське самоврядування
 ---
 
 ### 1. СФЕРА ЗАСТОСУВАННЯ

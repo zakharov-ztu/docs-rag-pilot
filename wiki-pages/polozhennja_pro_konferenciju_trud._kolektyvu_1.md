@@ -4,6 +4,7 @@ status: невідомо
 order_number: 19/од
 order_date: ''
 source_pdf: polozhennja_pro_konferenciju_trud._kolektyvu_1.pdf
+category: Колегіальні органи
 ---
 
 Міністерство освіти і науки України П – 02.01 –

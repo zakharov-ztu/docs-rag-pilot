@@ -5,6 +5,7 @@ status: невідомо
 order_number: 127/од1
 order_date: '2022-04-05'
 source_pdf: language_hub.pdf
+category: Міжнародна діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

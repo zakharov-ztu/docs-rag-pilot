@@ -5,6 +5,7 @@ status: невідомо
 order_number: 442/од
 order_date: '2022-09-16'
 source_pdf: polozhennja pro orhanizaciju roboty sportyvnyh sekcij-pravka.pdf
+category: Позанавчальна діяльність. Студентське самоврядування
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

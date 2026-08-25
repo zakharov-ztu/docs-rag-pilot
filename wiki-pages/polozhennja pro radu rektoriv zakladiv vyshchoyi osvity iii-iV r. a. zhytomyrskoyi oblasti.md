@@ -5,6 +5,7 @@ order_number: ''
 order_date: ''
 source_pdf: polozhennja pro radu rektoriv zakladiv vyshchoyi osvity iii-iV r. a. zhytomyrskoyi
   oblasti.pdf
+category: Колегіальні органи
 ---
 
 ЗАТВЕРДЖЕНО:

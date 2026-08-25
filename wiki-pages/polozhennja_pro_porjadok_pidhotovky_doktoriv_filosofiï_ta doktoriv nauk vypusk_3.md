@@ -6,6 +6,7 @@ order_number: 234/од1
 order_date: '2025-07-17'
 source_pdf: polozhennja_pro_porjadok_pidhotovky_doktoriv_filosofiï_ta doktoriv nauk
   vypusk_3.pdf
+category: Наукова, науково-технічна та інноваційна діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

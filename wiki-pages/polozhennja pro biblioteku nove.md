@@ -4,6 +4,7 @@ status: невідомо
 order_number: 2145-VIII
 order_date: '1960-06-06'
 source_pdf: polozhennja pro biblioteku nove.pdf
+category: Загальна нормативна база
 ---
 
 Житомирська Міністерство освіти і науки України П – 07.00 –

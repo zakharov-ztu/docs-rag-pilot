@@ -5,6 +5,7 @@ order_number: 36/од
 order_date: ''
 source_pdf: polozhennja pro pidvyshchennja kvalifikaciyi pracivnykiv universytetu
   2020.pdf
+category: Освітня діяльність
 ---
 
 Міністерство освіти і науки України

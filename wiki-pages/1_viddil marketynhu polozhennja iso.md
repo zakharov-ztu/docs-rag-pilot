@@ -4,6 +4,7 @@ status: невідомо
 order_number: 36/од
 order_date: ''
 source_pdf: 1_viddil marketynhu polozhennja iso.pdf
+category: Доброчесність та антикорупція
 ---
 
 Міністерство освіти і науки України П-26.00-

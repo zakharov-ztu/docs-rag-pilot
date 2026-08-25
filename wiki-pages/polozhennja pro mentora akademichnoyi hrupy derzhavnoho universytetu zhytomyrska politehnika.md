@@ -5,6 +5,7 @@ order_number: ''
 order_date: ''
 source_pdf: polozhennja pro mentora akademichnoyi hrupy derzhavnoho universytetu zhytomyrska
   politehnika.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П M – 44 – 16 – 02 –

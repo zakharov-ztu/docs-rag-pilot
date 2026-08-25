@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: '2024-09-12'
 source_pdf: alhorytm.pdf
+category: Колегіальні органи
 ---
 
 Ф-05.01-04.01-232/роз-2024

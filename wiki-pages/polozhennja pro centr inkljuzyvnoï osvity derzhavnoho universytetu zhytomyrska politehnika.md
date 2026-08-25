@@ -6,6 +6,8 @@ order_number: ''
 order_date: ''
 source_pdf: polozhennja pro centr inkljuzyvnoï osvity derzhavnoho universytetu zhytomyrska
   politehnika.pdf
+category: Структурні підрозділи
+subgroup: Центри
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

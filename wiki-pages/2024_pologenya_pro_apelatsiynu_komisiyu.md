@@ -4,6 +4,7 @@ status: невідомо
 order_number: 183/од
 order_date: ''
 source_pdf: 2024_pologenya_pro_apelatsiynu_komisiyu.pdf
+category: Формування контингенту студентів. Правила прийому
 ---
 
 Міністерство освіти і науки України

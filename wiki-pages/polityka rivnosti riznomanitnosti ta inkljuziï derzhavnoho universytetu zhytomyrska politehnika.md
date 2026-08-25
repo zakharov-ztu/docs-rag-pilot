@@ -5,6 +5,7 @@ order_number: 557/од
 order_date: '2022-10-31'
 source_pdf: polityka rivnosti riznomanitnosti ta inkljuziï derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+category: Загальна нормативна база
 ---
 
 ДЕРЖАВНИЙ УНІВЕРСИТЕТ «ЖИТОМИРСЬКА

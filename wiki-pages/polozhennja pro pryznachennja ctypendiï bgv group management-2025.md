@@ -5,6 +5,7 @@ status: невідомо
 order_number: 234/од1
 order_date: '2025-07-17'
 source_pdf: polozhennja pro pryznachennja ctypendiï bgv group management-2025.pdf
+category: Колегіальні органи
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

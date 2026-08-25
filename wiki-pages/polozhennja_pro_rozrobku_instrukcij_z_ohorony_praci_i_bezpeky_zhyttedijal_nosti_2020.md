@@ -5,6 +5,7 @@ status: невідомо
 order_number: 496/од
 order_date: '2020-10-07'
 source_pdf: polozhennja_pro_rozrobku_instrukcij_z_ohorony_praci_i_bezpeky_zhyttedijal_nosti_2020.pdf
+category: Охорона праці, безпека життєдіяльності, пожежна безпека
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

@@ -4,6 +4,7 @@ status: невідомо
 order_number: 19/од
 order_date: '2019-05-31'
 source_pdf: polozhennja pro feld-ozdorovpunkt.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П – 05.01 – 01

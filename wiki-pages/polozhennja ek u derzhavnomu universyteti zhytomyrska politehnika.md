@@ -5,6 +5,7 @@ status: невідомо
 order_number: 465/од
 order_date: '2024-08-28'
 source_pdf: polozhennja ek u derzhavnomu universyteti zhytomyrska politehnika.pdf
+category: Освітня діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

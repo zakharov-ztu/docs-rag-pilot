@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: zrazky dokumentiv pro osvitu.pdf
+category: Загальна нормативна база
 ---
 
 B19 № ХХХХХХ B19 № ХХХХХХ

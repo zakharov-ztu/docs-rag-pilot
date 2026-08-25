@@ -5,6 +5,8 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja_pro_centr_osvity_vprodovzh_zhyttja_2(1).pdf
+category: Структурні підрозділи
+subgroup: Центри
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

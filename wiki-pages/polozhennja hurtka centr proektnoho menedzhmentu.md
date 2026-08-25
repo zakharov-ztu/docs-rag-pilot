@@ -4,6 +4,8 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja hurtka centr proektnoho menedzhmentu.pdf
+category: Структурні підрозділи
+subgroup: Центри
 ---
 
 П-

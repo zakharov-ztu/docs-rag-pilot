@@ -6,6 +6,7 @@ order_number: 289/од
 order_date: '2025-08-29'
 source_pdf: polozhennja pro cilisnu systemu turboty pro psyhichne zdorovja uchasnykiv
   osvitnoho procesu.pdf
+category: Загальні організаційні питання
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

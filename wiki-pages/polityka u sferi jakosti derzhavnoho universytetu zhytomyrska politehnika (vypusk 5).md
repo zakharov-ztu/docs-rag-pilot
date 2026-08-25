@@ -5,6 +5,7 @@ order_number: 667/од
 order_date: '2023-11-01'
 source_pdf: polityka u sferi jakosti derzhavnoho universytetu zhytomyrska politehnika
   (vypusk 5).pdf
+category: Система управління якістю
 ---
 
 МІСІЯ ЖИТОМИРСЬКОЇ ПОЛІТЕХНІКИ

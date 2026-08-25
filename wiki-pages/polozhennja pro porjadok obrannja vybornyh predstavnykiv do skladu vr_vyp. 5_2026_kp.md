@@ -6,6 +6,8 @@ order_number: 57/од
 order_date: '2026-03-17'
 source_pdf: polozhennja pro porjadok obrannja vybornyh predstavnykiv do skladu vr_vyp.
   5_2026_kp.pdf
+category: Колегіальні органи
+subgroup: Вчена рада університету
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

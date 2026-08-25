@@ -5,6 +5,7 @@ order_number: ''
 order_date: ''
 source_pdf: polozhennja pro starostu akademichnoyi hrupy derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+category: Позанавчальна діяльність. Студентське самоврядування
 ---
 
 Міністерство освіти і науки України П CАГ – 44 – 15 – 02 –

@@ -4,6 +4,7 @@ status: невідомо
 order_number: 1/9-398
 order_date: '2005-08-01'
 source_pdf: vydannja_vymohy.pdf
+category: Інформаційно-бібліотечна та видавнича діяльність
 ---
 
 № 1/9-398 від 1 серпня 2005 р.

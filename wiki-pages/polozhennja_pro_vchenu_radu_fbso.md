@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja_pro_vchenu_radu_fbso.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П1 – 19.00 – 04/19.02 –

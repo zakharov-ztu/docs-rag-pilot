@@ -4,6 +4,7 @@ status: невідомо
 order_number: 21/од
 order_date: '2026-01-26'
 source_pdf: polozhennja_pro_porjadok_obrannja_predstavnykiv_iz_studentiv.pdf
+category: Позанавчальна діяльність. Студентське самоврядування
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

@@ -4,6 +4,7 @@ status: невідомо
 order_number: 19/од
 order_date: '2019-05-31'
 source_pdf: polozhennja_pro_stypendial_ni_komisii.pdf
+category: Загальні організаційні питання
 ---
 
 Міністерство освіти і науки України П – 06.02 – 08 – 02 –

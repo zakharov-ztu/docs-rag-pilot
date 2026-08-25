@@ -4,6 +4,8 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro fikt.pdf
+category: Структурні підрозділи
+subgroup: Кафедри
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

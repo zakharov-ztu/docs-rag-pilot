@@ -5,6 +5,8 @@ order_number: ''
 order_date: ''
 source_pdf: polozhennja pro sportyvno-ozdorovchyj tabir politehnik derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+category: Структурні підрозділи
+subgroup: Відділи
 ---
 
 Міністерство освіти і науки України П СОТ – 17.05 – 02 –

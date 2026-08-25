@@ -5,6 +5,8 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja_pro_centr_ukrayinskoyi_etnolohiyi2023 _2.pdf
+category: Структурні підрозділи
+subgroup: Центри
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

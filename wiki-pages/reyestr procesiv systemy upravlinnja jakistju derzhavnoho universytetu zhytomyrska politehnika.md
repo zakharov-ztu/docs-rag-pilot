@@ -5,6 +5,8 @@ order_number: 491/од
 order_date: '2025-10-29'
 source_pdf: reyestr procesiv systemy upravlinnja jakistju derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+category: Структурні підрозділи
+subgroup: Кафедри
 ---
 
 освіти програм, голови

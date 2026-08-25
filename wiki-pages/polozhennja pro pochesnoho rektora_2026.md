@@ -4,6 +4,8 @@ status: невідомо
 order_number: 99/од
 order_date: '2026-04-27'
 source_pdf: polozhennja pro pochesnoho rektora_2026.pdf
+category: Колегіальні органи
+subgroup: Вчена рада університету
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

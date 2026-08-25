@@ -5,6 +5,7 @@ status: невідомо
 order_number: 465/од
 order_date: '2024-08-28'
 source_pdf: polozhennja pro akademichnu dobrochesnist ta etyku_nove.pdf
+category: Доброчесність та антикорупція
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

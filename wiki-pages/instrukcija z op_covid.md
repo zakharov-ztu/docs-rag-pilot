@@ -6,6 +6,7 @@ status: невідомо
 order_number: 667/од
 order_date: '2020-12-02'
 source_pdf: instrukcija z op_covid.pdf
+category: Охорона праці, безпека життєдіяльності, пожежна безпека
 ---
 
 – 01-2020

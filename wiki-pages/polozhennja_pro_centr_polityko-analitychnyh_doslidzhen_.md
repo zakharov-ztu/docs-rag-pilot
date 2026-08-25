@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: '2022-09-16'
 source_pdf: polozhennja_pro_centr_polityko-analitychnyh_doslidzhen_.pdf
+category: Загальна нормативна база
 ---
 
 Система управління якістю відповідає ДСТУ 150 9001:2015

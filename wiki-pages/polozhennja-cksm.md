@@ -5,6 +5,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja-cksm.pdf
+category: Позанавчальна діяльність. Студентське самоврядування
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

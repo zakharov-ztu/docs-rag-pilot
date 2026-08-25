@@ -5,6 +5,8 @@ order_number: '1609'
 order_date: '2013-11-21'
 source_pdf: polozhennja pro specializovanu vchenu radu d 14.052.01 derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+category: Структурні підрозділи
+subgroup: Відділи
 ---
 
 Міністерство освіти і науки України

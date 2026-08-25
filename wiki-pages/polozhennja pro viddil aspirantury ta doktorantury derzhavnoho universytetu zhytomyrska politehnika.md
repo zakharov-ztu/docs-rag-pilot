@@ -5,6 +5,8 @@ order_number: 10-2/942
 order_date: '1994-07-21'
 source_pdf: polozhennja pro viddil aspirantury ta doktorantury derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+category: Структурні підрозділи
+subgroup: Відділи
 ---
 
 Міністерство освіти і науки України П -13.00- 01 -

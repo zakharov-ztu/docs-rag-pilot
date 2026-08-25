@@ -5,6 +5,7 @@ status: невідомо
 order_number: '207'
 order_date: '2022-05-17'
 source_pdf: instrukcija z op pid chas roboty z ekrannymy prystrojamy.pdf
+category: Охорона праці, безпека життєдіяльності, пожежна безпека
 ---
 
 Житомирська ІОП-17.04-

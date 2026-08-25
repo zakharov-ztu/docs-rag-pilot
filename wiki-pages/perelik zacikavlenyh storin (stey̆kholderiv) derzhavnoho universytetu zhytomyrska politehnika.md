@@ -5,6 +5,7 @@ order_number: 491/од
 order_date: '2025-10-29'
 source_pdf: perelik zacikavlenyh storin (stey̆kholderiv) derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+category: Загальна нормативна база
 ---
 
 № Зацікавлена Основні потреби та Потенційні Потенційні

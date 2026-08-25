@@ -5,6 +5,7 @@ order_number: '1045'
 order_date: '2016-12-28'
 source_pdf: polozhennja pro vyplatu socialnyh stypendij studentam derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П – 06 – 02 –

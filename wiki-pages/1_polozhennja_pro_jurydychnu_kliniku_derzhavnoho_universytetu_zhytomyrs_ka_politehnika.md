@@ -4,6 +4,8 @@ status: невідомо
 order_number: 300/од1
 order_date: '2019-09-30'
 source_pdf: 1_polozhennja_pro_jurydychnu_kliniku_derzhavnoho_universytetu_zhytomyrs_ka_politehnika.pdf
+category: Структурні підрозділи
+subgroup: Відділи
 ---
 
 Міністерство освіти і науки України П-21.01-01.03-

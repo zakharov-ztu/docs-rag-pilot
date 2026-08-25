@@ -5,6 +5,7 @@ status: невідомо
 order_number: 57/од
 order_date: '2026-03-17'
 source_pdf: polozhennja_pro_prjadok_ta_umovy_obrannja_vybirkovyh_dyscyplin_2026.pdf
+category: Освітня діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

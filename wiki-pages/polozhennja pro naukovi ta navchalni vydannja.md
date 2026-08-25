@@ -5,6 +5,7 @@ status: невідомо
 order_number: 293/од
 order_date: '2024-05-28'
 source_pdf: polozhennja pro naukovi ta navchalni vydannja.pdf
+category: Інформаційно-бібліотечна та видавнича діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

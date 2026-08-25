@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: '2026-07-31'
 source_pdf: nakaz pro indeksaciju osvitnih prohram vid 31.07.2026 274 od.pdf
+category: Загальні організаційні питання
 ---
 
 Ф-05.01-04.01-274/од-2026

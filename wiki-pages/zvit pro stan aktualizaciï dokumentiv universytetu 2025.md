@@ -4,6 +4,7 @@ status: невідомо
 order_number: 640/од
 order_date: '2025-12-18'
 source_pdf: zvit pro stan aktualizaciï dokumentiv universytetu 2025.pdf
+category: Доброчесність та антикорупція
 ---
 
 Висновок

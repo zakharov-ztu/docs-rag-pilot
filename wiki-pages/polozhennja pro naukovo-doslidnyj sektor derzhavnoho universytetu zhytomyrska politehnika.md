@@ -5,6 +5,7 @@ order_number: ''
 order_date: ''
 source_pdf: polozhennja pro naukovo-doslidnyj sektor derzhavnoho universytetu zhytomyrska
   politehnika.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П 12.01-01/02 -

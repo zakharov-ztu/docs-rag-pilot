@@ -5,6 +5,7 @@ status: невідомо
 order_number: 284/од
 order_date: '2020-06-26'
 source_pdf: polozhennja_pro_atestaciju-2020.pdf
+category: Управління персоналом
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

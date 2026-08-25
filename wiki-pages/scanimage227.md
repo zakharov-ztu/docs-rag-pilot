@@ -4,6 +4,8 @@ status: невідомо
 order_number: ''
 order_date: '2024-10-28'
 source_pdf: scanimage227.pdf
+category: Структурні підрозділи
+subgroup: Відділи
 ---
 
 УНІВЕРСИТЕТ «ЖИТОМИРСЬКА ПОЛІТЕХНІКА» б 01-202 4

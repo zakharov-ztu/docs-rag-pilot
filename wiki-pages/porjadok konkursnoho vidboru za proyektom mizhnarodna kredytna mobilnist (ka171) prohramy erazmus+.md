@@ -6,6 +6,7 @@ order_number: 48/од
 order_date: '2025-02-24'
 source_pdf: porjadok konkursnoho vidboru za proyektom mizhnarodna kredytna mobilnist
   (ka171) prohramy erazmus+.pdf
+category: Міжнародна діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

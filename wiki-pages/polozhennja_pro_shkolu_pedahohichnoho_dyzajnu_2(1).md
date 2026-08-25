@@ -5,6 +5,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja_pro_shkolu_pedahohichnoho_dyzajnu_2(1).pdf
+category: Загальна нормативна база
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

@@ -4,6 +4,7 @@ status: невідомо
 order_number: 11-л
 order_date: '2020-06-09'
 source_pdf: licenzija.pdf
+category: Загальна нормативна база
 ---
 
 Відомості щодо права провадження освітньої діяльності

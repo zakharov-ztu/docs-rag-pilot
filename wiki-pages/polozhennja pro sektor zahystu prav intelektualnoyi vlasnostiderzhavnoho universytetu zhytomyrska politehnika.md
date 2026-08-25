@@ -5,6 +5,7 @@ order_number: ''
 order_date: ''
 source_pdf: polozhennja pro sektor zahystu prav intelektualnoyi vlasnostiderzhavnoho
   universytetu zhytomyrska politehnika.pdf
+category: Наукова, науково-технічна та інноваційна діяльність
 ---
 
 Міністерство освіти і науки України П – 12.03 – 01/02

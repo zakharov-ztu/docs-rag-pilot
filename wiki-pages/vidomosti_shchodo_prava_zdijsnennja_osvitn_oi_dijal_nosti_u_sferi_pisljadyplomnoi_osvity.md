@@ -4,6 +4,7 @@ status: невідомо
 order_number: 661-л
 order_date: '2019-05-24'
 source_pdf: vidomosti_shchodo_prava_zdijsnennja_osvitn_oi_dijal_nosti_u_sferi_pisljadyplomnoi_osvity.pdf
+category: Загальна нормативна база
 ---
 
 Відомості щодо права здійснення освітньої діяльності

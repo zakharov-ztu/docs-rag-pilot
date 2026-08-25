@@ -6,6 +6,8 @@ status: невідомо
 order_number: 49/од
 order_date: '2025-02-24'
 source_pdf: polozhennja pro ckkno cessris derzhavnoho universytetu zhytomyrska politehnika.pdf
+category: Структурні підрозділи
+subgroup: Центри
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

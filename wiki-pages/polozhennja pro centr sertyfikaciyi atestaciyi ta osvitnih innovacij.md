@@ -4,6 +4,8 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro centr sertyfikaciyi atestaciyi ta osvitnih innovacij.pdf
+category: Структурні підрозділи
+subgroup: Центри
 ---
 
 Міністерство освіти і науки України

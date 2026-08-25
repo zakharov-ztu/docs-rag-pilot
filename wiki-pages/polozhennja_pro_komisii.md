@@ -5,6 +5,7 @@ status: невідомо
 order_number: 284/од
 order_date: '2020-06-26'
 source_pdf: polozhennja_pro_komisii.pdf
+category: Доброчесність та антикорупція
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

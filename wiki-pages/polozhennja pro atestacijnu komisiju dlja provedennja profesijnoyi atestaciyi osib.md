@@ -5,6 +5,7 @@ order_number: '605'
 order_date: '2018-07-26'
 source_pdf: polozhennja pro atestacijnu komisiju dlja provedennja profesijnoyi atestaciyi
   osib.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України

@@ -4,6 +4,7 @@ status: невідомо
 order_number: 517/од
 order_date: '2021-09-01'
 source_pdf: ekolohichna polityka.pdf
+category: Загальна нормативна база
 ---
 
 Процеси глобалізації та суспільних трансформацій підвищили

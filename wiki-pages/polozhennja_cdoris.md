@@ -5,6 +5,8 @@ status: невідомо
 order_number: 464/од
 order_date: '2020-09-28'
 source_pdf: polozhennja_cdoris.pdf
+category: Структурні підрозділи
+subgroup: Центри
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

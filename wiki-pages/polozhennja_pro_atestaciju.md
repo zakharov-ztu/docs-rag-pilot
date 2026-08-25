@@ -5,6 +5,7 @@ status: невідомо
 order_number: 122/од
 order_date: '2022-03-23'
 source_pdf: polozhennja_pro_atestaciju.pdf
+category: Освітня діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

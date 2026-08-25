@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: 2021_pologenya_pro_tvorchiy_konkurs.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П-04.00-01/05-

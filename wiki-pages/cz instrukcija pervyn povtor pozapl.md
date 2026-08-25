@@ -5,6 +5,7 @@ status: невідомо
 order_number: '325'
 order_date: '2016-08-15'
 source_pdf: cz instrukcija pervyn povtor pozapl.pdf
+category: Охорона праці, безпека життєдіяльності, пожежна безпека
 ---
 
 ЗАТВЕРДЖУЮ

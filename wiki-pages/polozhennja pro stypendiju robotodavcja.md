@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro stypendiju robotodavcja.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П – 06 – 02 –

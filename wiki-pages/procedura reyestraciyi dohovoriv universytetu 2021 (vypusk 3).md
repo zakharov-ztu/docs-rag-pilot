@@ -4,6 +4,7 @@ status: невідомо
 order_number: 314/од
 order_date: '2021-06-24'
 source_pdf: procedura reyestraciyi dohovoriv universytetu 2021 (vypusk 3).pdf
+category: Система управління якістю
 ---
 
 ### 2. НОРМАТИВНІ ПОСИЛАННЯ

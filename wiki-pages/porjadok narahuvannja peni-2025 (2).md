@@ -4,6 +4,7 @@ status: невідомо
 order_number: 249/од
 order_date: '2025-08-07'
 source_pdf: porjadok narahuvannja peni-2025 (2).pdf
+category: Фінансово-економічна діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

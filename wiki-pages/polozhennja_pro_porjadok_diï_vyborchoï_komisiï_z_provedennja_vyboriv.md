@@ -4,6 +4,8 @@ status: невідомо
 order_number: 640/од
 order_date: '2025-12-18'
 source_pdf: polozhennja_pro_porjadok_diï_vyborchoï_komisiï_z_provedennja_vyboriv.pdf
+category: Колегіальні органи
+subgroup: Вибори ректора 2026
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

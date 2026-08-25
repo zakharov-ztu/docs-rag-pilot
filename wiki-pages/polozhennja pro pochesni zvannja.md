@@ -5,6 +5,8 @@ status: невідомо
 order_number: 557/од
 order_date: '2022-10-31'
 source_pdf: polozhennja pro pochesni zvannja.pdf
+category: Колегіальні органи
+subgroup: Вчена рада університету
 ---
 
 ДЕРЖАВНИЙ УНІВЕРСИТЕТ «ЖИТОМИРСЬКА

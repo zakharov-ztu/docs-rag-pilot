@@ -5,6 +5,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pidtjahuvannja_pereroblene.pdf
+category: Позанавчальна діяльність. Студентське самоврядування
 ---
 
 ЗАТВЕРДЖУЮ

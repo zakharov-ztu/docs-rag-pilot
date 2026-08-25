@@ -5,6 +5,7 @@ order_number: ''
 order_date: ''
 source_pdf: polozhennja pro fakultet biznesu ta sfery obsluhovuvannja derzhavnoho
   universytetu zhytomyrska politehnika.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П1 – 19.00 –

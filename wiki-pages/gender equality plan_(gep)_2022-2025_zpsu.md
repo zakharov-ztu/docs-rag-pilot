@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: '2022-10-31'
 source_pdf: gender equality plan_(gep)_2022-2025_zpsu.pdf
+category: Міжнародна діяльність
 ---
 
 STRATEGY FOR EQUAL OPPORTUNITIES FOR ALL EMPLOYEES ОК ZHYTOMYR POLYTECHNIC STATE UNIVERSITY

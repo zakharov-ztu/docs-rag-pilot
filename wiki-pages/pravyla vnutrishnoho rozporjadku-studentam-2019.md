@@ -4,6 +4,7 @@ status: невідомо
 order_number: 19/од
 order_date: '2019-05-31'
 source_pdf: pravyla vnutrishnoho rozporjadku-studentam-2019.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П – 05.02 – 02

@@ -4,6 +4,7 @@ status: невідомо
 order_number: 284/од
 order_date: '2020-06-26'
 source_pdf: polozhennja pro upovnovazhenu osobu-1.pdf
+category: Фінансово-економічна діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

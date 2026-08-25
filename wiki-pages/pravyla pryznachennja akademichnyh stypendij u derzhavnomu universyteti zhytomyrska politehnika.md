@@ -5,6 +5,7 @@ order_number: 1556-VII
 order_date: '2014-07-01'
 source_pdf: pravyla pryznachennja akademichnyh stypendij u derzhavnomu universyteti
   zhytomyrska politehnika.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П – 06 – 02 –

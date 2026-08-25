@@ -5,6 +5,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro zenodo.pdf
+category: Інформаційно-бібліотечна та видавнича діяльність
 ---
 
 Проект внесено:

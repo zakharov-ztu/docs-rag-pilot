@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro viddil mizhnarodnyh zv'jazkiv.pdf
+category: Міжнародна діяльність
 ---
 
 Міністерство освіти і науки України п-08.00-

@@ -5,6 +5,7 @@ order_number: ''
 order_date: ''
 source_pdf: polozhennja pro sluzhbu ohorony praci v derzhavnomu universyteti zhytomyrska
   politehnika.pdf
+category: Охорона праці, безпека життєдіяльності, пожежна безпека
 ---
 
 Міністерство освіти і науки України П – 17.03 –

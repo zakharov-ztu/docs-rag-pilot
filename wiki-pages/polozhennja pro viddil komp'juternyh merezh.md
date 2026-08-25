@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro viddil komp'juternyh merezh.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П – 16.00 – 02 –

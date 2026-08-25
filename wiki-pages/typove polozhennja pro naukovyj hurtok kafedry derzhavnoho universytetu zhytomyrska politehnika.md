@@ -5,6 +5,7 @@ order_number: ''
 order_date: ''
 source_pdf: typove polozhennja pro naukovyj hurtok kafedry derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+category: Загальна нормативна база
 ---
 
 Міністерство освіти і науки України П 12.01 - 2019

@@ -5,6 +5,7 @@ status: невідомо
 order_number: 102/од
 order_date: '2026-04-27'
 source_pdf: polozhennja_redakciy̆no_vydavnychyy̆_sektor-2026.pdf
+category: Інформаційно-бібліотечна та видавнича діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

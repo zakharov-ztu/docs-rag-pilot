@@ -5,6 +5,7 @@ order_number: 489/од
 order_date: '2019-11-25'
 source_pdf: polozhennja pro zhytlovu komisiju derzhavnoho universytetu zhytomyrska
   politehnika.pdf
+category: Гуртожитки. Соціальні питання
 ---
 
 Міністерство освіти і науки України П – 17.05 – 08

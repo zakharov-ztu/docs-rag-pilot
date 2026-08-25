@@ -4,6 +4,7 @@ status: невідомо
 order_number: '839'
 order_date: '2007-06-20'
 source_pdf: vidomosti_shchodo_zdijsnennja_osvitn_oi_dijal_nosti_u_sferi_vyshchoi_osvity.pdf
+category: Загальна нормативна база
 ---
 
 Відомості щодо здійснення освітньої діяльності

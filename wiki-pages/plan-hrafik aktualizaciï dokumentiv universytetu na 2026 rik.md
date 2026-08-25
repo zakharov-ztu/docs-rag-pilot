@@ -4,6 +4,7 @@ status: невідомо
 order_number: 640/од
 order_date: '2025-12-18'
 source_pdf: plan-hrafik aktualizaciï dokumentiv universytetu na 2026 rik.pdf
+category: Доброчесність та антикорупція
 ---
 
 Місяць

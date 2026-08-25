@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: '2021-04-30'
 source_pdf: 2021_olimpiada polozhennja_2020.pdf
+category: Формування контингенту студентів. Правила прийому
 ---
 
 Міністерство освіти і науки України П-04.00-01/06-

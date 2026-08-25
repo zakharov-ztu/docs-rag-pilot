@@ -4,6 +4,7 @@ status: невідомо
 order_number: 186/од
 order_date: '2026-06-05'
 source_pdf: polozhennja_fahove_vydannja_2026-nove.docx
+category: Інформаційно-бібліотечна та видавнича діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

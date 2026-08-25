@@ -5,6 +5,7 @@ order_number: ''
 order_date: ''
 source_pdf: polozhennja pro orhanizaciju naukovoyi naukovo-tehnichnoyi ta innovacijnoyi
   dijalnosti v derzhavnomu universyteti zhytomyrska politehnika.pdf
+category: Наукова, науково-технічна та інноваційна діяльність
 ---
 
 Міністерство освіти і науки України П 12.01 – 05/04 -

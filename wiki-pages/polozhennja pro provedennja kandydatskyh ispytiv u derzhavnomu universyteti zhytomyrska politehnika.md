@@ -5,6 +5,7 @@ order_number: ''
 order_date: ''
 source_pdf: polozhennja pro provedennja kandydatskyh ispytiv u derzhavnomu universyteti
   zhytomyrska politehnika.pdf
+category: Наукова, науково-технічна та інноваційна діяльність
 ---
 
 Міністерство освіти і науки України П -13.00 - 02 -

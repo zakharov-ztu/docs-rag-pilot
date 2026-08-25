@@ -5,6 +5,7 @@ status: невідомо
 order_number: 196/од
 order_date: ''
 source_pdf: typove polozhennja z vyznannja cdoris.pdf
+category: Освітня діяльність
 ---
 
 підлягають розгляду, функціональні обов’язки кожного члена Комісії,

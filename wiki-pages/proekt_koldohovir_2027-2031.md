@@ -7,6 +7,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: proekt_koldohovir_2027-2031.pdf
+category: Загальна нормативна база
 ---
 
 КОЛЕКТИВНИЙ ДОГОВІР

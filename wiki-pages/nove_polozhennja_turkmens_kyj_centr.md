@@ -4,6 +4,8 @@ status: невідомо
 order_number: 464/од
 order_date: '2020-09-24'
 source_pdf: nove_polozhennja_turkmens_kyj_centr.pdf
+category: Структурні підрозділи
+subgroup: Центри
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

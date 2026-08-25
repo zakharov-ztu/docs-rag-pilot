@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: '2025-09-04'
 source_pdf: alhorytm zi zminamy.pdf
+category: Освітня діяльність
 ---
 
 Ф-05.01-04.01-310/од1-2025

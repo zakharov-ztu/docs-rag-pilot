@@ -4,6 +4,8 @@ status: невідомо
 order_number: ''
 order_date: '2025-02-24'
 source_pdf: polozhennja pro vymohy do zdobuvachiv vchenyh zvan profesora ta docenta.pdf
+category: Колегіальні органи
+subgroup: Вчена рада університету
 ---
 
 сл ьо м чо

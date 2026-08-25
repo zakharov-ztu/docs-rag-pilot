@@ -4,6 +4,7 @@ status: невідомо
 order_number: 158/агп
 order_date: '2025-07-31'
 source_pdf: prohrama vstupnoho instruktazhu z ohorony praci dlja pracivnykiv.pdf
+category: Охорона праці, безпека життєдіяльності, пожежна безпека
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

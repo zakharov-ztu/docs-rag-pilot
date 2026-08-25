@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro planovo-finansovyj viddil.pdf
+category: Система управління якістю
 ---
 
 Міністерство освіти і науки України П 06.02-01 - 02 -

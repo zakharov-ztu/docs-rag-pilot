@@ -4,6 +4,8 @@ status: невідомо
 order_number: ''
 order_date: '2020-06-26'
 source_pdf: polozhennja pro cspsp (skanovane).pdf
+category: Структурні підрозділи
+subgroup: Центри
 ---
 
 МІНІСТЕРСТВО ОСВІТИ ІНАУКИ УКРАЇНИ || поро

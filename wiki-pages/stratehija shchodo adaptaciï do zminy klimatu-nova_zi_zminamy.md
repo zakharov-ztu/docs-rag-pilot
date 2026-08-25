@@ -4,6 +4,7 @@ status: невідомо
 order_number: 517/од
 order_date: '2021-09-01'
 source_pdf: stratehija shchodo adaptaciï do zminy klimatu-nova_zi_zminamy.pdf
+category: Загальна нормативна база
 ---
 
 ### 1. ЗАГАЛЬНА ЧАСТИНА

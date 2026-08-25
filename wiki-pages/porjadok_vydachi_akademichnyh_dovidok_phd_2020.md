@@ -5,6 +5,7 @@ status: невідомо
 order_number: 197/од
 order_date: '2020-05-22'
 source_pdf: porjadok_vydachi_akademichnyh_dovidok_phd_2020.pdf
+category: Наукова, науково-технічна та інноваційна діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

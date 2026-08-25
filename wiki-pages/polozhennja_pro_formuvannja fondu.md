@@ -4,6 +4,7 @@ status: невідомо
 order_number: 19/од
 order_date: '2019-05-31'
 source_pdf: polozhennja_pro_formuvannja fondu.pdf
+category: Інформаційно-бібліотечна та видавнича діяльність
 ---
 
 Міністерство освіти і науки України П – 07.00 –

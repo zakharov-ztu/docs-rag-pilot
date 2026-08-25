@@ -4,6 +4,7 @@ status: невідомо
 order_number: ''
 order_date: '2025-07-16'
 source_pdf: nakaz 266od.pdf
+category: Фінансово-економічна діяльність
 ---
 
 Ф-05.01-04.01-266/од-2025

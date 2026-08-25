@@ -5,6 +5,8 @@ order_number: 19/од
 order_date: '2019-05-31'
 source_pdf: polozhennja pro porjadok navchannja studentiv derzhavnoho universytetu
   zhytomyrska politehnika za indyvidualnym hrafikom .pdf
+category: Колегіальні органи
+subgroup: Вчена рада університету
 ---
 
 Міністерство освіти і науки України П – 10.03 – 03 – 02 –

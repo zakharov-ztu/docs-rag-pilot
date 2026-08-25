@@ -5,6 +5,7 @@ status: невідомо
 order_number: 656/од
 order_date: '2022-12-27'
 source_pdf: 5 polozhennja pro obrobku ta zahyst personalnyh danyh (vypusk 2).pdf
+category: Загальна нормативна база
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ

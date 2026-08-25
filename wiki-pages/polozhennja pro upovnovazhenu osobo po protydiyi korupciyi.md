@@ -4,6 +4,7 @@ status: невідомо
 order_number: 309/од
 order_date: '2022-07-27'
 source_pdf: polozhennja pro upovnovazhenu osobo po protydiyi korupciyi.pdf
+category: Формування контингенту студентів. Правила прийому
 ---
 
 ДЕРЖАВНИЙ УНІВЕРСИТЕТ «ЖИТОМИРСЬКА

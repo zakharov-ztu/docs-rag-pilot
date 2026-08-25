@@ -5,6 +5,7 @@ order_number: 1556-VII
 order_date: '2014-07-01'
 source_pdf: polozhennja pro radu molodyh vchenyh pry derzhavnomu universyteti zhytomyrska
   politehnika.pdf
+category: Наукова, науково-технічна та інноваційна діяльність
 ---
 
 Міністерство освіти і науки України

@@ -6,6 +6,7 @@ order_number: 234/од1
 order_date: '2025-07-17'
 source_pdf: polozhennja pro nadannja dodatkovyh osvitnih posluh zdobuvacham osvity
   vypusk 2 (1) (2).pdf
+category: Фінансово-економічна діяльність
 ---
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ
