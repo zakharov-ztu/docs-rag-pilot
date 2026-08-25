@@ -1,7 +1,8 @@
 ---
-title: МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ
+title: ПОЛОЖЕННЯ про організацію освітнього процесу у Державному університеті «Житомирська
+  політехніка»
 status: невідомо
-order_number: '1'
+order_number: 563/од
 order_date: '2025-11-17'
 source_pdf: polozhennja_pro_orhanizaciju_osvitnoho_procesu (7).pdf
 ---
@@ -25,8 +26,7 @@ source_pdf: polozhennja_pro_orhanizaciju_osvitnoho_procesu (7).pdf
 Погоджено Вченою радою
 Державного університету
 «Житомирська політехніка»
-
-### 17. листопада 2025 р., протокол № 19
+17 листопада 2025 р., протокол № 19
 Житомир
 2025
 

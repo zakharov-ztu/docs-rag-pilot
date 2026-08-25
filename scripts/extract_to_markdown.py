@@ -116,6 +116,17 @@ RE_SECTION = re.compile(r"^([IVXLCDM]{1,6})\.\s+(\S.*)$")
 RE_POINT = re.compile(r"^(\d{1,3}(?:\.\d{1,3}){0,3})\.?\s+(\S.*)$")
 # Sub-points like "1.2.3." handled by RE_POINT via dot count.
 
+# "N. <month name>" is a date ("15 вересня 2025 р."), not a document point.
+_MONTH_NAMES_LOWER = tuple(m.lower() for m in [
+    "січня", "лютого", "березня", "квітня", "травня", "червня",
+    "липня", "серпня", "вересня", "жовтня", "листопада", "грудня",
+])
+
+
+def _looks_like_date(point_body: str) -> bool:
+    first_word = point_body.split(maxsplit=1)[0].lower().rstrip(",.") if point_body else ""
+    return first_word in _MONTH_NAMES_LOWER
+
 
 def split_into_blocks(text: str) -> str:
     """Reflow raw extracted text into Markdown headings for sections/points."""
@@ -134,7 +145,7 @@ def split_into_blocks(text: str) -> str:
             continue
 
         m_point = RE_POINT.match(line)
-        if m_point:
+        if m_point and not _looks_like_date(m_point.group(2)):
             depth = m_point.group(1).count(".") + 1  # 1 -> level3, 1.2 -> level4, ...
             heading_level = min(3 + (depth - 1), 6)
             out.append(f"\n{'#' * heading_level} {m_point.group(1)}. {m_point.group(2)}")
@@ -151,11 +162,13 @@ def split_into_blocks(text: str) -> str:
 # Metadata recognition
 # --------------------------------------------------------------------------
 
-RE_ORDER_NUMBER = re.compile(
-    r"(?:наказ|розпорядженн\w*|положенн\w*)\s*(?:№|N)\s*([\w./-]+)",
-    re.IGNORECASE,
+RE_ANY_NUMBER_SIGN = re.compile(r"№\s*([\w./-]+)")
+# "№" preceded by these labels refers to a copy/page/protocol count, not the
+# наказ's own registration number (e.g. document headers all carry
+# "Екземпляр № 1" on every page).
+NUMBER_SIGN_STOPWORDS = re.compile(
+    r"(екземпляр|арк\.?|випуск|протокол)\s*$", re.IGNORECASE
 )
-RE_ORDER_NUMBER_FALLBACK = re.compile(r"№\s*([\w./-]+)")
 
 MONTHS_UK = {
     "січня": "01", "лютого": "02", "березня": "03", "квітня": "04",
@@ -166,20 +179,30 @@ RE_ORDER_DATE_TEXTUAL = re.compile(
     r"(\d{1,2})\s+(" + "|".join(MONTHS_UK) + r")\s+(\d{4})",
     re.IGNORECASE,
 )
+RE_ORDER_DATE_TEXTUAL_AFTER_VID = re.compile(
+    r"від\s+(\d{1,2})\s+(" + "|".join(MONTHS_UK) + r")\s+(\d{4})",
+    re.IGNORECASE,
+)
 RE_ORDER_DATE_NUMERIC = re.compile(r"\b(\d{2})[./](\d{2})[./](\d{4})\b")
 
 
 def guess_order_number(text: str) -> str | None:
-    m = RE_ORDER_NUMBER.search(text)
-    if m:
-        return m.group(1).strip().rstrip(".,")
-    m = RE_ORDER_NUMBER_FALLBACK.search(text)
-    if m:
+    for m in RE_ANY_NUMBER_SIGN.finditer(text):
+        context_before = text[max(0, m.start() - 25): m.start()]
+        if NUMBER_SIGN_STOPWORDS.search(context_before):
+            continue
         return m.group(1).strip().rstrip(".,")
     return None
 
 
 def guess_order_date(text: str) -> str | None:
+    # Prefer a date right after "від" (наказ ... від DD <місяць> YYYY р.),
+    # since a document can also contain unrelated dates (e.g. a Вчена рада
+    # protocol date) earlier or later in the text.
+    m = RE_ORDER_DATE_TEXTUAL_AFTER_VID.search(text)
+    if m:
+        day, month_name, year = m.groups()
+        return f"{year}-{MONTHS_UK[month_name.lower()]}-{int(day):02d}"
     m = RE_ORDER_DATE_TEXTUAL.search(text)
     if m:
         day, month_name, year = m.groups()
@@ -192,10 +215,38 @@ def guess_order_date(text: str) -> str | None:
     return None
 
 
+# Document-type words that typically stand alone as a heading right above
+# the actual title text, e.g. a line reading just "ПОЛОЖЕННЯ".
+TITLE_ANCHORS = {"ПОЛОЖЕННЯ", "НАКАЗ", "ІНСТРУКЦІЯ", "ПРАВИЛА", "ПОРЯДОК", "РЕГЛАМЕНТ"}
+# Lines that signal we've run past the title into unrelated boilerplate.
+TITLE_STOP_LINE = re.compile(
+    r"(контрольний примірник|врахований примірник|погоджено|вченою радою|ректор|_{3,})",
+    re.IGNORECASE,
+)
+
+
+def _is_mostly_uppercase(line: str) -> bool:
+    letters = [ch for ch in line if ch.isalpha()]
+    if not letters:
+        return False
+    return sum(ch.isupper() for ch in letters) / len(letters) > 0.8
+
+
 def guess_title(text: str) -> str:
-    for raw_line in text.split("\n"):
-        line = raw_line.strip()
-        if len(line) >= 8 and not line.isdigit():
+    lines = [ln.strip() for ln in text.split("\n")]
+
+    for i, line in enumerate(lines):
+        if line in TITLE_ANCHORS:
+            parts = [line]
+            for cont in lines[i + 1: i + 8]:
+                if not cont or TITLE_STOP_LINE.search(cont) or _is_mostly_uppercase(cont):
+                    break
+                parts.append(cont)
+            return " ".join(parts)[:300]
+
+    # Fallback: first substantial line that isn't a repeated ALL-CAPS header.
+    for line in lines:
+        if len(line) >= 8 and not line.isdigit() and not _is_mostly_uppercase(line):
             return line[:200]
     return ""
 

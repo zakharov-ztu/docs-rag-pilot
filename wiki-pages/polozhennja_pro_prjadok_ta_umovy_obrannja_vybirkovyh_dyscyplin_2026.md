@@ -1,7 +1,8 @@
 ---
-title: МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ П-10.00-
+title: ПОЛОЖЕННЯ про порядок та умови обрання здобувачами вищої освіти Державного
+  університету «Житомирська політехніка» вибіркових дисциплін
 status: невідомо
-order_number: '1'
+order_number: 57/од
 order_date: '2026-03-17'
 source_pdf: polozhennja_pro_prjadok_ta_umovy_obrannja_vybirkovyh_dyscyplin_2026.pdf
 ---
@@ -23,8 +24,7 @@ source_pdf: polozhennja_pro_prjadok_ta_umovy_obrannja_vybirkovyh_dyscyplin_2026.
 Погоджено Вченою радою
 Державного університету
 «Житомирська політехніка»
-
-### 16. березня 2026 р., протокол № 4
+16 березня 2026 р., протокол № 4
 Житомир
 2026
 
