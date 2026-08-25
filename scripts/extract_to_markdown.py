@@ -21,6 +21,7 @@ import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
+from urllib.parse import quote
 
 import pdfplumber
 import pytesseract
@@ -358,7 +359,10 @@ def _is_mostly_uppercase(line: str) -> bool:
     return sum(ch.isupper() for ch in letters) / len(letters) > 0.8
 
 
-def guess_title(text: str) -> str:
+def _find_title_anchor_parts(text: str) -> tuple[str, str] | None:
+    """If a TITLE_ANCHORS word opens the title, return (anchor_word,
+    full_title). Shared by guess_title() and build_link_spec(), since a
+    cross-reference link needs the same anchor/rest split as the title."""
     lines = [ln.strip() for ln in _approval_slice(text).split("\n")]
 
     for i, line in enumerate(lines):
@@ -369,10 +373,18 @@ def guess_title(text: str) -> str:
                 if not cont or TITLE_STOP_LINE.search(cont) or _is_mostly_uppercase(cont):
                     break
                 parts.append(cont)
-            return " ".join(parts)[:300]
+            return first_word, " ".join(parts)[:300]
+    return None
+
+
+def guess_title(text: str) -> str:
+    found = _find_title_anchor_parts(text)
+    if found:
+        return found[1]
 
     # Fallback: first substantial line that isn't a repeated ALL-CAPS header
     # or a bare document-code fragment (digits/dots/dashes only).
+    lines = [ln.strip() for ln in _approval_slice(text).split("\n")]
     for line in lines:
         if (
             len(line) >= 8
@@ -381,6 +393,106 @@ def guess_title(text: str) -> str:
         ):
             return line[:200]
     return ""
+
+
+# --------------------------------------------------------------------------
+# Cross-document linking
+# --------------------------------------------------------------------------
+
+# Ukrainian declines "Положення про X" into "Положенням про X" / "Положенні
+# про X" / etc. depending on grammatical role, but the noun stem stays
+# fixed, so "<stem>\w*" matches every case. "Положення" itself barely
+# declines (only dative/instrumental/locative change), but the others do.
+ANCHOR_STEMS = {
+    "ПОЛОЖЕННЯ": "Положен",
+    "НАКАЗ": "Наказ",
+    "ІНСТРУКЦІЯ": "Інструкці",
+    "ПРАВИЛА": "Правил",
+    "ПОРЯДОК": "Поряд",
+    "РЕГЛАМЕНТ": "Регламент",
+    "КОДЕКС": "Кодекс",
+    "ПРОЦЕДУРА": "Процедур",
+    "ПОЛІТИКА": "Політик",
+    "СТАТУТ": "Статут",
+    "СТРАТЕГІЯ": "Стратег",
+}
+
+# The "Державного університету «Житомирська політехніка»" tail is common to
+# almost every title and appears in body references with varying grammar
+# ("у Державному університеті...", "Державного університету..."), or is
+# dropped entirely when the reference is abbreviated. Strip it off the end
+# of a title's core phrase, and match any inflected form of it as optional
+# in body text, rather than requiring the title's exact wording.
+RE_UNIV_SUFFIX = re.compile(
+    r"\s+(?:у\s+)?Державн\w+\s+університет\w*\s+«Житомирська\s+політехніка»\.?$"
+)
+RE_UNIV_SUFFIX_MATCH = r"(?:\s+\S+)?\s+Державн\w+\s+університет\w*\s+«Житомирська\s+політехніка»"
+
+# A core phrase shorter than this is too generic to link safely (risk of
+# matching unrelated text).
+MIN_LINK_CORE_WORDS = 2
+
+
+@dataclass
+class LinkSpec:
+    pattern: re.Pattern
+    url: str
+
+
+def build_link_spec(pdf_stem: str, text: str) -> LinkSpec | None:
+    """Build a regex that finds mentions of this document (by its own
+    title) inside OTHER documents' bodies, so they can become links."""
+    found = _find_title_anchor_parts(text)
+    if not found:
+        return None
+    anchor_word, full_title = found
+    stem = ANCHOR_STEMS.get(anchor_word)
+    if not stem:
+        return None
+
+    rest = full_title[len(anchor_word):].strip()
+    core = RE_UNIV_SUFFIX.sub("", rest).strip()
+    core_words = core.split()
+    if len(core_words) < MIN_LINK_CORE_WORDS:
+        return None
+
+    core_pattern = r"\s+".join(re.escape(w) for w in core_words)
+    pattern = re.compile(rf"{stem}\w*\s+{core_pattern}(?:{RE_UNIV_SUFFIX_MATCH})?")
+    url = "/wiki-pages/" + quote(f"{pdf_stem}.html", safe="/")
+    return LinkSpec(pattern=pattern, url=url)
+
+
+def link_cross_references(body: str, own_stem: str, registry: dict[str, LinkSpec]) -> str:
+    """Turn the first mention of each other recognized document's title
+    into a Markdown link. Non-overlapping, self-links excluded."""
+    matches: list[tuple[int, int, str]] = []
+    for target_stem, spec in registry.items():
+        if target_stem == own_stem:
+            continue
+        m = spec.pattern.search(body)
+        if m:
+            matches.append((m.start(), m.end(), spec.url))
+
+    if not matches:
+        return body
+
+    matches.sort()
+    accepted: list[tuple[int, int, str]] = []
+    last_end = -1
+    for start, end, url in matches:
+        if start < last_end:
+            continue
+        accepted.append((start, end, url))
+        last_end = end
+
+    out = []
+    cursor = 0
+    for start, end, url in accepted:
+        out.append(body[cursor:start])
+        out.append(f"[{body[start:end]}]({url})")
+        cursor = end
+    out.append(body[cursor:])
+    return "".join(out)
 
 
 # --------------------------------------------------------------------------
@@ -404,54 +516,75 @@ def read_existing_status(out_path: Path) -> str:
         return "невідомо"
 
 
-def build_markdown(pdf_path: Path, result: ExtractionResult, existing_status: str) -> str:
-    title = guess_title(result.text)
-    order_number = guess_order_number(result.text) or ""
-    order_date = guess_order_date(result.text) or ""
-
-    frontmatter = {
-        "title": title,
-        "status": existing_status,
-        "order_number": order_number,
-        "order_date": order_date,
-        "source_pdf": pdf_path.name,
-    }
-    fm_yaml = yaml.dump(frontmatter, allow_unicode=True, sort_keys=False, default_flow_style=False)
-
-    body = split_into_blocks(strip_boilerplate(result.text))
-    return f"---\n{fm_yaml}---\n\n{body}"
+@dataclass
+class DocRecord:
+    pdf_path: Path
+    out_path: Path
+    result: ExtractionResult
+    existing_status: str
+    title: str
+    order_number: str
+    order_date: str
+    body: str
+    link_spec: LinkSpec | None
 
 
 # --------------------------------------------------------------------------
 # Main
 # --------------------------------------------------------------------------
 
-def process_pdf(pdf_path: Path, stats: RunStats) -> None:
+def analyze_pdf(pdf_path: Path, stats: RunStats) -> DocRecord | None:
+    """Phase 1: extract + guess metadata for one PDF. Cross-document links
+    aren't inserted yet — that needs every document's title first, which
+    only exists once phase 1 has run for all of them."""
     stats.total += 1
     try:
         result = extract_pdf(pdf_path)
     except Exception as exc:
         log.error("FAILED %s: %s", pdf_path.name, exc)
         stats.failed.append((pdf_path.name, str(exc)))
-        return
+        return None
 
     if not result.text.strip():
         msg = "no text extracted (pdfplumber and OCR both returned empty)"
         log.error("FAILED %s: %s", pdf_path.name, msg)
         stats.failed.append((pdf_path.name, msg))
-        return
+        return None
 
     out_path = OUTPUT_DIR / f"{pdf_path.stem}.md"
-    md = build_markdown(pdf_path, result, read_existing_status(out_path))
-    out_path.write_text(md, encoding="utf-8")
+    body = split_into_blocks(strip_boilerplate(result.text))
 
-    stats.succeeded += 1
-    if result.used_ocr:
-        stats.used_ocr += 1
-    log.info(
-        "OK %s -> %s (%d pages, %s)",
-        pdf_path.name, out_path.name, result.pages, "OCR" if result.used_ocr else "text layer",
+    return DocRecord(
+        pdf_path=pdf_path,
+        out_path=out_path,
+        result=result,
+        existing_status=read_existing_status(out_path),
+        title=guess_title(result.text),
+        order_number=guess_order_number(result.text) or "",
+        order_date=guess_order_date(result.text) or "",
+        body=body,
+        link_spec=build_link_spec(pdf_path.stem, result.text),
     )
+
+
+def write_record(record: DocRecord, registry: dict[str, LinkSpec]) -> int:
+    """Phase 2: insert cross-document links (now that the full registry
+    exists) and write the final .md file. Returns the number of links
+    inserted, for the run summary."""
+    linked_body = link_cross_references(record.body, record.pdf_path.stem, registry)
+    links_inserted = linked_body.count("](/wiki-pages/")
+
+    frontmatter = {
+        "title": record.title,
+        "status": record.existing_status,
+        "order_number": record.order_number,
+        "order_date": record.order_date,
+        "source_pdf": record.pdf_path.name,
+    }
+    fm_yaml = yaml.dump(frontmatter, allow_unicode=True, sort_keys=False, default_flow_style=False)
+    md = f"---\n{fm_yaml}---\n\n{linked_body}"
+    record.out_path.write_text(md, encoding="utf-8")
+    return links_inserted
 
 
 def main() -> int:
@@ -463,14 +596,31 @@ def main() -> int:
         return 0
 
     stats = RunStats()
-    for pdf_path in pdf_files:
-        process_pdf(pdf_path, stats)
+    records = [r for r in (analyze_pdf(p, stats) for p in pdf_files) if r is not None]
+
+    registry = {r.pdf_path.stem: r.link_spec for r in records if r.link_spec}
+    log.info("Cross-reference registry: %d/%d documents recognized a linkable title", len(registry), len(records))
+
+    total_links = 0
+    for record in records:
+        total_links += write_record(record, registry)
+
+        stats.succeeded += 1
+        if record.result.used_ocr:
+            stats.used_ocr += 1
+        log.info(
+            "OK %s -> %s (%d pages, %s)",
+            record.pdf_path.name, record.out_path.name, record.result.pages,
+            "OCR" if record.result.used_ocr else "text layer",
+        )
 
     print("\n=== Підсумок ===")
-    print(f"Усього PDF:        {stats.total}")
-    print(f"Оброблено успішно: {stats.succeeded}")
-    print(f"Знадобився OCR:    {stats.used_ocr}")
-    print(f"Помилки:           {len(stats.failed)}")
+    print(f"Усього PDF:            {stats.total}")
+    print(f"Оброблено успішно:     {stats.succeeded}")
+    print(f"Знадобився OCR:        {stats.used_ocr}")
+    print(f"Розпізнано для лінків: {len(registry)}")
+    print(f"Проставлено посилань:  {total_links}")
+    print(f"Помилки:               {len(stats.failed)}")
     for name, err in stats.failed:
         print(f"  - {name}: {err}")
 
