@@ -110,6 +110,105 @@ def extract_pdf(pdf_path: Path) -> ExtractionResult:
 # Structure detection / Markdown formatting
 # --------------------------------------------------------------------------
 
+# This university's documents share one ISO-9001 template: every single
+# page repeats an institutional header/footer stamp, and the cover page
+# carries an approval block (ЗАТВЕРДЖЕНО...) whose useful parts (title,
+# наказ number/date) are already pulled into the YAML frontmatter by
+# guess_title/guess_order_number/guess_order_date. Both are pure noise in
+# the document body and get stripped by strip_boilerplate() below.
+RUNNING_HEADER_PATTERNS = [
+    re.compile(r"МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ"),
+    re.compile(r"ДЕРЖАВНИЙ УНІВЕРСИТЕТ.*ЖИТОМИРСЬКА ПОЛІТЕХНІКА"),
+    re.compile(r"Система управління якістю.*ДСТУ ISO"),
+    re.compile(r"Екземпляр\s*№?\s*\d+.*Арк"),
+    re.compile(r"^Випуск\s+\d+\s+Зміни\s+\d+"),
+    # Document control code, e.g. "П-10.00-02.01-" / "07-2025", which some
+    # pages wrap onto their own line instead of the header line above.
+    re.compile(r"^[А-ЯІЇЄҐ]-[\d]+\.[\d]+-[\d]+\.[\d]+-?$"),
+    re.compile(r"^\d{2}-\d{4}$"),
+]
+# The institution's logo text sometimes extracts as isolated lines.
+STANDALONE_NOISE_LINES = {"Житомирська", "політехніка"}
+
+# Table-of-contents dot leaders ("Загальні положення……………… 3") and bare
+# page-footer numbers.
+RE_DOT_LEADER = re.compile(r"[.…]{3,}\s*\d*\s*$")
+RE_LONE_PAGE_NUMBER = re.compile(r"^\d{1,3}$")
+
+RE_APPROVAL_BLOCK_START = re.compile(r"^ЗАТВЕРДЖЕНО$")
+RE_BARE_YEAR = re.compile(r"^(19|20)\d{2}$")
+# Safety cap: if no bare-year terminator turns up quickly, stop dropping
+# lines rather than risk eating real content (e.g. an annex with its own
+# ЗАТВЕРДЖЕНО stamp but a differently formatted date).
+MAX_APPROVAL_BLOCK_LINES = 25
+
+RE_TOC_LABEL = re.compile(r"^ЗМІСТ$")
+# A genuine top-level section heading ("1. ЗАГАЛЬНІ ПОЛОЖЕННЯ" /
+# "I. ЗАГАЛЬНІ ПОЛОЖЕННЯ") is ALL CAPS, unlike a ЗМІСТ entry for the same
+# section ("1. Загальні положення………… 3"), which is mixed case. That's
+# what marks the real content starting again after the table of contents.
+RE_TOP_LEVEL_HEADING_CANDIDATE = re.compile(r"^(?:[IVXLCDM]{1,6}|\d{1,3})\.?\s+(\S.*)$")
+MAX_TOC_BLOCK_LINES = 150
+
+
+def _looks_like_toc_terminator(stripped: str) -> bool:
+    m = RE_TOP_LEVEL_HEADING_CANDIDATE.match(stripped)
+    return bool(m and _is_mostly_uppercase(m.group(1)))
+
+
+def strip_boilerplate(text: str) -> str:
+    """Remove the repeated page header/footer stamp, the cover-page
+    approval block, and the dotted table of contents from raw extracted
+    text, leaving just the document body."""
+    out: list[str] = []
+    skipping_approval_block = False
+    approval_block_used = False
+    approval_skipped_count = 0
+    skipping_toc = False
+    toc_used = False
+    toc_skipped_count = 0
+
+    for line in text.split("\n"):
+        stripped = line.strip()
+
+        if skipping_toc:
+            toc_skipped_count += 1
+            if _looks_like_toc_terminator(stripped) or toc_skipped_count > MAX_TOC_BLOCK_LINES:
+                skipping_toc = False
+            else:
+                continue
+
+        if skipping_approval_block:
+            approval_skipped_count += 1
+            if RE_BARE_YEAR.match(stripped) or approval_skipped_count > MAX_APPROVAL_BLOCK_LINES:
+                skipping_approval_block = False
+            continue
+
+        if not approval_block_used and RE_APPROVAL_BLOCK_START.match(stripped):
+            skipping_approval_block = True
+            approval_block_used = True
+            approval_skipped_count = 0
+            continue
+
+        if not toc_used and RE_TOC_LABEL.match(stripped):
+            skipping_toc = True
+            toc_used = True
+            toc_skipped_count = 0
+            continue
+
+        if (
+            stripped in STANDALONE_NOISE_LINES
+            or RE_DOT_LEADER.search(stripped)
+            or RE_LONE_PAGE_NUMBER.match(stripped)
+            or any(p.search(stripped) for p in RUNNING_HEADER_PATTERNS)
+        ):
+            continue
+
+        out.append(line)
+
+    return "\n".join(out)
+
+
 # Roman-numeral top-level sections, e.g. "I. ЗАГАЛЬНІ ПОЛОЖЕННЯ"
 RE_SECTION = re.compile(r"^([IVXLCDM]{1,6})\.\s+(\S.*)$")
 # Numbered points, e.g. "1. Текст" or "1.2. Текст"
@@ -269,7 +368,7 @@ def build_markdown(pdf_path: Path, result: ExtractionResult) -> str:
     }
     fm_yaml = yaml.dump(frontmatter, allow_unicode=True, sort_keys=False, default_flow_style=False)
 
-    body = split_into_blocks(result.text)
+    body = split_into_blocks(strip_boilerplate(result.text))
     return f"---\n{fm_yaml}---\n\n{body}"
 
 
