@@ -1,0 +1,23 @@
+---
+layout: default
+---
+<p><a href="{{ '/' | relative_url }}">&larr; Всі документи</a></p>
+
+<article class="document">
+  <h1>{{ page.title }}</h1>
+
+  <table class="doc-meta">
+    <tr><th>Статус</th><td><span class="status">{{ page.status }}</span></td></tr>
+    {% if page.order_number and page.order_number != "" %}
+    <tr><th>№ наказу</th><td>{{ page.order_number }}</td></tr>
+    {% endif %}
+    {% if page.order_date and page.order_date != "" %}
+    <tr><th>Дата наказу</th><td>{{ page.order_date }}</td></tr>
+    {% endif %}
+    <tr><th>Джерело</th><td>{{ page.source_pdf }}</td></tr>
+  </table>
+
+  <hr>
+
+  {{ content }}
+</article>

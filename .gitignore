@@ -2,3 +2,6 @@
 __pycache__/
 *.pyc
 .DS_Store
+_site/
+.jekyll-cache/
+wiki-pages/.Rhistory
