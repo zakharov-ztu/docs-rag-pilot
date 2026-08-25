@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-"""Extract text from PDFs in source-pdfs/ into structured Markdown in wiki-pages/.
+"""Extract text from PDF/DOCX files in source-pdfs/ into structured
+Markdown in wiki-pages/.
 
-For each PDF:
-  1. Try to extract the text layer with pdfplumber.
-  2. If the text layer is missing or looks broken (too little text, or mostly
-     garbage characters), fall back to OCR (pdf2image -> tesseract, ukr+eng).
-  3. Split the text into logical blocks by document structure (roman-numeral
+For each source document:
+  1. PDF: try the text layer with pdfplumber; if missing or broken (too
+     little text, or mostly garbage characters), fall back to OCR
+     (pdf2image -> tesseract, ukr+eng). DOCX: read directly with
+     python-docx — it always has a real text layer, no OCR needed.
+  2. Split the text into logical blocks by document structure (roman-numeral
      sections, numbered "punkty"/"pidpunkty", etc.) using Markdown headings.
-  4. Try to recognize order number / date from the text.
-  5. Write <pdf_stem>.md into wiki-pages/ with a YAML frontmatter header.
+  3. Try to recognize order number / date from the text.
+  4. Write <stem>.md into wiki-pages/ with a YAML frontmatter header.
 
 Usage:
     .venv/bin/python scripts/extract_to_markdown.py
@@ -23,6 +25,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from urllib.parse import quote
 
+import docx
 import pdfplumber
 import pytesseract
 import yaml
@@ -51,7 +54,7 @@ log = logging.getLogger("extract_to_markdown")
 
 @dataclass
 class ExtractionResult:
-    pdf_path: Path
+    source_path: Path
     text: str
     used_ocr: bool
     pages: int
@@ -85,6 +88,20 @@ def extract_with_ocr(pdf_path: Path) -> tuple[str, int]:
     return "\n\n".join(pages_text), len(images)
 
 
+def extract_with_docx(docx_path: Path) -> tuple[str, int]:
+    """.docx always carries a real text layer, so no OCR fallback is ever
+    needed. Table cells are pulled in too (flattened, cell by cell) since
+    some normative content lives in tables rather than paragraphs."""
+    document = docx.Document(docx_path)
+    parts = [p.text for p in document.paragraphs]
+    for table in document.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                if cell.text.strip():
+                    parts.append(cell.text)
+    return "\n".join(parts), len(document.paragraphs)
+
+
 def is_text_layer_broken(text: str, n_pages: int) -> bool:
     if not text or not text.strip():
         return True
@@ -98,19 +115,23 @@ def is_text_layer_broken(text: str, n_pages: int) -> bool:
     return False
 
 
-def extract_pdf(pdf_path: Path) -> ExtractionResult:
+def extract_document(source_path: Path) -> ExtractionResult:
+    if source_path.suffix.lower() == ".docx":
+        text, n_units = extract_with_docx(source_path)
+        return ExtractionResult(source_path, text, used_ocr=False, pages=n_units)
+
     try:
-        text, n_pages = extract_with_pdfplumber(pdf_path)
+        text, n_pages = extract_with_pdfplumber(source_path)
     except Exception as exc:  # pdfplumber can choke on malformed PDFs
-        log.warning("pdfplumber failed for %s (%s), falling back to OCR", pdf_path.name, exc)
+        log.warning("pdfplumber failed for %s (%s), falling back to OCR", source_path.name, exc)
         text, n_pages = "", 0
 
     if is_text_layer_broken(text, n_pages):
-        log.info("%s: text layer missing/weak, running OCR (ukr+eng)...", pdf_path.name)
-        ocr_text, ocr_pages = extract_with_ocr(pdf_path)
-        return ExtractionResult(pdf_path, ocr_text, used_ocr=True, pages=ocr_pages or n_pages)
+        log.info("%s: text layer missing/weak, running OCR (ukr+eng)...", source_path.name)
+        ocr_text, ocr_pages = extract_with_ocr(source_path)
+        return ExtractionResult(source_path, ocr_text, used_ocr=True, pages=ocr_pages or n_pages)
 
-    return ExtractionResult(pdf_path, text, used_ocr=False, pages=n_pages)
+    return ExtractionResult(source_path, text, used_ocr=False, pages=n_pages)
 
 
 # --------------------------------------------------------------------------
@@ -524,7 +545,7 @@ def read_existing_status(out_path: Path) -> str:
 
 @dataclass
 class DocRecord:
-    pdf_path: Path
+    source_path: Path
     out_path: Path
     result: ExtractionResult
     existing_status: str
@@ -539,29 +560,30 @@ class DocRecord:
 # Main
 # --------------------------------------------------------------------------
 
-def analyze_pdf(pdf_path: Path, stats: RunStats) -> DocRecord | None:
-    """Phase 1: extract + guess metadata for one PDF. Cross-document links
-    aren't inserted yet — that needs every document's title first, which
-    only exists once phase 1 has run for all of them."""
+def analyze_document(source_path: Path, stats: RunStats) -> DocRecord | None:
+    """Phase 1: extract + guess metadata for one source document (PDF or
+    DOCX). Cross-document links aren't inserted yet — that needs every
+    document's title first, which only exists once phase 1 has run for all
+    of them."""
     stats.total += 1
     try:
-        result = extract_pdf(pdf_path)
+        result = extract_document(source_path)
     except Exception as exc:
-        log.error("FAILED %s: %s", pdf_path.name, exc)
-        stats.failed.append((pdf_path.name, str(exc)))
+        log.error("FAILED %s: %s", source_path.name, exc)
+        stats.failed.append((source_path.name, str(exc)))
         return None
 
     if not result.text.strip():
-        msg = "no text extracted (pdfplumber and OCR both returned empty)"
-        log.error("FAILED %s: %s", pdf_path.name, msg)
-        stats.failed.append((pdf_path.name, msg))
+        msg = "no text extracted"
+        log.error("FAILED %s: %s", source_path.name, msg)
+        stats.failed.append((source_path.name, msg))
         return None
 
-    out_path = OUTPUT_DIR / f"{pdf_path.stem}.md"
+    out_path = OUTPUT_DIR / f"{source_path.stem}.md"
     body = split_into_blocks(strip_boilerplate(result.text))
 
     return DocRecord(
-        pdf_path=pdf_path,
+        source_path=source_path,
         out_path=out_path,
         result=result,
         existing_status=read_existing_status(out_path),
@@ -569,7 +591,7 @@ def analyze_pdf(pdf_path: Path, stats: RunStats) -> DocRecord | None:
         order_number=guess_order_number(result.text) or "",
         order_date=guess_order_date(result.text) or "",
         body=body,
-        link_spec=build_link_spec(pdf_path.stem, result.text),
+        link_spec=build_link_spec(source_path.stem, result.text),
     )
 
 
@@ -577,7 +599,7 @@ def write_record(record: DocRecord, registry: dict[str, LinkSpec]) -> int:
     """Phase 2: insert cross-document links (now that the full registry
     exists) and write the final .md file. Returns the number of links
     inserted, for the run summary."""
-    linked_body = link_cross_references(record.body, record.pdf_path.stem, registry)
+    linked_body = link_cross_references(record.body, record.source_path.stem, registry)
     links_inserted = linked_body.count(f"]({SITE_BASEURL}/wiki-pages/")
 
     frontmatter = {
@@ -585,7 +607,7 @@ def write_record(record: DocRecord, registry: dict[str, LinkSpec]) -> int:
         "status": record.existing_status,
         "order_number": record.order_number,
         "order_date": record.order_date,
-        "source_pdf": record.pdf_path.name,
+        "source_pdf": record.source_path.name,
     }
     fm_yaml = yaml.dump(frontmatter, allow_unicode=True, sort_keys=False, default_flow_style=False)
     md = f"---\n{fm_yaml}---\n\n{linked_body}"
@@ -596,15 +618,15 @@ def write_record(record: DocRecord, registry: dict[str, LinkSpec]) -> int:
 def main() -> int:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    pdf_files = sorted(SOURCE_DIR.glob("*.pdf"))
-    if not pdf_files:
-        log.warning("No PDF files found in %s", SOURCE_DIR)
+    source_files = sorted(SOURCE_DIR.glob("*.pdf")) + sorted(SOURCE_DIR.glob("*.docx"))
+    if not source_files:
+        log.warning("No PDF/DOCX files found in %s", SOURCE_DIR)
         return 0
 
     stats = RunStats()
-    records = [r for r in (analyze_pdf(p, stats) for p in pdf_files) if r is not None]
+    records = [r for r in (analyze_document(p, stats) for p in source_files) if r is not None]
 
-    registry = {r.pdf_path.stem: r.link_spec for r in records if r.link_spec}
+    registry = {r.source_path.stem: r.link_spec for r in records if r.link_spec}
     log.info("Cross-reference registry: %d/%d documents recognized a linkable title", len(registry), len(records))
 
     total_links = 0
@@ -616,12 +638,12 @@ def main() -> int:
             stats.used_ocr += 1
         log.info(
             "OK %s -> %s (%d pages, %s)",
-            record.pdf_path.name, record.out_path.name, record.result.pages,
+            record.source_path.name, record.out_path.name, record.result.pages,
             "OCR" if record.result.used_ocr else "text layer",
         )
 
     print("\n=== Підсумок ===")
-    print(f"Усього PDF:            {stats.total}")
+    print(f"Усього документів:     {stats.total}")
     print(f"Оброблено успішно:     {stats.succeeded}")
     print(f"Знадобився OCR:        {stats.used_ocr}")
     print(f"Розпізнано для лінків: {len(registry)}")

@@ -1,0 +1,11 @@
+---
+title: Міністерство освіти і науки України П – 06 – 02 –
+status: невідомо
+order_number: ''
+order_date: ''
+source_pdf: polozhennja pro stypendiju rektora derzhavnoho universytetu zhytomyrska
+  politehnika.pdf
+---
+
+Міністерство освіти і науки України П – 06 – 02 –
+Державний університет «Житомирська політехніка» 09 – 2019
