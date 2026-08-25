@@ -122,10 +122,12 @@ RUNNING_HEADER_PATTERNS = [
     re.compile(r"Система управління якістю.*ДСТУ ISO"),
     re.compile(r"Екземпляр\s*№?\s*\d+.*Арк"),
     re.compile(r"^Випуск\s+\d+\s+Зміни\s+\d+"),
-    # Document control code, e.g. "П-10.00-02.01-" / "07-2025", which some
-    # pages wrap onto their own line instead of the header line above.
-    re.compile(r"^[А-ЯІЇЄҐ]-[\d]+\.[\d]+-[\d]+\.[\d]+-?$"),
-    re.compile(r"^\d{2}-\d{4}$"),
+    # Document control code, e.g. "П-10.00-02.01-" / "07-2025" /
+    # "02.15-01-2020", which different documents wrap onto their own
+    # line(s) in slightly different ways instead of the header line above.
+    # A standalone line made up only of digits/dots/dashes (with an
+    # optional single leading Cyrillic letter) is never real prose.
+    re.compile(r"^(?:[А-ЯІЇЄҐ]-)?\d+(?:[.\-]\d+)*-?$"),
 ]
 # The institution's logo text sometimes extracts as isolated lines.
 STANDALONE_NOISE_LINES = {"Житомирська", "політехніка"}
@@ -261,12 +263,30 @@ def split_into_blocks(text: str) -> str:
 # Metadata recognition
 # --------------------------------------------------------------------------
 
+# The title/наказ number/date always live in the cover-page approval block
+# ("ЗАТВЕРДЖЕНО\nНаказ ... від DD MONTH YYYY р. № NNN/од\n...ПОЛОЖЕННЯ..."),
+# right after the word ЗАТВЕРДЖЕНО. Searching only that narrow window (not
+# the whole document, and not even just "the first N characters") avoids
+# matching an unrelated date/№ cited in body text (e.g. "...затверджено
+# наказом МОН від 06.10.2010 №...", a legal citation inside section 1.1).
+COVER_TEXT_CHARS = 2500
+APPROVAL_SLICE_CHARS = 600
+RE_APPROVAL_WORD = re.compile(r"ЗАТВЕРДЖЕНО")
+
+
+def _approval_slice(text: str) -> str:
+    m = RE_APPROVAL_WORD.search(text)
+    if m:
+        return text[m.start(): m.start() + APPROVAL_SLICE_CHARS]
+    return text[:COVER_TEXT_CHARS]
+
 RE_ANY_NUMBER_SIGN = re.compile(r"№\s*([\w./-]+)")
-# "№" preceded by these labels refers to a copy/page/protocol count, not the
-# наказ's own registration number (e.g. document headers all carry
-# "Екземпляр № 1" on every page).
+# "№" preceded by these labels refers to a copy/page/protocol/table-row
+# count, not the наказ's own registration number (e.g. document headers
+# all carry "Екземпляр № 1" on every page, and tables use "№ з/п" as a
+# "row no." column header).
 NUMBER_SIGN_STOPWORDS = re.compile(
-    r"(екземпляр|арк\.?|випуск|протокол)\s*$", re.IGNORECASE
+    r"(екземпляр|арк\.?|випуск|протокол|з/п)\s*$", re.IGNORECASE
 )
 
 MONTHS_UK = {
@@ -286,37 +306,44 @@ RE_ORDER_DATE_NUMERIC = re.compile(r"\b(\d{2})[./](\d{2})[./](\d{4})\b")
 
 
 def guess_order_number(text: str) -> str | None:
-    for m in RE_ANY_NUMBER_SIGN.finditer(text):
-        context_before = text[max(0, m.start() - 25): m.start()]
-        if NUMBER_SIGN_STOPWORDS.search(context_before):
+    cover = _approval_slice(text)
+    for m in RE_ANY_NUMBER_SIGN.finditer(cover):
+        context_before = cover[max(0, m.start() - 25): m.start()]
+        value = m.group(1).strip().rstrip(".,")
+        if NUMBER_SIGN_STOPWORDS.search(context_before) or not any(ch.isdigit() for ch in value):
             continue
-        return m.group(1).strip().rstrip(".,")
+        return value
     return None
 
 
 def guess_order_date(text: str) -> str | None:
+    cover = _approval_slice(text)
     # Prefer a date right after "від" (наказ ... від DD <місяць> YYYY р.),
     # since a document can also contain unrelated dates (e.g. a Вчена рада
-    # protocol date) earlier or later in the text.
-    m = RE_ORDER_DATE_TEXTUAL_AFTER_VID.search(text)
+    # protocol date, or a citation of some other regulation) elsewhere.
+    m = RE_ORDER_DATE_TEXTUAL_AFTER_VID.search(cover)
     if m:
         day, month_name, year = m.groups()
         return f"{year}-{MONTHS_UK[month_name.lower()]}-{int(day):02d}"
-    m = RE_ORDER_DATE_TEXTUAL.search(text)
+    m = RE_ORDER_DATE_TEXTUAL.search(cover)
     if m:
         day, month_name, year = m.groups()
         month = MONTHS_UK[month_name.lower()]
         return f"{year}-{month}-{int(day):02d}"
-    m = RE_ORDER_DATE_NUMERIC.search(text)
+    m = RE_ORDER_DATE_NUMERIC.search(cover)
     if m:
         day, month, year = m.groups()
         return f"{year}-{month}-{day}"
     return None
 
 
-# Document-type words that typically stand alone as a heading right above
-# the actual title text, e.g. a line reading just "ПОЛОЖЕННЯ".
-TITLE_ANCHORS = {"ПОЛОЖЕННЯ", "НАКАЗ", "ІНСТРУКЦІЯ", "ПРАВИЛА", "ПОРЯДОК", "РЕГЛАМЕНТ"}
+# Document-type words that open the title, either alone on their own line
+# ("ПОЛОЖЕННЯ", with the rest of the title on following lines) or as the
+# first word of an all-caps title line ("КОДЕКС АКАДЕМІЧНОЇ ДОБРОЧЕСНОСТІ").
+TITLE_ANCHORS = {
+    "ПОЛОЖЕННЯ", "НАКАЗ", "ІНСТРУКЦІЯ", "ПРАВИЛА", "ПОРЯДОК", "РЕГЛАМЕНТ",
+    "КОДЕКС", "ПРОЦЕДУРА", "ПОЛІТИКА", "СТАТУТ", "СТРАТЕГІЯ",
+}
 # Lines that signal we've run past the title into unrelated boilerplate.
 TITLE_STOP_LINE = re.compile(
     r"(контрольний примірник|врахований примірник|погоджено|вченою радою|ректор|_{3,})",
@@ -332,10 +359,11 @@ def _is_mostly_uppercase(line: str) -> bool:
 
 
 def guess_title(text: str) -> str:
-    lines = [ln.strip() for ln in text.split("\n")]
+    lines = [ln.strip() for ln in _approval_slice(text).split("\n")]
 
     for i, line in enumerate(lines):
-        if line in TITLE_ANCHORS:
+        first_word = line.split(maxsplit=1)[0] if line else ""
+        if first_word in TITLE_ANCHORS and _is_mostly_uppercase(line):
             parts = [line]
             for cont in lines[i + 1: i + 8]:
                 if not cont or TITLE_STOP_LINE.search(cont) or _is_mostly_uppercase(cont):
@@ -343,9 +371,14 @@ def guess_title(text: str) -> str:
                 parts.append(cont)
             return " ".join(parts)[:300]
 
-    # Fallback: first substantial line that isn't a repeated ALL-CAPS header.
+    # Fallback: first substantial line that isn't a repeated ALL-CAPS header
+    # or a bare document-code fragment (digits/dots/dashes only).
     for line in lines:
-        if len(line) >= 8 and not line.isdigit() and not _is_mostly_uppercase(line):
+        if (
+            len(line) >= 8
+            and not _is_mostly_uppercase(line)
+            and any(ch.isalpha() for ch in line)
+        ):
             return line[:200]
     return ""
 
@@ -354,14 +387,31 @@ def guess_title(text: str) -> str:
 # Markdown assembly
 # --------------------------------------------------------------------------
 
-def build_markdown(pdf_path: Path, result: ExtractionResult) -> str:
+def read_existing_status(out_path: Path) -> str:
+    """Re-running the script must not clobber a status a human already set
+    on a previous .md output (e.g. 'затверджено'). Only brand-new files get
+    the 'невідомо' default."""
+    if not out_path.exists():
+        return "невідомо"
+    try:
+        raw = out_path.read_text(encoding="utf-8")
+        if not raw.startswith("---\n"):
+            return "невідомо"
+        fm_text = raw.split("---\n", 2)[1]
+        existing = yaml.safe_load(fm_text) or {}
+        return existing.get("status") or "невідомо"
+    except Exception:
+        return "невідомо"
+
+
+def build_markdown(pdf_path: Path, result: ExtractionResult, existing_status: str) -> str:
     title = guess_title(result.text)
     order_number = guess_order_number(result.text) or ""
     order_date = guess_order_date(result.text) or ""
 
     frontmatter = {
         "title": title,
-        "status": "невідомо",
+        "status": existing_status,
         "order_number": order_number,
         "order_date": order_date,
         "source_pdf": pdf_path.name,
@@ -391,8 +441,8 @@ def process_pdf(pdf_path: Path, stats: RunStats) -> None:
         stats.failed.append((pdf_path.name, msg))
         return
 
-    md = build_markdown(pdf_path, result)
     out_path = OUTPUT_DIR / f"{pdf_path.stem}.md"
+    md = build_markdown(pdf_path, result, read_existing_status(out_path))
     out_path.write_text(md, encoding="utf-8")
 
     stats.succeeded += 1
