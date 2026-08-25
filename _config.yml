@@ -1,6 +1,7 @@
 title: Нормативна база — Державний університет "Житомирська політехніка"
 description: Пілотна RAG-система для нормативних документів університету
 theme: minima
+baseurl: "/docs-rag-pilot"
 
 defaults:
   - scope:

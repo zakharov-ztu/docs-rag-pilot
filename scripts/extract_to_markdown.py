@@ -32,6 +32,12 @@ ROOT = Path(__file__).resolve().parent.parent
 SOURCE_DIR = ROOT / "source-pdfs"
 OUTPUT_DIR = ROOT / "wiki-pages"
 
+# Cross-document links are written as plain Markdown (not Liquid), so they
+# can't use Jekyll's `relative_url` filter — this must match `baseurl` in
+# _config.yml, since the site is served from a /docs-rag-pilot/ subpath
+# (a GitHub Pages project site), not the domain root.
+SITE_BASEURL = "/docs-rag-pilot"
+
 OCR_LANGS = "ukr+eng"
 OCR_DPI = 300
 
@@ -458,7 +464,7 @@ def build_link_spec(pdf_stem: str, text: str) -> LinkSpec | None:
 
     core_pattern = r"\s+".join(re.escape(w) for w in core_words)
     pattern = re.compile(rf"{stem}\w*\s+{core_pattern}(?:{RE_UNIV_SUFFIX_MATCH})?")
-    url = "/wiki-pages/" + quote(f"{pdf_stem}.html", safe="/")
+    url = SITE_BASEURL + "/wiki-pages/" + quote(f"{pdf_stem}.html", safe="/")
     return LinkSpec(pattern=pattern, url=url)
 
 
@@ -572,7 +578,7 @@ def write_record(record: DocRecord, registry: dict[str, LinkSpec]) -> int:
     exists) and write the final .md file. Returns the number of links
     inserted, for the run summary."""
     linked_body = link_cross_references(record.body, record.pdf_path.stem, registry)
-    links_inserted = linked_body.count("](/wiki-pages/")
+    links_inserted = linked_body.count(f"]({SITE_BASEURL}/wiki-pages/")
 
     frontmatter = {
         "title": record.title,
