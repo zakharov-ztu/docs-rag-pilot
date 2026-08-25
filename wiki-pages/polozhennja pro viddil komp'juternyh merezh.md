@@ -3,7 +3,7 @@ title: Міністерство освіти і науки України П –
 status: невідомо
 order_number: ''
 order_date: ''
-source_pdf: polozhennja pro viddil komp&#039;juternyh merezh.pdf
+source_pdf: polozhennja pro viddil komp'juternyh merezh.pdf
 ---
 
 Міністерство освіти і науки України П – 16.00 – 02 –
