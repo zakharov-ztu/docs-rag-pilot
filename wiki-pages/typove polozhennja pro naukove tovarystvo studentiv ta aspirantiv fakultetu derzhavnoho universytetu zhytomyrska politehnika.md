@@ -1,10 +1,12 @@
 ---
-title: 1. Загальні положення
+title: ТИПОВЕ ПОЛОЖЕННЯ про наукове товариство студентів та аспірантів факультету
+  Державного університету «Житомирська політехніка»
 status: невідомо
 order_number: 1556-VII
 order_date: '2014-07-01'
 source_pdf: typove polozhennja pro naukove tovarystvo studentiv ta aspirantiv fakultetu
   derzhavnoho universytetu zhytomyrska politehnika.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

@@ -1,10 +1,12 @@
 ---
-title: 1. Загальні положення
+title: ПОЛОЖЕННЯ про Сектор захисту прав інтелектуальної власності Державного університету
+  «Житомирська політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro sektor zahystu prav intelektualnoyi vlasnostiderzhavnoho
   universytetu zhytomyrska politehnika.pdf
+title_locked: true
 category: Наукова, науково-технічна та інноваційна діяльність
 ---
 

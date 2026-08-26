@@ -1,10 +1,12 @@
 ---
-title: 1. Загальні положення
+title: ПОЛОЖЕННЯ про науково-дослідний сектор Державного університету «Житомирська
+  політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro naukovo-doslidnyj sektor derzhavnoho universytetu zhytomyrska
   politehnika.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

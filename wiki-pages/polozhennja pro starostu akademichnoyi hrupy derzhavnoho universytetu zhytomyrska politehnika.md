@@ -1,10 +1,12 @@
 ---
-title: 1.1. Старостою академічної групи може бути студент, якому притаманні високі
+title: ПОЛОЖЕННЯ про старосту академічної групи Державного університету «Житомирська
+  політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro starostu akademichnoyi hrupy derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+title_locked: true
 category: Позанавчальна діяльність. Студентське самоврядування
 ---
 

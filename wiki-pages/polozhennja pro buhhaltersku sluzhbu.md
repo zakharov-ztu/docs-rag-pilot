@@ -1,9 +1,10 @@
 ---
-title: 1. Загальні положення
+title: ПОЛОЖЕННЯ про бухгалтерську службу Державного університету «Житомирська політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro buhhaltersku sluzhbu.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

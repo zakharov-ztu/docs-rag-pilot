@@ -1,10 +1,12 @@
 ---
-title: 1. Загальні положення
+title: ПОЛОЖЕННЯ про організацію наукової, науково-технічної та інноваційної діяльності
+  в Державному університеті «Житомирська політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro orhanizaciju naukovoyi naukovo-tehnichnoyi ta innovacijnoyi
   dijalnosti v derzhavnomu universyteti zhytomyrska politehnika.pdf
+title_locked: true
 category: Наукова, науково-технічна та інноваційна діяльність
 ---
 

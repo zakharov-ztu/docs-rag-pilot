@@ -1,9 +1,11 @@
 ---
-title: 1. Загальні положення
+title: ПОЛОЖЕННЯ про Центр розвитку професійної кар’єри Державного університету «Житомирська
+  політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro centr rozvytku profesijnoyi karyery.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

@@ -1,13 +1,16 @@
 ---
-title: ty 01 У.
+title: GENDER EQUALITY PLAN OF ZHYTOMYR POLYTECHNIC STATE UNIVERSITY (2022-2025)
 status: невідомо
 order_number: ''
 order_date: '2022-10-31'
 source_pdf: gender equality plan_(gep)_2022-2025_zpsu.pdf
+title_locked: true
 category: Міжнародна діяльність
 ---
 
-STRATEGY FOR EQUAL OPPORTUNITIES FOR ALL EMPLOYEES ОК ZHYTOMYR POLYTECHNIC STATE UNIVERSITY
+Житомирська політехніка Система управління якістю відповідає ДСТУ 150 9001:2015
+
+STRATEGY FOR EQUAL OPPORTUNITIES FOR ALL EMPLOYEES OF ZHYTOMYR POLYTECHNIC STATE UNIVERSITY
 
 It is based on Ukrainian and European legislation and activities. It follows the principles of the European Research Area (ERA) advocating
 gender equality in research teams and teaching content, gender balance in leadership and decision-making and evaluation and integration of the
@@ -15,7 +18,7 @@ gender dimension into the content of research and innovation. It claims gender e
 has ISO 9001:2015 always under data collection, monitoring and control within commitment of Human Resources and gender expertise.
 
 It is oriented on keeping gender leadership throughout Ukrainian universities, and the Zhytomyr Polytechnic State University is the only one who
-achieved “A”-level Certificate of gender equality (the highest level).
+achieved “A”’-level Certificate of gender equality (the highest level).
 
 It is based on position that the Zhytomyr Polytechnic State University recognizes the human right to be free from discrimination and unequal
 treatment, which is enshrined in international documents such as ICERD, ICCPR, ICESCR, CEDAW, CAT, CRC, CRPD and the legislation of
@@ -36,7 +39,7 @@ Systematically, on a long-term and open basis, strengthen and promote:
 e gender balance in leadership and decision-making processes;
 e gender equality in recruitment and career development;
 e integration of the gender dimension into research, innovation creation, teaching and training process;
-¢ preventive measures against non-discrimination and gender-based violence.
+e preventive measures against non-discrimination and gender-based violence.
 
 The general purpose is to promote equal opportunities and eliminate discrimination, harassment and victimization of all participants in the educational
 process and staff of the University in all aspects of university life, including admission, recruitment, employment, teaching, research, students' support
@@ -45,9 +48,7 @@ gender, and ability, to develop academically, professionally, and personally.
 
 The principles are:
 
-че
-
-Г) ensuring equality of rights and freedoms of individuals and/or groups of persons;
+1) ensuring equality of rights and freedoms of individuals and/or groups of persons;
 2) ensuring equality before the law of persons and/or groups of persons;
 
 3) respect for the dignity of every human;
@@ -100,10 +101,10 @@ gender expertise);
 
 - coordination and implementation of the individual tasks of the GEP at faculties and at university level;
 
-‘e
+«
 т
 
-Житомирська політехніка Система управління якістю відповідає ДСТУ 150 9001:2015
+Житомирська політехніка
 
 - regular collection and evaluation and publication of gender segregated data,
 - educational activities to raise awareness of gender-balanced attitudes, behavior and culture at the University (trainings, workshops, webinars).
@@ -128,77 +129,145 @@ e external grants, state strategies and regional programs;
 
 e sources of Zhytomyr Polytechnic State University.
 
-Житомирська політехніка Система управління якістю відповідає ДСТУ 150 9001:2015
+Житомирська політехніка
+
+Система управління якістю відповідає ДСТУ 150 9001:2015
 
 GENDER EQUALITY PLAN OF ZHYTOMYR POLYTECHNIC STATE UNIVERSITY
 ACTIVITIES WILL BE DEVELOPED IN 5 PRIORITY AREAS:
 
-Planned activities Indicator/Output Responsibility
+Planned activities
 
-(GOAL 1: Gender equality in work-life balance for employees and organisational culture
+Indicator/Output
 
-. Enabling flexible forms of work Regularly, once а year First Vice-Rector, Faculties, Non-
-Flexible use of part-time work according to the possibilities of the workplace, the Monitoring and evaluation of gender segregated Academic Departments
-performance of the work and the needs of the employees. data (for university and faculties)
+Responsibility
 
-Support for career stabilisation through permanent contracts. - Number of full-time and part-time jobs (full-
+GOAL 1: Gender equality in work-life balance for employees and organisational culture
+
+### 1. Enabling flexible forms of work
+Flexible use of part-time work according to the possibilities of the workplace, the
+performance of the work and the needs of the employees.
+Support for career stabilisation through permanent contracts.
+
+The possibility and conditions for arranging the home/off-site office (especially in in
+war-times) as a full form of off-site work.
+
+### 2. Employee care
+Providing consultations (career, personal) and expanding the services and capacities o
+the the internal departments of the ZPSU (Professional Career Development Centre,
+Legal Clinics, PsyCenter) for the employed, not only for students.
+
+### 3. Support for motherhood and parenthood
+Systematic and active support given to caregivers (women and men) by the
+organisation (university and faculty) and senior staff, especially in war-times.
+
+### 4. Providing information about career development and training in approaches to
+career.
+
+### 5. Ensuring awareness and promotion of gender issues, support, services and
+activities of the University
+Raising awareness of gender equality in general, equal opportunities, services and
+support at the University, opportunities for involvement within ML/PL, behaviour
+and unconscious biases or stereotypes.
+
+Adaptation processes for recruits — ex-combatants.
+
+### 6. Systematic monitoring of equal opportunities.
+Systematic and long-term collection of gender-segregated data and regular
+assessment of equal opportunities at the University.
+
+Person in charge of promoting and monitoring the implementation of gender equality
+and equal opportunities at ZPSU.
+
+Monitoring and evaluation of gender segregated
+
+data (for university and faculties)
+
+- Number of full-time and part-time jobs (full-
 time and part-time, depending on the scope)
+
 - Percentage of fixed-term/indefinite contracts
+
 - Number/proportion of contracts concluded for
 home/off-site office work
 
-The possibility and conditions for arranging the home/off-site office (especially in in | Adaptation of the ZPSU legislation guidelines on
-war-times) as a full form of off-site work. home
-. Employee care Regularly, First Vice-Rector, Vice-Rector for
-Providing consultations (career, personal) and expanding the services and capacities of] Number of implemented aids for the employed until 2Q/2023 educational-training work, heads о
-the the internal departments of the ZPSU (Professional Career Development Сепіге,| Implementation of information events оп the the Departments (PCDC, LC, PC)
-Legal Clinics, PsyCenter) for the employed, not only for students. services of the employment (internal portal of the
+Adaptation of the ZPSU legislation guidelines on
+home
+
+Number of implemented aids for the employed
+Implementation of information events on the
+services of the employment (internal portal of the
 ZPSU: https://portal.ztu.edu.ua/events/schedule)
 
-. Support for motherhood and parenthood Regularly First Vice-Rector, Vice-Rector for
-Systematic and active support given to caregivers (women and men) by the Monitoring and evaluation of gender-segregated data educational-training work, heads о
-organisation (university and faculty) and senior staff, especially in war-times. (number of people on maternity or parental leave, the Non-Academic Departments
-
+Monitoring and evaluation of gender-segregated data
+(number of people on maternity or parental leave,
 amount of full-time and part-time employment)
 
-### 4. Providing information about career development and training in approaches to Disclosure/provision of information of trainings of Until 3Q/2023 Vice-Rector for educational-
-career. senior staff, existence of space on the university or training work, heads of the Non-
-online (trough university server) Academic Departments
+Disclosure/provision of information of trainings of
+senior staff, existence of space on the university or
+online (trough university server)
 
-### 5. Ensuring awareness and promotion of gender issues, support, services and Regularly, Vice-Rector for educational-
-activities of the University from 4Q/2022 training work, Faculties,
-Raising awareness of gender equality in general, equal opportunities, services and Number of information events, seminars, Departments
-support at the University, opportunities for involvement within ML/PL, behaviour workshops on the issue
-and unconscious biases or stereotypes. Number of participants in such events
+Number of information events, seminars,
+workshops on the issue
+Number of participants in such events
 
-Adaptation processes for recruits — ex-combatants. Number of persons trained/mentored
+Number of persons trained/mentored
 
-### 6. Systematic monitoring of equal opportunities. Regularly, Faculties
-Systematic and long-term collection of gender-segregated data and regular | Generating gender statistics for subsequent from 3Q/2023 Vice-Rector for educational-
-assessment of equal opportunities at the University. decision-making processes training work, Faculties,
+Generating gender statistics for subsequent
+decision-making processes
+Publication of gender analyses conducted
 
-Publication of gender analyses conducted Departments
+Existence of an authorised person
 
-Person in charge of promoting and monitoring the implementation of gender equality Existence of an authorised person
-and equal opportunities at ZPSU.
+Regularly, once a year
 
-Система управління якістю відповідає ДСТУ 150 9001:2015
+Regularly,
+until 2Q/2023
 
-(GOAL 2: Gender balance in leadership and decision-making processes
+Regularly
 
-### 1. Strengthening equal representation of women and men in the University’s Monitoring at the level of University’s Board, Regularly, First Vice-Rector, Faculties, Non-
+Until 3Q/2023
 
-і ‘ Ф-08.03-01.01-01-2022
+Regularly,
+from 4Q/2022
+
+Regularly,
+from 3Q/2023
+
+First Vice-Rector, Faculties, Non-
+Academic Departments
+
+First Vice-Rector, Vice-Rector for
+educational-training work, heads о
+the Departments (PCDC, LC, PC)
+
+First Vice-Rector, Vice-Rector for
+educational-training work, heads о
+the Non-Academic Departments
+
+Vice-Rector for educational-
+training work, heads of the Non-
+Academic Departments
+
+Vice-Rector for educational-
+training work, Faculties,
+Departments
+
+Faculties
+Vice-Rector for educational-
+training work, Faculties,
+Departments
+
 Житомирська політехніка
 
-structures for leadership and decision-making processes.
+GOAL 2: Gender balance іп leadership and decision-making processes
 
+### 1. Strengthening equal representation of women and men in the University’s
+structures for leadership and decision-making processes.
 Systematic monitoring the gender equality in leadership and decision-making processes
 
 ### 2. Evaluation of the representation of women and men in leadership and decision-
-
 making positions, in University’s structures and at various levels of management, in
-
 professional advisory bodies, etc.
 
 GOAL 3: Gender equality in recruitment and career development
@@ -227,7 +296,11 @@ Seeking and using funding and grant schemes to support the involvement of career
 and scientists with parental responsibilities in research teams, projects and
 mobilities, especially abroad.
 
-extended University’s Board and Faculties Boards from 4Q/2022
+Regularly,
+from 4Q/2022
+
+Monitoring at the level of University’s Board,
+extended University’s Board and Faculties Boards
 
 Regularly,
 from 4Q/2022
@@ -257,7 +330,7 @@ Gender assessment of career growth (number of
 new PhD, Assoc., Prof., etc.)
 
 Number of trips/mobilities (proportion of
-lwomen/men)
+women/men)
 
 GOAL 4: Integration of the gender dimension into research, innovation creation, teaching and training process
 
@@ -281,7 +354,7 @@ Implementation of gender themes/data/dimensions in the content of final student 
 and research projects.
 
 ### 3. Popularisation researches (gender context) Information and promotional activities on the
-Presentation of researches results (internet, social networks and in the media University’s website, social media
+Presentation of researches results (internet, social networks and in the media University’s website, social media pages, etc.
 
 dimensions in teaching and research
 
@@ -289,6 +362,7 @@ Number of student papers / research projects /
 publications containing gender themes and
 dimensions
 
+First Vice-Rector, Faculties, Non-
 Academic Departments
 
 Vice-Rectors, Faculties, Non-
@@ -308,34 +382,31 @@ Departments
 Regularly Faculties, Non- and Academic
 Departments
 
+Житомирська політехніка Система управління якістю відповідає ДСТУ 150 9001:2015
+
 GOAL 5: Preventive measures against non-discrimination and gender-based violence
+
 Existence of a documents / procedures Regularly, Vice-Rectors, Faculties,
 Updating documents from 4Q/2022 Academic Departments
 Information events, sseminars and discussions on Regularly Vice-Rectors, Faculties,
-
 the topic Departments
 
-Житомирська політехніка
-
-### 1. Inclusion ої non-discrimination, measures and practices against gender-based
+### 1. Inclusion of non-discrimination, measures and practices against gender-based
 violence in the University’s core documents.
-
-Updatin
+Updating existing University standards.
 
 ### 2. Internal communication of ethically problematic areas, awareness of support
-
 and systemic solutions to crisis situations and negative phenomena in the
-
 workplace. Awareness of gender-based violence.
 
 Abbreviations:
 
-СЕР — Gender Equality Plan
+СЕР - Gender Equality Plan
 
-ZPSU - Zhytomyr Polytechnic State University
+ZPSU — Zhytomyr Polytechnic State University
 ML/PL — maternity/parental leave
 
-R&D&I — Research & Development & Innovation
+R&D &I — Research & Development & Innovation
 
 Житомирська політехніка Система управління якістю відповідає ДСТУ 150 9001:2015
 
@@ -347,8 +418,6 @@ R&D&I — Research & Development & Innovation
 
 Житомирська політехніка
 
-Система управління якістю відповідає ДСТУ 150 9001:2015
-
 АРКУШ ОЗНАЙОМЛЕННЯ З ДОКУМЕНТОМ
 
 Підпис ознайомленої особи
@@ -357,17 +426,23 @@ R&D&I — Research & Development & Innovation
 
 Примітки
 
+Житомирська політехніка Система управління якістю відповідає ДСТУ 150 9001:2015
+
 АРКУШ ОБЛІКУ ЗМІН
 
 Хо листа/сторінки (пункту)
-No зміни і , анульованог
-зміненого заміненого нового
+his кій Підпис особи, яка внесла | Дата внесення
+з ЗМІНИ анульованог
+зміненого заміненого нового 9
 
-Підпис особи, яка внесла | Датаввнесення | Дата введення
+Дата введення
+зміни
 
-о
+Житомирська політехніка Система управління якістю відповідає ДСТУ І50 9001:2015
 
 АРКУШ РЕЄСТРАЦІЇ РЕВІЗІЙ
 
 Висновок щодо
+
+Прізвище та власне ім'я і
 адекватності

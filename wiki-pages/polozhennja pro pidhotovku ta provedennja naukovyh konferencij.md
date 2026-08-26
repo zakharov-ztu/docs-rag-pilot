@@ -1,9 +1,11 @@
 ---
-title: 1. Загальні положення
+title: ПОЛОЖЕННЯ про підготовку та проведення наукових конференцій у Державному університеті
+  «Житомирська політехніка»
 status: невідомо
 order_number: '76'
 order_date: '2018-08-31'
 source_pdf: polozhennja pro pidhotovku ta provedennja naukovyh konferencij.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

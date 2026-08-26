@@ -1,9 +1,11 @@
 ---
-title: 1.Загальні положення …………………… … ……3
+title: ПОЛОЖЕННЯ про плановo-фінансовий відділ Державного університету «Житомирська
+  політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro planovo-finansovyj viddil.pdf
+title_locked: true
 category: Система управління якістю
 ---
 

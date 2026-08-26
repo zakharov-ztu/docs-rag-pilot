@@ -1,9 +1,10 @@
 ---
-title: 1. Загальні положення
+title: ПОЛОЖЕННЯ про ректорат Державного університету «Житомирська політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro rektorat derzhavnoho universytetu zhytomyrska politehnika.pdf
+title_locked: true
 category: Колегіальні органи
 ---
 

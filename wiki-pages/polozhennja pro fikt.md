@@ -1,9 +1,10 @@
 ---
-title: ПОЛОЖЕННЯ
+title: ПОЛОЖЕННЯ про факультет (типова форма, назва факультету не заповнена в оригіналі)
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro fikt.pdf
+title_locked: true
 category: Структурні підрозділи
 subgroup: Кафедри
 ---

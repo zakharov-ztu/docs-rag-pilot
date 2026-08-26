@@ -1,10 +1,12 @@
 ---
-title: 7. Взаємовідносини з іншими структурними підрозділами (службові
+title: ПОЛОЖЕННЯ про факультет бізнесу та сфери обслуговування Державного університету
+  «Житомирська політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro fakultet biznesu ta sfery obsluhovuvannja derzhavnoho
   universytetu zhytomyrska politehnika.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

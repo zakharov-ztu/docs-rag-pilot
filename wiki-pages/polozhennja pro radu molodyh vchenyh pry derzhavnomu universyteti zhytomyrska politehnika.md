@@ -1,10 +1,12 @@
 ---
-title: 1. Загальні положення
+title: ПОЛОЖЕННЯ про Раду молодих вчених при Державному університеті «Житомирська
+  політехніка»
 status: невідомо
 order_number: 1556-VII
 order_date: '2014-07-01'
 source_pdf: polozhennja pro radu molodyh vchenyh pry derzhavnomu universyteti zhytomyrska
   politehnika.pdf
+title_locked: true
 category: Наукова, науково-технічна та інноваційна діяльність
 ---
 

@@ -1,10 +1,12 @@
 ---
-title: 1.1. Ментор – студент, основним завданням якого є допомога в адаптації
+title: ПОЛОЖЕННЯ про ментора академічної групи Державного університету «Житомирська
+  політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro mentora akademichnoyi hrupy derzhavnoho universytetu zhytomyrska
   politehnika.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

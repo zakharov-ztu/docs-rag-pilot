@@ -1,9 +1,11 @@
 ---
-title: політехніка «Житомирська політехніка»
+title: ПОРЯДОК виборів до складу Вченої ради факультету Державного університету «Житомирська
+  політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: porjadok vyboriv do skladu vchenoyi rady fakultetu.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

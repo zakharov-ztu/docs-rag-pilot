@@ -1,9 +1,10 @@
 ---
-title: Іваненко Ivanenko
+title: Зразки документів про освіту
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: zrazky dokumentiv pro osvitu.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

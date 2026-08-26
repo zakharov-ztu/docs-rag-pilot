@@ -1,10 +1,12 @@
 ---
-title: 2. Навчання та перевірка знань з питань охорони праці … 4
+title: ПОЛОЖЕННЯ про навчання, інструктаж і перевірку знань з питань охорони праці
+  працівників та студентів Державного університету «Житомирська політехніка»
 status: невідомо
 order_number: '15'
 order_date: '2001-08-01'
 source_pdf: polozhennja pro navchannja instruktazh i perevirku znan z pytan ohorony
   praci pracivnykiv ta studentiv derzhavnoho universytetu zhytomyrska politehnika.pdf
+title_locked: true
 category: Охорона праці, безпека життєдіяльності, пожежна безпека
 ---
 

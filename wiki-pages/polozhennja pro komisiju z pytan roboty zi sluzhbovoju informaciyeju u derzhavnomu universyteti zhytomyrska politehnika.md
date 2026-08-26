@@ -1,10 +1,12 @@
 ---
-title: 1. Загальні положення 3
+title: ПОЛОЖЕННЯ про комісію з питань роботи зі службовою інформацією у Державному
+  університеті «Житомирська політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro komisiju z pytan roboty zi sluzhbovoju informaciyeju u
   derzhavnomu universyteti zhytomyrska politehnika.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

@@ -42,7 +42,12 @@ OUTPUT_DIR = ROOT / "wiki-pages"
 SITE_BASEURL = "/docs-rag-pilot"
 
 OCR_LANGS = "ukr+eng"
-OCR_DPI = 300
+# 400 (up from 300): the cover-page seal/stamp overlaps the ЗАТВЕРДЖЕНО block
+# on some scans, and at 300 DPI tesseract garbles text right at that overlap
+# (the anchor word, the issuing-naказ line) even though the title's actual
+# subject a line or two below comes through fine either way. The higher
+# resolution recovers several of those anchor-word lines too.
+OCR_DPI = 400
 
 # Below this many characters per page (on average) we treat the text layer
 # as missing/broken and fall back to OCR.
@@ -371,10 +376,16 @@ def guess_order_date(text: str) -> str | None:
 TITLE_ANCHORS = {
     "ПОЛОЖЕННЯ", "НАКАЗ", "ІНСТРУКЦІЯ", "ПРАВИЛА", "ПОРЯДОК", "РЕГЛАМЕНТ",
     "КОДЕКС", "ПРОЦЕДУРА", "ПОЛІТИКА", "СТАТУТ", "СТРАТЕГІЯ",
+    "ПРОГРАМА", "ПЕРЕЛІК", "РЕЄСТР", "ЗВІТ", "КОНЦЕПЦІЯ", "НАСТАНОВА",
+    "КАРТА", "ПЛАН-ГРАФІК", "ІНДЕКСАЦІЯ", "РОЗПОРЯДЖЕННЯ",
 }
 # Lines that signal we've run past the title into unrelated boilerplate.
+# "ректор" is word-bounded because plenty of real titles legitimately
+# inflect it ("вибори ректора", "почесного ректора") — only the standalone
+# "Ректор" signature label should stop collection, not every word built on
+# that stem.
 TITLE_STOP_LINE = re.compile(
-    r"(контрольний примірник|врахований примірник|погоджено|вченою радою|ректор|_{3,})",
+    r"(контрольний примірник|врахований примірник|погоджено|вченою радою|\bректор\b|_{3,})",
     re.IGNORECASE,
 )
 
@@ -387,20 +398,28 @@ def _is_mostly_uppercase(line: str) -> bool:
 
 
 def _find_title_anchor_parts(text: str) -> tuple[str, str] | None:
-    """If a TITLE_ANCHORS word opens the title, return (anchor_word,
-    full_title). Shared by guess_title() and build_link_spec(), since a
-    cross-reference link needs the same anchor/rest split as the title."""
+    """If a TITLE_ANCHORS word opens the title — either as the line's first
+    word ("ПОЛОЖЕННЯ...") or, when a lead adjective comes first, as its
+    second ("ЕКОЛОГІЧНА ПОЛІТИКА...") — return (anchor_word, full_title).
+    Shared by guess_title() and build_link_spec(), since a cross-reference
+    link needs the same anchor/rest split as the title."""
     lines = [ln.strip() for ln in _approval_slice(text).split("\n")]
 
     for i, line in enumerate(lines):
-        first_word = line.split(maxsplit=1)[0] if line else ""
-        if first_word in TITLE_ANCHORS and _is_mostly_uppercase(line):
-            parts = [line]
-            for cont in lines[i + 1: i + 8]:
-                if not cont or TITLE_STOP_LINE.search(cont) or _is_mostly_uppercase(cont):
-                    break
-                parts.append(cont)
-            return first_word, " ".join(parts)[:300]
+        if not line or not _is_mostly_uppercase(line):
+            continue
+        if line.strip() == "ЗАГАЛЬНІ ПОЛОЖЕННЯ":
+            # Fixed idiom for a document's own opening section ("General
+            # Provisions"), never a real document title — every single
+            # "ПОЛОЖЕННЯ про ..." document in this corpus opens its body
+            # with this exact heading, so treating ПОЛОЖЕННЯ-as-2nd-word
+            # here would mistake section 1 for the cover title.
+            continue
+        words = line.split(maxsplit=2)
+        anchor_word = next((w for w in words[:2] if w in TITLE_ANCHORS), None)
+        if anchor_word:
+            full_title = _collect_title(lines, i + 1, line)
+            return anchor_word, full_title
     return None
 
 
@@ -410,41 +429,138 @@ def _looks_like_split_logo_or_code(line: str) -> bool:
     ("Житомирська П 18.00 - 05 - 2019") — STANDALONE_NOISE_LINES only
     catches the bare-word case. Treat a line as this kind of noise if it's
     just one of those two words, or if one of them appears alongside at
-    least two digits (a document code fragment sharing the line)."""
+    least two digits (a document code fragment sharing the line). The
+    length cap keeps this from misfiring on a genuine title/sentence that
+    happens to name the institution and also contain a year ("...у
+    Державному університеті «Житомирська політехніка» на 2024-2026 роки")
+    — real glued-logo fragments are always short."""
     low = line.lower().strip()
     if low in {"житомирська", "політехніка"}:
         return True
+    if len(line) > 60:
+        return False
     words = set(re.findall(r"[а-яіїєґ]+", low))
     digit_count = sum(ch.isdigit() for ch in line)
     return bool(words & {"житомирська", "політехніка"}) and digit_count >= 2
 
 
+def _looks_like_control_code(line: str) -> bool:
+    """A document-control code line ("П – 04.00 – 01/04-02 – 2024") is
+    almost all digits/punctuation with at most one or two stray letters —
+    unlike real title text, which is letter-heavy even when it names a
+    year."""
+    letters = [ch for ch in line if ch.isalpha()]
+    digit_count = sum(ch.isdigit() for ch in line)
+    return digit_count >= 4 and len(letters) <= 2
+
+
+# The ЗАТВЕРДЖЕНО block's "issuing order" line ("Наказ Державного
+# університету «Житомирська політехніка»") and the bare quoted institution
+# name that often follows it are boilerplate that separates the anchor word
+# from the real title text, or (when no anchor word is found at all) sit
+# between ЗАТВЕРДЖЕНО and the real, non-uppercase title line further down.
+RE_APPROVAL_ISSUER_LINE = re.compile(
+    r"^Наказ\s+(Державного\s+ун[іi]верситету|М[іi]н[іi]стерства)", re.IGNORECASE
+)
+RE_INSTITUTION_NAME_ONLY = re.compile(
+    r'^[«"]?\s*Житомирська\s+політехніка\s*[»"]?[.,]?$', re.IGNORECASE
+)
+
+
+def _is_transient_title_noise(line: str) -> bool:
+    """Noise that can appear *between* real title-text lines and should be
+    skipped without ending the title (a document-control code, an order
+    date/number, the issuing-order line) — as opposed to TITLE_STOP_LINE,
+    which marks a firm end to the title block. Deliberately excludes
+    RE_INSTITUTION_NAME_ONLY: that line is boilerplate before the title
+    starts, but a legitimate title routinely *ends* with exactly the
+    quoted institution name on its own line — callers that haven't
+    started collecting real content yet should check it separately."""
+    return (
+        bool(RE_DOT_LEADER.search(line))
+        or _looks_like_split_logo_or_code(line)
+        or _looks_like_control_code(line)
+        or bool(RE_ORDER_DATE_TEXTUAL.search(line))
+        or bool(RE_ORDER_DATE_NUMERIC.search(line))
+        or bool(RE_ANY_NUMBER_SIGN.search(line))
+        or bool(RE_APPROVAL_ISSUER_LINE.match(line))
+    )
+
+
+# How many lines past the anchor/start line to keep looking for more title
+# text. Generous enough to cover a multi-line "НАКАЗ" subject paragraph
+# (which, unlike a "ПОЛОЖЕННЯ" title, can run to 6-8 lines), while the
+# blank-line/TITLE_STOP_LINE break below still keeps it from running past
+# the title into the document body.
+TITLE_CONTINUATION_WINDOW = 16
+
+# A document's own first body section ("1. Загальні положення", "I. ЗАГАЛЬНІ
+# ПОЛОЖЕННЯ") starts with a bare number/roman numeral + dot. Some documents
+# have no ЗАТВЕРДЖЕНО/Контрольний примірник separator at all between their
+# bare anchor word and this heading, so without treating it as a firm stop
+# too, title collection runs straight into the body. Ukrainian text types
+# roman numerals with the Cyrillic lookalikes І/Х (U+0406/U+0425), not the
+# visually identical Latin I/X — both need to match here.
+RE_BODY_SECTION_START = re.compile(r"^(?:\d{1,3}|[IVXLCDMІХ]{1,4})\.\s+\S")
+
+
+def _collect_title(lines: list[str], start_idx: int, first_line: str) -> str:
+    """Build a full (possibly multi-line) title starting at first_line,
+    extending forward through lines[start_idx:] while skipping transient
+    noise, and stopping firmly at a blank line once real content has been
+    captured, or at a TITLE_STOP_LINE/RE_BODY_SECTION_START marker (which
+    never re-opens — everything past it is signature/approval boilerplate
+    or the document body, never title text, however it happens to be
+    interleaved)."""
+    parts = [first_line]
+    content_started = False
+    for cont in lines[start_idx: start_idx + TITLE_CONTINUATION_WINDOW]:
+        if TITLE_STOP_LINE.search(cont) or RE_BODY_SECTION_START.match(cont):
+            break
+        if not cont:
+            if content_started:
+                break
+            continue
+        if not content_started and RE_INSTITUTION_NAME_ONLY.match(cont):
+            continue
+        if _is_transient_title_noise(cont):
+            continue
+        parts.append(cont)
+        content_started = True
+    return " ".join(parts)[:300]
+
+
 def guess_title(text: str) -> str:
+    lines = [ln.strip() for ln in _approval_slice(text).split("\n")]
+
     found = _find_title_anchor_parts(text)
     if found:
         return found[1]
 
     # Fallback: first substantial line that isn't a repeated header, a TOC
-    # dot-leader entry, or a bare document-code fragment. Some documents in
-    # this corpus never carry a ЗАТВЕРДЖЕНО block at all — no naказ, no
-    # "ПОЛОЖЕННЯ" anchor line — so this is genuinely the best available
-    # signal for them. RUNNING_HEADER_PATTERNS is written for strip_boilerplate,
-    # where case is the ALL-CAPS-vs-title-case signal that distinguishes
-    # boilerplate from real content; here we match it case-insensitively,
-    # since some documents render "Міністерство освіти і науки України" in
-    # title case instead of the more common ALL-CAPS, and that boilerplate
-    # is just as unhelpful as a title either way.
-    lines = [ln.strip() for ln in _approval_slice(text).split("\n")]
-    for line in lines:
+    # dot-leader entry, a bare document-code fragment, or ЗАТВЕРДЖЕНО-block
+    # boilerplate. Some documents in this corpus never carry an anchor word
+    # ("ПОЛОЖЕННЯ", "НАКАЗ", ...) at the start of their title line — so this
+    # is genuinely the best available signal for them.  RUNNING_HEADER_PATTERNS
+    # is written for strip_boilerplate, where case is the ALL-CAPS-vs-title-case
+    # signal that distinguishes boilerplate from real content; here we match
+    # it case-insensitively, since some documents render "Міністерство освіти
+    # і науки України" in title case instead of the more common ALL-CAPS, and
+    # that boilerplate is just as unhelpful as a title either way.
+    for i, line in enumerate(lines):
         if (
             len(line) >= 8
             and not _is_mostly_uppercase(line)
             and any(ch.isalpha() for ch in line)
             and not RE_DOT_LEADER.search(line)
             and not _looks_like_split_logo_or_code(line)
+            and not _is_transient_title_noise(line)
+            and not RE_INSTITUTION_NAME_ONLY.match(line)
+            and not TITLE_STOP_LINE.search(line)
+            and not RE_BODY_SECTION_START.match(line)
             and not any(re.search(p.pattern, line, re.IGNORECASE) for p in RUNNING_HEADER_PATTERNS)
         ):
-            return line[:200]
+            return _collect_title(lines, i + 1, line[:200])
     return ""
 
 
@@ -468,6 +584,16 @@ ANCHOR_STEMS = {
     "ПОЛІТИКА": "Політик",
     "СТАТУТ": "Статут",
     "СТРАТЕГІЯ": "Стратег",
+    "ПРОГРАМА": "Програм",
+    "ПЕРЕЛІК": "Перелі",
+    "РЕЄСТР": "Реєстр",
+    "ЗВІТ": "Звіт",
+    "КОНЦЕПЦІЯ": "Концепці",
+    "НАСТАНОВА": "Настанов",
+    "КАРТА": "Карт",
+    "ПЛАН-ГРАФІК": "План-граф",
+    "ІНДЕКСАЦІЯ": "Індексаці",
+    "РОЗПОРЯДЖЕННЯ": "Розпоряджен",
 }
 
 # The "Державного університету «Житомирська політехніка»" tail is common to
@@ -555,7 +681,8 @@ def link_cross_references(body: str, own_stem: str, registry: dict[str, LinkSpec
 def read_existing_frontmatter(out_path: Path) -> dict:
     """Re-running the script must not clobber fields a human or a later
     pipeline step (e.g. scripts/categorize.py) already set on a previous
-    .md output — status, category, subgroup. Only brand-new files get
+    .md output — status, category, subgroup, and (only when explicitly
+    hand-verified via title_locked: true) title. Only brand-new files get
     status 'невідомо' and no category."""
     if out_path.exists():
         try:
@@ -567,10 +694,11 @@ def read_existing_frontmatter(out_path: Path) -> dict:
                     "status": existing.get("status") or "невідомо",
                     "category": existing.get("category"),
                     "subgroup": existing.get("subgroup"),
+                    "title": existing.get("title") if existing.get("title_locked") else None,
                 }
         except Exception:
             pass
-    return {"status": "невідомо", "category": None, "subgroup": None}
+    return {"status": "невідомо", "category": None, "subgroup": None, "title": None}
 
 
 @dataclass
@@ -581,6 +709,7 @@ class DocRecord:
     existing_status: str
     existing_category: str | None
     existing_subgroup: str | None
+    locked_title: str | None
     title: str
     order_number: str
     order_date: str
@@ -622,7 +751,8 @@ def analyze_document(source_path: Path, stats: RunStats) -> DocRecord | None:
         existing_status=existing["status"],
         existing_category=existing["category"],
         existing_subgroup=existing["subgroup"],
-        title=guess_title(result.text),
+        locked_title=existing["title"],
+        title=existing["title"] or guess_title(result.text),
         order_number=guess_order_number(result.text) or "",
         order_date=guess_order_date(result.text) or "",
         body=body,
@@ -644,6 +774,8 @@ def write_record(record: DocRecord, registry: dict[str, LinkSpec]) -> int:
         "order_date": record.order_date,
         "source_pdf": record.source_path.name,
     }
+    if record.locked_title:
+        frontmatter["title_locked"] = True
     if record.existing_category:
         frontmatter["category"] = record.existing_category
     if record.existing_subgroup:

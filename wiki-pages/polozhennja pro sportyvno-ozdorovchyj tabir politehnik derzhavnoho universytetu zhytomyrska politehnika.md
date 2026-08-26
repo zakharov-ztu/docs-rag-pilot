@@ -1,10 +1,12 @@
 ---
-title: 1.1. Спортивно-оздоровчий табір «Політехнік» є структурним підрозділом Державного
+title: ПОЛОЖЕННЯ про спортивно-оздоровчий табір «Політехнік» Державного університету
+  «Житомирська політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro sportyvno-ozdorovchyj tabir politehnik derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+title_locked: true
 category: Структурні підрозділи
 subgroup: Відділи
 ---

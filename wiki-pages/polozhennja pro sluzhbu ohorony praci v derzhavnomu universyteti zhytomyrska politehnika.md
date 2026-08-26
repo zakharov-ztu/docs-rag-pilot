@@ -1,10 +1,11 @@
 ---
-title: 4. Права працівників служби охорони праці
+title: ПОЛОЖЕННЯ про службу охорони праці в Державному університеті «Житомирська політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro sluzhbu ohorony praci v derzhavnomu universyteti zhytomyrska
   politehnika.pdf
+title_locked: true
 category: Охорона праці, безпека життєдіяльності, пожежна безпека
 ---
 

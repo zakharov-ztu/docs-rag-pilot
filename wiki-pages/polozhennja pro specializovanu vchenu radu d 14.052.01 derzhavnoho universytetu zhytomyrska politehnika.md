@@ -1,10 +1,12 @@
 ---
-title: 3. Організація розгляду дисертацій і документів у спеціалізованій
+title: ПОЛОЖЕННЯ про Спеціалізовану вчену раду Д 14.052.01 Державного університету
+  «Житомирська політехніка»
 status: невідомо
 order_number: '1609'
 order_date: '2013-11-21'
 source_pdf: polozhennja pro specializovanu vchenu radu d 14.052.01 derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+title_locked: true
 category: Структурні підрозділи
 subgroup: Відділи
 ---

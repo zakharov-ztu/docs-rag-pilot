@@ -1,10 +1,12 @@
 ---
-title: 1. Основні завдання
+title: ТИПОВЕ ПОЛОЖЕННЯ про науковий гурток кафедри Державного університету «Житомирська
+  політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: typove polozhennja pro naukovyj hurtok kafedry derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

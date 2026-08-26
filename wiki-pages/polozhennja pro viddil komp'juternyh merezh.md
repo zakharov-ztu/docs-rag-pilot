@@ -1,9 +1,11 @@
 ---
-title: 1. Загальні положення
+title: ПОЛОЖЕННЯ про відділ комп’ютерних мереж Державного університету «Житомирська
+  політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro viddil komp'juternyh merezh.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

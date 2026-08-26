@@ -1,9 +1,10 @@
 ---
-title: 1. Загальні положення
+title: ПОЛОЖЕННЯ про Відділ кадрів Державного університету «Житомирська політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro viddil kadriv.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

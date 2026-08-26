@@ -1,9 +1,11 @@
 ---
-title: 3. Порядок висунення кандидатур на призначення
+title: ПОЛОЖЕННЯ про призначення стипендії роботодавця в Державному університеті «Житомирська
+  політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro stypendiju robotodavcja.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

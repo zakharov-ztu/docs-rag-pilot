@@ -1,10 +1,12 @@
 ---
-title: 1.Загальні положення
+title: ПОЛОЖЕННЯ про виплату соціальних стипендій студентам Державного університету
+  «Житомирська політехніка»
 status: невідомо
 order_number: '1045'
 order_date: '2016-12-28'
 source_pdf: polozhennja pro vyplatu socialnyh stypendij studentam derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

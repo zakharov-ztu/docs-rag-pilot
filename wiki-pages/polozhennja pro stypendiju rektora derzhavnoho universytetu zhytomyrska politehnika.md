@@ -1,10 +1,11 @@
 ---
-title: 1. Загальні положення
+title: ПОЛОЖЕННЯ про Стипендію Ректора Державного університету «Житомирська політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro stypendiju rektora derzhavnoho universytetu zhytomyrska
   politehnika.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

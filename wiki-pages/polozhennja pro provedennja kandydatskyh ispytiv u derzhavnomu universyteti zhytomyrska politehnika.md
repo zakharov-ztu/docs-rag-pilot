@@ -1,10 +1,12 @@
 ---
-title: 1. Загальні положення
+title: ПОЛОЖЕННЯ про проведення кандидатських іспитів у Державному університеті «Житомирська
+  політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro provedennja kandydatskyh ispytiv u derzhavnomu universyteti
   zhytomyrska politehnika.pdf
+title_locked: true
 category: Наукова, науково-технічна та інноваційна діяльність
 ---
 

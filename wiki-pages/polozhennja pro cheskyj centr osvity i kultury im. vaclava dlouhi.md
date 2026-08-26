@@ -1,9 +1,11 @@
 ---
-title: 1. Загальні положення
+title: ПОЛОЖЕННЯ про Чеський центр освіти і культури імені Вацлава Длоугі Державного
+  університету «Житомирська політехніка»
 status: невідомо
 order_number: ''
 order_date: ''
 source_pdf: polozhennja pro cheskyj centr osvity i kultury im. vaclava dlouhi.pdf
+title_locked: true
 category: Загальна нормативна база
 ---
 

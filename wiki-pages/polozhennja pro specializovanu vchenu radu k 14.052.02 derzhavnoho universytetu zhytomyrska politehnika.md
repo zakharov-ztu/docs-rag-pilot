@@ -1,10 +1,12 @@
 ---
-title: 2. Порядок подання документів до спеціалізованої вченої 4
+title: ПОЛОЖЕННЯ про Спеціалізовану вчену раду К 14.052.02 Державного університету
+  «Житомирська політехніка»
 status: невідомо
 order_number: '515'
 order_date: '2016-05-16'
 source_pdf: polozhennja pro specializovanu vchenu radu k 14.052.02 derzhavnoho universytetu
   zhytomyrska politehnika.pdf
+title_locked: true
 category: Структурні підрозділи
 subgroup: Відділи
 ---
