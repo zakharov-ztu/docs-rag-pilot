@@ -83,26 +83,150 @@ class RunStats:
 # Text extraction
 # --------------------------------------------------------------------------
 
-def extract_with_pdfplumber(pdf_path: Path) -> list[str]:
+# A raw text line from pdfplumber/OCR is a physical line wrapped at the
+# page's text-box width, not a logical paragraph — so consecutive sentences
+# that were separate indented paragraphs in the original document end up as
+# consecutive lines with no blank line between them, and downstream
+# Markdown rendering merges them into one wall of text. The fix is the same
+# one a human proofreader would use: a paragraph's *first* line starts
+# further right (the "абзацний відступ" indent) than every line after it.
+# Below this many points of difference from a page's baseline left margin,
+# treat it as page-to-page jitter rather than a real indent.
+INDENT_TOLERANCE_PT = 3.0
+
+# Not every document in this corpus signals a new paragraph with a visual
+# first-line indent — some number every point ("1.1. ...", "1.2. ...") and
+# start each one flush with the same left margin as its own continuation
+# lines, relying on the number itself (not indentation) as the paragraph
+# marker. A bullet character works the same way. Recognize both as a
+# paragraph start regardless of x0, alongside the indent signal -- this
+# mirrors RE_SECTION/RE_POINT further below, which recognize the same
+# numbering as *headings*; here it is the coarser paragraph-vs-continuation
+# split. U+F0B7 is Wingdings/Symbol-font bullet glyph, which Word
+# documents commonly embed as a private-use-area codepoint instead of a
+# plain bullet character.
+RE_PARAGRAPH_MARKER = re.compile(
+    r'^(?:[IVXLCDM]{1,6}\.\s|\d{1,3}(?:\.\d{1,3}){0,3}\.?\s|[−–—•·]\s)'
+)
+
+
+def _reflow_lines(lines: list[tuple[float, str]]) -> str:
+    """lines: (x0, text) pairs in reading order. Joins each paragraph's
+    wrapped continuation lines onto one line with a space, and separates
+    distinct paragraphs (and anything else that starts at a different
+    indent, or with its own numbered/bulleted marker — headings, list
+    items, the repeated page header/footer) with a blank line, so each
+    becomes its own Markdown paragraph/block instead of all merging into
+    one."""
+    lines = [(x0, text.strip()) for x0, text in lines if text and text.strip()]
+    if not lines:
+        return ""
+
+    # The baseline (continuation) margin is the leftmost x0 that recurs —
+    # picking the single most *frequent* x0 instead can pick the paragraph
+    # indent by mistake on a page made up mostly of short, one-line
+    # paragraphs, where the indent position outnumbers the baseline one.
+    from collections import Counter
+    counts = Counter(round(x0) for x0, _ in lines)
+    recurring = [x for x, n in counts.items() if n >= 2]
+    baseline = min(recurring) if recurring else round(lines[0][0])
+
+    paragraphs: list[str] = []
+    buffer = ""
+    for x0, text in lines:
+        is_new_paragraph = (
+            abs(round(x0) - baseline) > INDENT_TOLERANCE_PT
+            or bool(RE_PARAGRAPH_MARKER.match(text))
+        )
+        if buffer and not is_new_paragraph:
+            buffer += " " + text
+        else:
+            if buffer:
+                paragraphs.append(buffer)
+            buffer = text
+    if buffer:
+        paragraphs.append(buffer)
+
+    return "\n\n".join(paragraphs)
+
+
+def extract_with_pdfplumber(pdf_path: Path) -> list[tuple[str, str]]:
+    """Returns (raw, reflowed) text for each page. Raw is pdfplumber's
+    plain per-physical-line extract_text() — what guess_title/
+    guess_order_number/guess_order_date/build_link_spec all expect, since
+    they treat a blank line as the firm end of a title/approval block, and
+    reflow would insert one between every wrapped line the block happens
+    to be made of. Reflowed collapses each paragraph's wrapped lines onto
+    one line and separates paragraphs with a blank line instead — for the
+    body, where a reader wants actual paragraphs, not the PDF's line
+    wrapping."""
+    pages = []
     with pdfplumber.open(pdf_path) as pdf:
-        return [page.extract_text() or "" for page in pdf.pages]
+        for page in pdf.pages:
+            raw = page.extract_text() or ""
+            try:
+                lines = page.extract_text_lines()
+            except Exception:
+                lines = None
+            reflowed = _reflow_lines([(l["x0"], l["text"]) for l in lines]) if lines else raw
+            pages.append((raw, reflowed))
+    return pages
 
 
-def extract_with_ocr(pdf_path: Path) -> list[str]:
+def _reflow_ocr_image(image) -> str:
+    """Tesseract's own layout analysis already groups words into
+    paragraphs (block_num/par_num) — use that instead of inventing an x0
+    heuristic a second time for OCR'd pages."""
+    from pytesseract import Output
+
+    data = pytesseract.image_to_data(image, lang=OCR_LANGS, output_type=Output.DICT)
+    paragraphs: dict[tuple[int, int, int], list[str]] = {}
+    order: list[tuple[int, int, int]] = []
+    for i, word in enumerate(data["text"]):
+        if not word.strip():
+            continue
+        key = (data["block_num"][i], data["par_num"][i], data["line_num"][i])
+        # Group by (block, par) for paragraphs, but preserve line order
+        # within a paragraph via line_num when joining below.
+        para_key = (data["block_num"][i], data["par_num"][i])
+        if para_key not in paragraphs:
+            paragraphs[para_key] = []
+            order.append(para_key)
+        paragraphs[para_key].append((data["line_num"][i], word))
+
+    out = []
+    for key in order:
+        words = paragraphs[key]
+        # Reconstruct with line breaks collapsed into spaces, preserving
+        # the order Tesseract emitted the words in (already line-major).
+        out.append(" ".join(w for _, w in words))
+    text = "\n\n".join(out)
+    return text if text.strip() else pytesseract.image_to_string(image, lang=OCR_LANGS)
+
+
+def _ocr_page_text(image) -> tuple[str, str]:
+    """Returns (raw, reflowed) OCR text for one page image — same raw-vs-
+    reflowed split as extract_with_pdfplumber, for the same reason."""
+    raw = pytesseract.image_to_string(image, lang=OCR_LANGS)
+    reflowed = _reflow_ocr_image(image)
+    return raw, reflowed
+
+
+def extract_with_ocr(pdf_path: Path) -> list[tuple[str, str]]:
     """Whole-document OCR — only used when pdfplumber can't open the PDF at
     all (malformed file), so there's no per-page text to decide from."""
     images = convert_from_path(str(pdf_path), dpi=OCR_DPI)
-    return [pytesseract.image_to_string(img, lang=OCR_LANGS) for img in images]
+    return [_ocr_page_text(img) for img in images]
 
 
-def ocr_single_page(pdf_path: Path, page_number: int) -> str:
+def ocr_single_page(pdf_path: Path, page_number: int) -> tuple[str, str]:
     """page_number is 1-indexed. Rasters just this one page instead of the
     whole document — cheap even for a 30+ page PDF where only the cover
     needs OCR."""
     images = convert_from_path(
         str(pdf_path), dpi=OCR_DPI, first_page=page_number, last_page=page_number
     )
-    return pytesseract.image_to_string(images[0], lang=OCR_LANGS)
+    return _ocr_page_text(images[0])
 
 
 def extract_with_docx(docx_path: Path) -> tuple[str, int]:
@@ -143,24 +267,26 @@ def extract_document(source_path: Path) -> ExtractionResult:
         return ExtractionResult(source_path, text, pages_text=[text], used_ocr=False, pages=n_units)
 
     try:
-        pages_text = extract_with_pdfplumber(source_path)
+        pages = extract_with_pdfplumber(source_path)  # list[(raw, reflowed)]
     except Exception as exc:  # pdfplumber can choke on malformed PDFs
         log.warning("pdfplumber failed for %s (%s), falling back to whole-document OCR", source_path.name, exc)
-        pages_text = extract_with_ocr(source_path)
-        text = "\n\n".join(pages_text)
-        return ExtractionResult(source_path, text, pages_text=pages_text, used_ocr=True, pages=len(pages_text))
+        pages = extract_with_ocr(source_path)
+        raw_text = "\n\n".join(raw for raw, _ in pages)
+        reflowed_pages = [reflowed for _, reflowed in pages]
+        return ExtractionResult(source_path, raw_text, pages_text=reflowed_pages, used_ocr=True, pages=len(pages))
 
-    broken_pages = [i for i, t in enumerate(pages_text) if is_page_broken(t)]
+    broken_pages = [i for i, (raw, _) in enumerate(pages) if is_page_broken(raw)]
     if broken_pages:
         log.info(
             "%s: %d/%d page(s) missing/weak text layer, OCR'ing just those (ukr+eng)...",
-            source_path.name, len(broken_pages), len(pages_text),
+            source_path.name, len(broken_pages), len(pages),
         )
         for i in broken_pages:
-            pages_text[i] = ocr_single_page(source_path, i + 1)
+            pages[i] = ocr_single_page(source_path, i + 1)
 
-    text = "\n\n".join(pages_text)
-    return ExtractionResult(source_path, text, pages_text=pages_text, used_ocr=bool(broken_pages), pages=len(pages_text))
+    raw_text = "\n\n".join(raw for raw, _ in pages)
+    reflowed_pages = [reflowed for _, reflowed in pages]
+    return ExtractionResult(source_path, raw_text, pages_text=reflowed_pages, used_ocr=bool(broken_pages), pages=len(pages))
 
 
 # --------------------------------------------------------------------------
