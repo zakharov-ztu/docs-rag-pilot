@@ -3,9 +3,13 @@
 Markdown in wiki-pages/.
 
 For each source document:
-  1. PDF: try the text layer with pdfplumber; if missing or broken (too
-     little text, or mostly garbage characters), fall back to OCR
-     (pdf2image -> tesseract, ukr+eng). DOCX: read directly with
+  1. PDF: try the text layer with pdfplumber, per page — any page whose own
+     text is missing or broken (too little text, or mostly garbage
+     characters) gets OCR'd individually (pdf2image -> tesseract, ukr+eng),
+     while pages with a good text layer keep it. This matters because a
+     mixed PDF (a scanned cover page glued onto an otherwise-native
+     document) would otherwise pass a whole-document average check and
+     silently lose just that one page. DOCX: read directly with
      python-docx — it always has a real text layer, no OCR needed.
   2. Split the text into logical blocks by document structure (roman-numeral
      sections, numbered "punkty"/"pidpunkty", etc.) using Markdown headings.
@@ -49,8 +53,8 @@ OCR_LANGS = "ukr+eng"
 # resolution recovers several of those anchor-word lines too.
 OCR_DPI = 400
 
-# Below this many characters per page (on average) we treat the text layer
-# as missing/broken and fall back to OCR.
+# Below this many characters we treat one page's own text layer as
+# missing/broken and OCR that page individually.
 MIN_CHARS_PER_PAGE = 40
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -61,6 +65,7 @@ log = logging.getLogger("extract_to_markdown")
 class ExtractionResult:
     source_path: Path
     text: str
+    pages_text: list[str]
     used_ocr: bool
     pages: int
     error: str | None = None
@@ -78,19 +83,26 @@ class RunStats:
 # Text extraction
 # --------------------------------------------------------------------------
 
-def extract_with_pdfplumber(pdf_path: Path) -> tuple[str, int]:
-    pages_text = []
+def extract_with_pdfplumber(pdf_path: Path) -> list[str]:
     with pdfplumber.open(pdf_path) as pdf:
-        n_pages = len(pdf.pages)
-        for page in pdf.pages:
-            pages_text.append(page.extract_text() or "")
-    return "\n\n".join(pages_text), n_pages
+        return [page.extract_text() or "" for page in pdf.pages]
 
 
-def extract_with_ocr(pdf_path: Path) -> tuple[str, int]:
+def extract_with_ocr(pdf_path: Path) -> list[str]:
+    """Whole-document OCR — only used when pdfplumber can't open the PDF at
+    all (malformed file), so there's no per-page text to decide from."""
     images = convert_from_path(str(pdf_path), dpi=OCR_DPI)
-    pages_text = [pytesseract.image_to_string(img, lang=OCR_LANGS) for img in images]
-    return "\n\n".join(pages_text), len(images)
+    return [pytesseract.image_to_string(img, lang=OCR_LANGS) for img in images]
+
+
+def ocr_single_page(pdf_path: Path, page_number: int) -> str:
+    """page_number is 1-indexed. Rasters just this one page instead of the
+    whole document — cheap even for a 30+ page PDF where only the cover
+    needs OCR."""
+    images = convert_from_path(
+        str(pdf_path), dpi=OCR_DPI, first_page=page_number, last_page=page_number
+    )
+    return pytesseract.image_to_string(images[0], lang=OCR_LANGS)
 
 
 def extract_with_docx(docx_path: Path) -> tuple[str, int]:
@@ -107,11 +119,16 @@ def extract_with_docx(docx_path: Path) -> tuple[str, int]:
     return "\n".join(parts), len(document.paragraphs)
 
 
-def is_text_layer_broken(text: str, n_pages: int) -> bool:
-    if not text or not text.strip():
+def is_page_broken(text: str) -> bool:
+    """Per-page version of the old whole-document check. A mixed PDF (most
+    pages a real text layer, one page a scanned cover) used to slip past
+    detection entirely: the broken page's near-empty text got averaged in
+    with 20+ healthy pages, so the document-level average never dropped
+    below MIN_CHARS_PER_PAGE and that one page was silently left blank."""
+    stripped = (text or "").strip()
+    if not stripped:
         return True
-    stripped = text.strip()
-    if n_pages > 0 and len(stripped) / n_pages < MIN_CHARS_PER_PAGE:
+    if len(stripped) < MIN_CHARS_PER_PAGE:
         return True
     # Mostly non-letter characters usually means a garbled/font-mapped layer.
     letters = sum(ch.isalpha() for ch in stripped)
@@ -123,20 +140,27 @@ def is_text_layer_broken(text: str, n_pages: int) -> bool:
 def extract_document(source_path: Path) -> ExtractionResult:
     if source_path.suffix.lower() == ".docx":
         text, n_units = extract_with_docx(source_path)
-        return ExtractionResult(source_path, text, used_ocr=False, pages=n_units)
+        return ExtractionResult(source_path, text, pages_text=[text], used_ocr=False, pages=n_units)
 
     try:
-        text, n_pages = extract_with_pdfplumber(source_path)
+        pages_text = extract_with_pdfplumber(source_path)
     except Exception as exc:  # pdfplumber can choke on malformed PDFs
-        log.warning("pdfplumber failed for %s (%s), falling back to OCR", source_path.name, exc)
-        text, n_pages = "", 0
+        log.warning("pdfplumber failed for %s (%s), falling back to whole-document OCR", source_path.name, exc)
+        pages_text = extract_with_ocr(source_path)
+        text = "\n\n".join(pages_text)
+        return ExtractionResult(source_path, text, pages_text=pages_text, used_ocr=True, pages=len(pages_text))
 
-    if is_text_layer_broken(text, n_pages):
-        log.info("%s: text layer missing/weak, running OCR (ukr+eng)...", source_path.name)
-        ocr_text, ocr_pages = extract_with_ocr(source_path)
-        return ExtractionResult(source_path, ocr_text, used_ocr=True, pages=ocr_pages or n_pages)
+    broken_pages = [i for i, t in enumerate(pages_text) if is_page_broken(t)]
+    if broken_pages:
+        log.info(
+            "%s: %d/%d page(s) missing/weak text layer, OCR'ing just those (ukr+eng)...",
+            source_path.name, len(broken_pages), len(pages_text),
+        )
+        for i in broken_pages:
+            pages_text[i] = ocr_single_page(source_path, i + 1)
 
-    return ExtractionResult(source_path, text, used_ocr=False, pages=n_pages)
+    text = "\n\n".join(pages_text)
+    return ExtractionResult(source_path, text, pages_text=pages_text, used_ocr=bool(broken_pages), pages=len(pages_text))
 
 
 # --------------------------------------------------------------------------
@@ -170,67 +194,33 @@ STANDALONE_NOISE_LINES = {"Житомирська", "політехніка"}
 RE_DOT_LEADER = re.compile(r"[.…]{3,}\s*\d*\s*$")
 RE_LONE_PAGE_NUMBER = re.compile(r"^\d{1,3}$")
 
-RE_APPROVAL_BLOCK_START = re.compile(r"^ЗАТВЕРДЖЕНО$")
-RE_BARE_YEAR = re.compile(r"^(19|20)\d{2}$")
-# Safety cap: if no bare-year terminator turns up quickly, stop dropping
-# lines rather than risk eating real content (e.g. an annex with its own
-# ЗАТВЕРДЖЕНО stamp but a differently formatted date).
-MAX_APPROVAL_BLOCK_LINES = 25
+def drop_cover_page(pages_text: list[str]) -> list[str]:
+    """Page 1 of a "ПОЛОЖЕННЯ/ПОЛІТИКА/..." document is a dedicated cover —
+    ЗАТВЕРДЖЕНО block, title, signatures, "Контрольний примірник" — none of
+    it is body content (its useful parts are already pulled into the YAML
+    frontmatter by guess_title/guess_order_number/guess_order_date). Drop it
+    outright rather than trying to guess where it ends line-by-line: that
+    guessing is exactly what used to eat real content, like an unnumbered
+    "ВСТУП" section landing on page 2/3 right after a ЗМІСТ block whose end
+    was misdetected.
 
-RE_TOC_LABEL = re.compile(r"^ЗМІСТ$")
-# A genuine top-level section heading ("1. ЗАГАЛЬНІ ПОЛОЖЕННЯ" /
-# "I. ЗАГАЛЬНІ ПОЛОЖЕННЯ") is ALL CAPS, unlike a ЗМІСТ entry for the same
-# section ("1. Загальні положення………… 3"), which is mixed case. That's
-# what marks the real content starting again after the table of contents.
-RE_TOP_LEVEL_HEADING_CANDIDATE = re.compile(r"^(?:[IVXLCDM]{1,6}|\d{1,3})\.?\s+(\S.*)$")
-MAX_TOC_BLOCK_LINES = 150
-
-
-def _looks_like_toc_terminator(stripped: str) -> bool:
-    m = RE_TOP_LEVEL_HEADING_CANDIDATE.match(stripped)
-    return bool(m and _is_mostly_uppercase(m.group(1)))
+    A наказ, by contrast, approves *itself* — it has no separate cover, so
+    page 1 (or the only page) is real content and must be kept. Whether
+    page 1 is a cover is decided by whether it actually contains a
+    ЗАТВЕРДЖЕНО stamp, not by position alone."""
+    if len(pages_text) > 1 and RE_APPROVAL_WORD.search(pages_text[0]):
+        return pages_text[1:]
+    return pages_text
 
 
 def strip_boilerplate(text: str) -> str:
-    """Remove the repeated page header/footer stamp, the cover-page
-    approval block, and the dotted table of contents from raw extracted
-    text, leaving just the document body."""
+    """Remove the repeated page header/footer stamp from raw extracted
+    text. The cover page and its ЗАТВЕРДЖЕНО block are handled separately,
+    by drop_cover_page(), before this ever runs — this only deals with the
+    ISO-template stamp line that repeats on every remaining page."""
     out: list[str] = []
-    skipping_approval_block = False
-    approval_block_used = False
-    approval_skipped_count = 0
-    skipping_toc = False
-    toc_used = False
-    toc_skipped_count = 0
-
     for line in text.split("\n"):
         stripped = line.strip()
-
-        if skipping_toc:
-            toc_skipped_count += 1
-            if _looks_like_toc_terminator(stripped) or toc_skipped_count > MAX_TOC_BLOCK_LINES:
-                skipping_toc = False
-            else:
-                continue
-
-        if skipping_approval_block:
-            approval_skipped_count += 1
-            if RE_BARE_YEAR.match(stripped) or approval_skipped_count > MAX_APPROVAL_BLOCK_LINES:
-                skipping_approval_block = False
-            continue
-
-        if not approval_block_used and RE_APPROVAL_BLOCK_START.match(stripped):
-            skipping_approval_block = True
-            approval_block_used = True
-            approval_skipped_count = 0
-            continue
-
-        if not toc_used and RE_TOC_LABEL.match(stripped):
-            skipping_toc = True
-            toc_used = True
-            toc_skipped_count = 0
-            continue
-
         if (
             stripped in STANDALONE_NOISE_LINES
             or RE_DOT_LEADER.search(stripped)
@@ -238,7 +228,6 @@ def strip_boilerplate(text: str) -> str:
             or any(p.search(stripped) for p in RUNNING_HEADER_PATTERNS)
         ):
             continue
-
         out.append(line)
 
     return "\n".join(out)
@@ -741,7 +730,8 @@ def analyze_document(source_path: Path, stats: RunStats) -> DocRecord | None:
         return None
 
     out_path = OUTPUT_DIR / f"{source_path.stem}.md"
-    body = split_into_blocks(strip_boilerplate(result.text))
+    body_text = "\n\n".join(drop_cover_page(result.pages_text))
+    body = split_into_blocks(strip_boilerplate(body_text))
     existing = read_existing_frontmatter(out_path)
 
     return DocRecord(

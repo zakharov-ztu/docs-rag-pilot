@@ -9,6 +9,8 @@ source_pdf: pravyla vnutrishnoho rozporjadku v studentskyh hurtozhytkah derzhavn
 category: Гуртожитки. Соціальні питання
 ---
 
+ЗМІСТ
+
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ
 
 #### 1.1. Поселення студентів у студентські гуртожитки

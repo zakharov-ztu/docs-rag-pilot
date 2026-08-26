@@ -8,6 +8,8 @@ source_pdf: polozhennja pro anketuvannja stey̆kholderiv universytetu (vypusk 2)
 category: Система управління якістю
 ---
 
+ЗМІСТ
+
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ
 
 #### 1.1. Положення про анкетування стейкхолдерів Державного

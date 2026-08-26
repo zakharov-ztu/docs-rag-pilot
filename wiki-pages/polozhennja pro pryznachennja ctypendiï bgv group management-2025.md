@@ -8,6 +8,8 @@ source_pdf: polozhennja pro pryznachennja ctypendiï bgv group management-2025.
 category: Колегіальні органи
 ---
 
+ЗМІСТ
+
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ
 
 #### 1.1. Дане Положення розроблено у відповідності до Постанови

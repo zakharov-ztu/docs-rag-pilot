@@ -8,6 +8,8 @@ source_pdf: international_association_of_scientists.pdf
 category: Міжнародна діяльність
 ---
 
+ЗМІСТ
+
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ
 
 #### 1.1. Міжнародна асоціація науковців Центру міжнародної

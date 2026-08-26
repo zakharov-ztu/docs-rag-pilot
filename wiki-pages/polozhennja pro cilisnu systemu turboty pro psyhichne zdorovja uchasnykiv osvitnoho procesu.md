@@ -9,6 +9,8 @@ source_pdf: polozhennja pro cilisnu systemu turboty pro psyhichne zdorovja uchas
 category: Загальні організаційні питання
 ---
 
+ЗМІСТ
+
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ
 
 #### 1.1. Положення про цілісну систему турботи про психічне

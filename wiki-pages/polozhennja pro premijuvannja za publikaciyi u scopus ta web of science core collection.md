@@ -10,6 +10,8 @@ source_pdf: polozhennja pro premijuvannja za publikaciyi u scopus ta web of scie
 category: Наукова, науково-технічна та інноваційна діяльність
 ---
 
+ЗМІСТ
+
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ
 
 #### 1.1. Дане положення розроблене з метою стимулювання до
