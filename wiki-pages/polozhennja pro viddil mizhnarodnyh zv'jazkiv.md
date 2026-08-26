@@ -55,7 +55,7 @@ Men . Міністерство освіти і науки України п-08.0
 
 - нормативною і технічною документацією з охорони праці та пожежної безпеки;
 
-- Політикою у сфері якості;
+- [Політикою у сфері якості](/docs-rag-pilot/wiki-pages/polityka%20u%20sferi%20jakosti%20derzhavnoho%20universytetu%20zhytomyrska%20politehnika%20%28vypusk%205%29.html);
 
 - Цілями у сфері якості;
 

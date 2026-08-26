@@ -48,7 +48,7 @@ TI-33.00-01.01-
 
 пожежної безпеки;
 
-− Політикою у сфері якості Університету;
+− [Політикою у сфері якості](/docs-rag-pilot/wiki-pages/polityka%20u%20sferi%20jakosti%20derzhavnoho%20universytetu%20zhytomyrska%20politehnika%20%28vypusk%205%29.html) Університету;
 
 − Цілями у сфері якості Університету;
 

@@ -516,8 +516,9 @@ def _find_title_anchor_parts(text: str) -> tuple[str, str] | None:
     """If a TITLE_ANCHORS word opens the title — either as the line's first
     word ("ПОЛОЖЕННЯ...") or, when a lead adjective comes first, as its
     second ("ЕКОЛОГІЧНА ПОЛІТИКА...") — return (anchor_word, full_title).
-    Shared by guess_title() and build_link_spec(), since a cross-reference
-    link needs the same anchor/rest split as the title."""
+    Used by guess_title() to recover a title from raw PDF text in the
+    first place; build_link_spec() does the equivalent split on the final
+    frontmatter title string instead, via _split_title_anchor()."""
     lines = [ln.strip() for ln in _approval_slice(text).split("\n")]
 
     for i, line in enumerate(lines):
@@ -718,7 +719,8 @@ ANCHOR_STEMS = {
 # of a title's core phrase, and match any inflected form of it as optional
 # in body text, rather than requiring the title's exact wording.
 RE_UNIV_SUFFIX = re.compile(
-    r"\s+(?:у\s+)?Державн\w+\s+університет\w*\s+«Житомирська\s+політехніка»\.?$"
+    r"\s*(?:у\s+)?Державн\w+\s+університет\w*\s+«Житомирська\s+політехніка»\.?$",
+    re.IGNORECASE,
 )
 RE_UNIV_SUFFIX_MATCH = r"(?:\s+\S+)?\s+Державн\w+\s+університет\w*\s+«Житомирська\s+політехніка»"
 
@@ -733,25 +735,53 @@ class LinkSpec:
     url: str
 
 
-def build_link_spec(pdf_stem: str, text: str) -> LinkSpec | None:
+def _split_title_anchor(title: str) -> tuple[str, str, str] | None:
+    """Find a TITLE_ANCHORS word opening a title *string* — as it finally
+    ended up in frontmatter, title-case (a hand-simplified title) or
+    ALL-CAPS (machine-guessed) — rather than re-deriving one from the raw
+    PDF text the way _find_title_anchor_parts does. This is what makes a
+    document linkable as a *target*: even one whose title had to be
+    hand-fixed (no anchor recoverable from its own raw cover-page text at
+    all) can still be linked to from other documents' bodies, since by
+    now every document has *some* title. Returns (anchor_word, lead,
+    rest): lead is any adjective before a second-word anchor ("Дорожня"
+    in "Дорожня карта...", "ЕКОЛОГІЧНА" in "ЕКОЛОГІЧНА ПОЛІТИКА...") —
+    empty when the anchor opens the title — and rest is everything after
+    the anchor."""
+    words = title.strip().split()
+    for i in range(min(2, len(words))):
+        if words[i].upper() in TITLE_ANCHORS:
+            return words[i].upper(), " ".join(words[:i]), " ".join(words[i + 1:])
+    return None
+
+
+def build_link_spec(pdf_stem: str, title: str) -> LinkSpec | None:
     """Build a regex that finds mentions of this document (by its own
     title) inside OTHER documents' bodies, so they can become links."""
-    found = _find_title_anchor_parts(text)
+    found = _split_title_anchor(title)
     if not found:
         return None
-    anchor_word, full_title = found
+    anchor_word, lead, rest = found
     stem = ANCHOR_STEMS.get(anchor_word)
     if not stem:
         return None
 
-    rest = full_title[len(anchor_word):].strip()
     core = RE_UNIV_SUFFIX.sub("", rest).strip()
+    lead_words = lead.split()
     core_words = core.split()
-    if len(core_words) < MIN_LINK_CORE_WORDS:
+    if len(lead_words) + len(core_words) < MIN_LINK_CORE_WORDS:
         return None
 
+    # A mention inside another document's body is ordinary sentence-case
+    # prose regardless of how *this* document's own title happens to be
+    # cased (ALL-CAPS straight off an anchor-detected cover, or title-case
+    # after a hand fix) — match case-insensitively so either source still
+    # finds it.
+    lead_pattern = r"\s+".join(re.escape(w) for w in lead_words)
     core_pattern = r"\s+".join(re.escape(w) for w in core_words)
-    pattern = re.compile(rf"{stem}\w*\s+{core_pattern}(?:{RE_UNIV_SUFFIX_MATCH})?")
+    anchor_part = rf"{lead_pattern}\s+{stem}\w*" if lead_pattern else rf"{stem}\w*"
+    body_part = rf"{anchor_part}\s+{core_pattern}" if core_pattern else anchor_part
+    pattern = re.compile(rf"{body_part}(?:{RE_UNIV_SUFFIX_MATCH})?", re.IGNORECASE)
     url = SITE_BASEURL + "/wiki-pages/" + quote(f"{pdf_stem}.html", safe="/")
     return LinkSpec(pattern=pattern, url=url)
 
@@ -859,6 +889,7 @@ def analyze_document(source_path: Path, stats: RunStats) -> DocRecord | None:
     body_text = "\n\n".join(drop_cover_page(result.pages_text))
     body = split_into_blocks(strip_boilerplate(body_text))
     existing = read_existing_frontmatter(out_path)
+    title = existing["title"] or guess_title(result.text)
 
     return DocRecord(
         source_path=source_path,
@@ -868,11 +899,11 @@ def analyze_document(source_path: Path, stats: RunStats) -> DocRecord | None:
         existing_category=existing["category"],
         existing_subgroup=existing["subgroup"],
         locked_title=existing["title"],
-        title=existing["title"] or guess_title(result.text),
+        title=title,
         order_number=guess_order_number(result.text) or "",
         order_date=guess_order_date(result.text) or "",
         body=body,
-        link_spec=build_link_spec(source_path.stem, result.text),
+        link_spec=build_link_spec(source_path.stem, title),
     )
 
 
