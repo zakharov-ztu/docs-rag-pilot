@@ -1,6 +1,7 @@
 ---
-title: НАСТАНОВА ЩОДО ЯКОСТІ Державного університету «Житомирська політехніка»
-status: невідомо
+title: Настанова щодо якості
+status: затверджено
+title_locked: true
 order_number: 667/од
 order_date: '2023-11-01'
 source_pdf: nastanova shchodo jakosti derzhavnoho universytetu zhytomyrska politehnika
