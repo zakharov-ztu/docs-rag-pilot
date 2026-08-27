@@ -106,7 +106,7 @@ INDENT_TOLERANCE_PT = 3.0
 # documents commonly embed as a private-use-area codepoint instead of a
 # plain bullet character.
 RE_PARAGRAPH_MARKER = re.compile(
-    r'^(?:[IVXLCDM]{1,6}\.\s|\d{1,3}(?:\.\d{1,3}){0,3}\.?\s|[−–—•·]\s)'
+    r'^(?:[IVXLCDM]{1,6}\.\s|\d{1,3}(?:\.\d{1,3}){0,3}\.?\s|\d{1,2}\)\s|[а-яіїєґ]\)\s|[-−–—•·]\s)'
 )
 
 
@@ -309,8 +309,15 @@ RUNNING_HEADER_PATTERNS = [
     # "02.15-01-2020", which different documents wrap onto their own
     # line(s) in slightly different ways instead of the header line above.
     # A standalone line made up only of digits/dots/dashes (with an
-    # optional single leading Cyrillic letter) is never real prose.
+    # optional single leading Cyrillic letter) is never real prose. This
+    # intentionally requires a trailing digit/dash (not a bare dot) so a
+    # lone clause number like "3.2.13." is never matched here.
     re.compile(r"^(?:[А-ЯІЇЄҐ]-)?\d+(?:[.\-]\d+)*-?$"),
+    # The same code, but with stray spaces OCR sometimes inserts around
+    # separators ("П-10.00-02.18- 01-2024") — only fires when the leading
+    # letter marker is actually present, so it can never match a bare
+    # clause number (which never carries one).
+    re.compile(r"^[А-ЯІЇЄҐ]-\s*[\d./\-\s]+$"),
 ]
 # The institution's logo text sometimes extracts as isolated lines.
 STANDALONE_NOISE_LINES = {"Житомирська", "політехніка"}
@@ -319,6 +326,48 @@ STANDALONE_NOISE_LINES = {"Житомирська", "політехніка"}
 # page-footer numbers.
 RE_DOT_LEADER = re.compile(r"[.…]{3,}\s*\d*\s*$")
 RE_LONE_PAGE_NUMBER = re.compile(r"^\d{1,3}$")
+
+# The same institutional stamp above also leaks through in mixed/title
+# case (title-case OCR reads, or a native text layer that stores the
+# header run in title case despite it being styled as small caps on the
+# page) instead of the ALL-CAPS form RUNNING_HEADER_PATTERNS expects. A
+# case-insensitive version of that pattern would also eat ordinary
+# sentences that just mention the university by name (very common in
+# body prose), so this only fires on lines that are *nothing but* the
+# institution name plus doc-code/date noise: no leading digit (real
+# numbered clauses, e.g. "3.2. Міністерство освіти і науки України:",
+# must never be touched) and no real word left over once the
+# institution phrase and known filler words are removed.
+RE_INSTITUTION_MIXED_CASE = re.compile(
+    r"міністерство освіти і науки україни"
+    r"|державний університет\s*[«\"“]?\s*житомирська\s*політехніка[»\"”]?",
+    re.IGNORECASE,
+)
+RE_REAL_WORD = re.compile(r"[А-ЯІЇЄҐа-яіїєґ]{4,}")
+_INSTITUTION_FILLER_WORDS = {"житомирська", "політехніка", "університет"}
+
+
+def is_mixed_case_header_noise(stripped_line: str) -> bool:
+    if not stripped_line or stripped_line[0].isdigit():
+        return False
+    if RE_INSTITUTION_MIXED_CASE.search(stripped_line):
+        residual = RE_INSTITUTION_MIXED_CASE.sub(" ", stripped_line)
+        leftover_words = [
+            w for w in RE_REAL_WORD.findall(residual)
+            if w.lower() not in _INSTITUTION_FILLER_WORDS
+        ]
+        return not leftover_words
+    # Shorter variant of the same stamp: just "Житомирська"/"політехніка"
+    # (together, or glued to a doc-code fragment like "П-14.01-01-02-2019"),
+    # with no institution phrase to anchor on. Capped at 80 chars and no
+    # other real word present, so a genuine sentence that happens to start
+    # with these words on a wrapped PDF line is never touched.
+    if len(stripped_line) > 80:
+        return False
+    words = RE_REAL_WORD.findall(stripped_line)
+    if not words:
+        return False
+    return all(w.lower() in _INSTITUTION_FILLER_WORDS for w in words)
 
 def drop_cover_page(pages_text: list[str]) -> list[str]:
     """Page 1 of a "ПОЛОЖЕННЯ/ПОЛІТИКА/..." document is a dedicated cover —
@@ -352,11 +401,57 @@ def strip_boilerplate(text: str) -> str:
             or RE_DOT_LEADER.search(stripped)
             or RE_LONE_PAGE_NUMBER.match(stripped)
             or any(p.search(stripped) for p in RUNNING_HEADER_PATTERNS)
+            or is_mixed_case_header_noise(stripped)
         ):
             continue
         out.append(line)
 
     return "\n".join(out)
+
+
+# Every document in this ISO-9001 template ends with the same tail: a
+# sign-off block ("Керівник відділу МЗГ М.О. Псюк Погоджено: Перший
+# проректор О.В. Олійник ...") immediately followed by a run of
+# standardized tracking-sheet sections ("Аркуш поширення документа",
+# "Аркуш ознайомлення з документом", "Аркуш обліку змін", "Аркуш
+# реєстрації ревізій") that are blank forms, not policy content — and
+# whose tabular layout regularly comes out as reflow gibberish (see the
+# "и и № листа/сторінки" style garbage in ekolohichna_polityka.md). None
+# of this belongs in the document body.
+RE_TRAILER_SHEET = re.compile(
+    r"аркуш\s+(?:поширення|ознайомлення|обліку\s+змін|реєстраці[її])",
+    re.IGNORECASE,
+)
+# A sign-off line names people as "І.ПБ. Прізвище" (two initials, then a
+# capitalized surname) — a shape that essentially never occurs in normal
+# running prose (the cover page's ЗАТВЕРДЖЕНО block, the one place a name
+# is written this way earlier in the document, is already dropped by
+# drop_cover_page before this runs).
+RE_SIGNATURE_NAME = re.compile(r"[А-ЯІЇЄҐ]\.\s?[А-ЯІЇЄҐ]\.\s*[А-ЯІЇЄҐ][а-яіїєґ'’ʼ]{2,}")
+
+
+def strip_trailing_administrivia(text: str) -> str:
+    """Cut everything from the first tracking-sheet header onward, plus
+    the sign-off block that's typically glued onto the end of the last
+    real paragraph right before it (same paragraph, no blank line, since
+    the page layout puts names right after the last sentence)."""
+    sheet_match = RE_TRAILER_SHEET.search(text)
+    if not sheet_match:
+        return text
+    # Text up to the sheet header, with the run of blank lines that
+    # precedes it (sometimes several, e.g. an emptied-out page) trimmed
+    # off, so it ends right at the last real character.
+    before = text[: sheet_match.start()].rstrip()
+    # The sign-off block sits somewhere in the last stretch of `before` —
+    # sometimes glued onto the last real sentence, sometimes its own
+    # paragraph, sometimes followed by a further "(Ф 03.02-01)" form-code
+    # paragraph before the sheet header. Rather than guess which of the
+    # last few paragraphs it's in, just look for the first signature-name
+    # shape within a generous trailing window.
+    window_start = max(0, len(before) - 800)
+    sig_match = RE_SIGNATURE_NAME.search(before, window_start)
+    cutoff = sig_match.start() if sig_match else len(before)
+    return text[:cutoff].rstrip()
 
 
 # Roman-numeral top-level sections, e.g. "I. ЗАГАЛЬНІ ПОЛОЖЕННЯ"
@@ -887,7 +982,7 @@ def analyze_document(source_path: Path, stats: RunStats) -> DocRecord | None:
 
     out_path = OUTPUT_DIR / f"{source_path.stem}.md"
     body_text = "\n\n".join(drop_cover_page(result.pages_text))
-    body = split_into_blocks(strip_boilerplate(body_text))
+    body = split_into_blocks(strip_trailing_administrivia(strip_boilerplate(body_text)))
     existing = read_existing_frontmatter(out_path)
     title = existing["title"] or guess_title(result.text)
 

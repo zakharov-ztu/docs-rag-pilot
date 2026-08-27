@@ -92,8 +92,6 @@ within the framework of the implementation of the Gender Equality Plan of Zhytom
 
 e sources of Zhytomyr Polytechnic State University.
 
-Житомирська політехніка
-
 Система управління якістю відповідає ДСТУ 150 9001:2015
 
 GENDER EQUALITY PLAN OF ZHYTOMYR POLYTECHNIC STATE UNIVERSITY ACTIVITIES WILL BE DEVELOPED IN 5 PRIORITY AREAS:
@@ -173,8 +171,6 @@ Vice-Rector for educational- training work, heads of the Non- Academic Departmen
 Vice-Rector for educational- training work, Faculties, Departments
 
 Faculties Vice-Rector for educational- training work, Faculties, Departments
-
-Житомирська політехніка
 
 GOAL 2: Gender balance іп leadership and decision-making processes
 
@@ -273,31 +269,3 @@ ZPSU — Zhytomyr Polytechnic State University ML/PL — maternity/parental leav
 R&D &I — Research & Development & Innovation
 
 Житомирська політехніка Система управління якістю відповідає ДСТУ 150 9001:2015
-
-АРКУШ ПОШИРЕННЯ ДОКУМЕНТА
-
-Прізвище та власне ім'я . . Підпис отримувача Примітки отримувача
-
-Житомирська політехніка
-
-АРКУШ ОЗНАЙОМЛЕННЯ З ДОКУМЕНТОМ
-
-Підпис ознайомленої особи
-
-Дата ознайомлення
-
-Примітки
-
-АРКУШ ОБЛІКУ ЗМІН
-
-Хо листа/сторінки (пункту) his кій Підпис особи, яка внесла | Дата внесення з ЗМІНИ анульованог зміненого заміненого нового 9
-
-Дата введення зміни
-
-Житомирська політехніка Система управління якістю відповідає ДСТУ І50 9001:2015
-
-АРКУШ РЕЄСТРАЦІЇ РЕВІЗІЙ
-
-Висновок щодо
-
-Прізвище та власне ім'я і адекватності

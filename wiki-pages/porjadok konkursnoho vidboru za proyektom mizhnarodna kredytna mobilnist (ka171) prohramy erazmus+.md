@@ -221,33 +221,65 @@ MOBILITY (KA171)” PROJECT
 
 #### 3.1. A week before the start date of the selection, the participant should prepare an application package of documents and send the relevant documents to the address specified in the announcement on the terms of the selection.
 
-##### 3.1.1. Undergraduate, postgraduate and doctoral students should submit the following documents: - completed application form (online); - CV - 1-2 pages; - 15 points
+##### 3.1.1. Undergraduate, postgraduate and doctoral students should submit the following documents:
 
-4,1 4,2 4,3 4,4 4,5 4,6 4,7 4,8 4,9 5,0 Points 2 4 6 8 10 12 14 16 18 20 - certificate confirming the level of foreign language proficiency (if any);
+- completed application form (online);
+
+- CV - 1-2 pages; - 15 points
+
+- letter of motivation (no more than 1 page of A4 format); - 20 points
+
+- a scanned copy of transcripts with grades (for 1-2 academic semesters) for bachelors, masters - a scanned copy of the appendix to the bachelor's degree (grades in specialised subjects are taken into account), postgraduate students
+
+- a scanned copy of the appendix to the master's degree (grades in specialised subjects are taken into account); doctoral students - a scanned copy of the appendix to the postgraduate degree; GPA 4,00- 4,11- 4,21- 4,31- 4,41- 4,51- 4,61- 4,71- 4,81- 4,91-
+
+4,1 4,2 4,3 4,4 4,5 4,6 4,7 4,8 4,9 5,0 Points 2 4 6 8 10 12 14 16 18 20
+
+- certificate confirming the level of foreign language proficiency (if any);
 
 Level Points Level Points
 
 B1 5 C1 9
 
-B2 7 C2 10 - interview - 5-30 points - a document certifying the achievements of a postgraduate student/doctoral researcher (publications, conferences, patents and competitions) - 5 points. The maximum number of selection points is 100 points.
+B2 7 C2 10
 
-##### 3.1.2. Academic staff should submit the following documents: - CV - 1-2 pages; - 15 points - certificate confirming the level of foreign language proficiency (if any);
+- interview - 5-30 points
 
-Level Points Level Points
+- a document certifying the achievements of a postgraduate student/doctoral researcher (publications, conferences, patents and competitions) - 5 points. The maximum number of selection points is 100 points.
 
-B1 5 C1 15
+##### 3.1.2. Academic staff should submit the following documents:
 
-B2 10 C2 20 - list of publications in journals included in scientometric databases (for the last 2 years); - 15 points - list of educational and methodological publications (for the last 2 years); -
+- CV - 1-2 pages; - 15 points
 
-### 10. points - lecture plan (8 hours) (STA - Staff Mobility for Teaching Agreement) or internship plan (STT - Staff Mobility for Training Agreement) agreed with
-
-##### 3.1.3. Academic staff should submit the following documents: - CV - 1-2 pages; - 15 points - certificate confirming the level of foreign language proficiency (if any);
+- certificate confirming the level of foreign language proficiency (if any);
 
 Level Points Level Points
 
 B1 5 C1 15
 
-B2 10 C2 20 - extended training plan (STT - Staff Mobility for Training Agreement) signed by the head of the structural unit (head of department, director of the institute) - 15 points; The maximum number of selection points is 50 points.
+B2 10 C2 20
+
+- list of publications in journals included in scientometric databases (for the last 2 years); - 15 points
+
+- list of educational and methodological publications (for the last 2 years); -
+
+### 10. points
+
+- lecture plan (8 hours) (STA - Staff Mobility for Teaching Agreement) or internship plan (STT - Staff Mobility for Training Agreement) agreed with
+
+##### 3.1.3. Academic staff should submit the following documents:
+
+- CV - 1-2 pages; - 15 points
+
+- certificate confirming the level of foreign language proficiency (if any);
+
+Level Points Level Points
+
+B1 5 C1 15
+
+B2 10 C2 20
+
+- extended training plan (STT - Staff Mobility for Training Agreement) signed by the head of the structural unit (head of department, director of the institute) - 15 points; The maximum number of selection points is 50 points.
 
 #### 3.2. Application documents in electronic format should be merged in the listed order and converted in PDF.
 
@@ -272,33 +304,3 @@ The place and date of the interview is declared in the selection announcement po
 #### 4.2. The selection of academic and administrative staff to participate in the international academic mobility project is based on an assessment of the quality of the application documents by the International Relations Department representatives and subsequent discussion and agreement on the programme of the visit with the representatives of international departments and faculties of hosting institutions regarding the teaching or training plan in the form of correspondence or through remote communication platforms such as Google Meets, Microsoft Teams, Zoom, etc.
 
 Information on the selection announcement for the relevant specialities is published on the official website of the University, the official pages of the International Relations Department on Facebook, Instagram. Координатор Програми Еразмус+ Проєкту «Міжнародна кредитна мобільність» Анна ПОЛЯНСЬКА ВІЗИ: Перший проректор Оксана ОЛІЙНИК __.__.20__ Начальник відділу моніторингу та забезпечення якості Ігор СВІТЛИШИН __.__.20__ Провідний юрисконсульт Максим ОСТАПЧУК __.__.20__
-
-АРКУШ ПОШИРЕННЯ ДОКУМЕНТА
-
-Прізвище та
-
-№ Куди передано Дата Підпис
-
-власне ім’я Примітки
-
-прим. (підрозділ) видачі отримувача
-
-отримувача
-
-АРКУШ ОЗНАЙОМЛЕННЯ З ДОКУМЕНТОМ
-
-Підпис
-
-№ з/ Прізвище та власне Дата
-
-ознайомленої Примітки п ім’я ознайомлення
-
-особи
-
-АРКУШ РЕЄСТРАЦІЇ РЕВІЗІЙ
-
-Дата Висновок щодо
-
-№ з/п Прізвище та власне ім’я Підпис
-
-ревізії адекватності
