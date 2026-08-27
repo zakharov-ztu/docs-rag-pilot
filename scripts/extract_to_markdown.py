@@ -150,6 +150,78 @@ def _reflow_lines(lines: list[tuple[float, str]]) -> str:
     return "\n\n".join(paragraphs)
 
 
+# Plain word-flow text extraction reads a real multi-column data table
+# (strategic-goal tables, council-composition rosters, process registries)
+# column-by-column and interleaves the columns' wrapped lines, producing
+# word-salad instead of the actual row data — the table's own row/column
+# structure has to be used instead. Small tables (a 2-column label/value
+# strip, the ISO header stamp's own bounding box) read fine as plain text
+# and are left alone; only tables large enough to actually scramble are
+# worth the special handling.
+MIN_TABLE_ROWS = 3
+MIN_TABLE_COLS = 3
+
+
+def _find_data_tables(page):
+    """Tables on this page worth extracting via their own row/column
+    structure instead of plain text — excludes small tables, and excludes
+    a table fully nested inside a larger one (pdfplumber sometimes reports
+    a merged-cell region within a table as its own extra "table")."""
+    tables = [
+        t for t in page.find_tables()
+        if len(t.rows) >= MIN_TABLE_ROWS
+        and t.rows
+        and len(t.rows[0].cells) >= MIN_TABLE_COLS
+    ]
+    outer = []
+    for t in tables:
+        x0, top, x1, bottom = t.bbox
+        nested_in_another = any(
+            other is not t
+            and other.bbox[0] <= x0 and other.bbox[1] <= top
+            and other.bbox[2] >= x1 and other.bbox[3] >= bottom
+            for other in tables
+        )
+        if not nested_in_another:
+            outer.append(t)
+    return outer
+
+
+def _format_table_rows(data: list[list[str | None]]) -> list[str]:
+    """Turn a table's extracted rows into standalone text lines, one per
+    row, each starting with "-" so the paragraph reflow keeps every row
+    as its own paragraph instead of merging them. The first row is taken
+    as column headers and used as field labels, not emitted itself. A row
+    with only one or two populated cells (a section-divider row spanning
+    the table, e.g. a bare "3. Маркетинг") is rendered as plain text
+    instead of forced into a sparse, mostly-empty label list."""
+
+    def clean(cell: str | None) -> str:
+        return re.sub(r"\s+", " ", (cell or "")).strip()
+
+    if not data:
+        return []
+    header = [clean(c) for c in data[0]]
+    lines = []
+    for row in data[1:]:
+        cells = [clean(c) for c in row]
+        populated = [(header[i], c) for i, c in enumerate(cells) if c and i < len(header)]
+        if not populated:
+            continue
+        if len(populated) <= 2:
+            lines.append("- " + " ".join(c for _, c in populated))
+            continue
+        # A "№"/numbering column reads better as a bare prefix than as
+        # "№: 3.1" — everything else keeps its column header as a label.
+        lead = ""
+        if populated and re.search(r"№|n[ou]?\b", populated[0][0], re.IGNORECASE):
+            lead = populated[0][1] + ". "
+            populated = populated[1:]
+        labeled = "; ".join(f"{label}: {value}" for label, value in populated)
+        lines.append(f"- {lead}{labeled}")
+    return lines
+
+
 def extract_with_pdfplumber(pdf_path: Path) -> list[tuple[str, str]]:
     """Returns (raw, reflowed) text for each page. Raw is pdfplumber's
     plain per-physical-line extract_text() — what guess_title/
@@ -159,16 +231,44 @@ def extract_with_pdfplumber(pdf_path: Path) -> list[tuple[str, str]]:
     to be made of. Reflowed collapses each paragraph's wrapped lines onto
     one line and separates paragraphs with a blank line instead — for the
     body, where a reader wants actual paragraphs, not the PDF's line
-    wrapping."""
+    wrapping. Any real data table on the page is pulled out via its own
+    row/column structure (see _format_table_rows) instead of being read
+    as plain text, which garbles multi-column tables badly."""
     pages = []
     with pdfplumber.open(pdf_path) as pdf:
         for page in pdf.pages:
             raw = page.extract_text() or ""
-            try:
-                lines = page.extract_text_lines()
-            except Exception:
-                lines = None
-            reflowed = _reflow_lines([(l["x0"], l["text"]) for l in lines]) if lines else raw
+            data_tables = _find_data_tables(page)
+            if data_tables:
+                table_bboxes = [t.bbox for t in data_tables]
+
+                def outside_tables(obj, boxes=table_bboxes):
+                    return not any(
+                        b[0] <= obj["x0"] and obj["top"] >= b[1]
+                        and obj["x1"] <= b[2] and obj["bottom"] <= b[3]
+                        for b in boxes
+                    )
+
+                text_page = page.filter(outside_tables)
+                try:
+                    prose_lines = text_page.extract_text_lines()
+                except Exception:
+                    prose_lines = []
+                entries = [(l["top"], l["x0"], l["text"]) for l in prose_lines]
+                for t in data_tables:
+                    row_lines = _format_table_rows(t.extract())
+                    top = t.bbox[1]
+                    for row_text in row_lines:
+                        entries.append((top, t.bbox[0], row_text))
+                        top += 0.01  # keep the table's own row order on tie-sort
+                entries.sort(key=lambda e: e[0])
+                reflowed = _reflow_lines([(x0, text) for _, x0, text in entries])
+            else:
+                try:
+                    lines = page.extract_text_lines()
+                except Exception:
+                    lines = None
+                reflowed = _reflow_lines([(l["x0"], l["text"]) for l in lines]) if lines else raw
             pages.append((raw, reflowed))
     return pages
 

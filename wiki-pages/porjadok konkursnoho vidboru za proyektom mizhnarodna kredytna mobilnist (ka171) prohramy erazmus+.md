@@ -85,11 +85,9 @@ category: Міжнародна діяльність
 
 - сертифікат, що підтверджує рівень володіння іноземною мовою (за наявності);
 
-Рівень Кількість балів Рівень Кількість балів
+- Рівень: B1; Кількість балів: 5; Рівень: C1; Кількість балів: 9
 
-B1 5 C1 9
-
-B2 7 C2 10
+- Рівень: B2; Кількість балів: 7; Рівень: C2; Кількість балів: 10
 
 - пройти співбесіду – 5-30 балів;
 
@@ -103,19 +101,27 @@ B2 7 C2 10
 
 - сертифікат, що підтверджує рівень володіння іноземною мовою (за наявності);
 
-Рівень Кількість балів Рівень Кількість балів
+- Рівень: B1; Кількість балів: 5; Рівень: C1; Кількість балів: 15
 
-B1 5 C1 15
+- Рівень: B2; Кількість балів: 10; Рівень: C2; Кількість балів: 20
 
-B2 10 C2 20
+- список публікацій у журналах, що входять в наукометричні
 
-- список публікацій у журналах, що входять в наукометричні бази (за останні 2 роки) – 15 балів;
+бази (за останні 2 роки) – 15 балів;
 
 - список навчально-методичних публікацій (за останні 2 роки) –
 
 ### 10. балів;
 
-- план лекцій (8 годин) (STA – Staff Mobility for Teaching Agreement) або план стажування (STT – Staff Mobility for Training Agreement), узгоджений із завідувачем кафедри/деканом факультету та погоджений представником приймаючої кафедри/деканом факультету ЗВО-партнера – 10 балів.
+- план лекцій (8 годин) (STA – Staff Mobility for Teaching
+
+Agreement) або план стажування (STT – Staff Mobility for Training
+
+Agreement), узгоджений із завідувачем кафедри/деканом факультету та
+
+погоджений представником приймаючої кафедри/деканом факультету
+
+ЗВО-партнера – 10 балів.
 
 Максимальна кількість конкурсних балів – 70 балів.
 
@@ -123,21 +129,31 @@ B2 10 C2 20
 
 - резюме (CV) – 1-2 сторінки – 15 балів;
 
-- сертифікат, що підтверджує рівень володіння іноземною мовою (за наявності);
+- сертифікат, що підтверджує рівень володіння іноземною
 
-Рівень Кількість балів Рівень Кількість балів
+мовою (за наявності);
 
-B1 5 C1 15
+- Рівень: B1; Кількість балів: 5; Рівень: C1; Кількість балів: 15
 
-B2 10 C2 20
+- Рівень: B2; Кількість балів: 10; Рівень: C2; Кількість балів: 20
 
-- розширений план стажування (STT – Staff Mobility for Training Agreeement), підписаний керівником структурного підрозділу (керівником відділу, директором інституту) – 15 балів.
+- розширений план стажування (STT – Staff Mobility for Training
+
+Agreeement), підписаний керівником структурного підрозділу
+
+(керівником відділу, директором інституту) – 15 балів.
 
 Максимальна кількість конкурсних балів – 50 балів.
 
-#### 3.2. Пакет документів в електронному вигляді має бути зібраний в один електронний файл у форматі PDF, у такому порядку, як вони зазначені у переліку.
+#### 3.2. Пакет документів в електронному вигляді має бути зібраний в
 
-#### 3.3. Термін подачі документів для участі в конкурсі визначається умовами реалізації програми.
+один електронний файл у форматі PDF, у такому порядку, як вони
+
+зазначені у переліку.
+
+#### 3.3. Термін подачі документів для участі в конкурсі визначається
+
+умовами реалізації програми.
 
 ### 4. ПОРЯДОК ПРОВЕДЕННЯ ВІДБОРУ ДЛЯ УЧАСТІ У
 
@@ -229,23 +245,37 @@ MOBILITY (KA171)” PROJECT
 
 - letter of motivation (no more than 1 page of A4 format); - 20 points
 
-- a scanned copy of transcripts with grades (for 1-2 academic semesters) for bachelors, masters - a scanned copy of the appendix to the bachelor's degree (grades in specialised subjects are taken into account), postgraduate students
+- a scanned copy of transcripts with grades (for 1-2 academic semesters) for
 
-- a scanned copy of the appendix to the master's degree (grades in specialised subjects are taken into account); doctoral students - a scanned copy of the appendix to the postgraduate degree; GPA 4,00- 4,11- 4,21- 4,31- 4,41- 4,51- 4,61- 4,71- 4,81- 4,91-
+bachelors, masters - a scanned copy of the appendix to the bachelor's degree
 
-4,1 4,2 4,3 4,4 4,5 4,6 4,7 4,8 4,9 5,0 Points 2 4 6 8 10 12 14 16 18 20
+(grades in specialised subjects are taken into account), postgraduate students
+
+- a scanned copy of the appendix to the master's degree (grades in specialised
+
+subjects are taken into account); doctoral students - a scanned copy of the
+
+appendix to the postgraduate degree;
+
+GPA 4,00- 4,11- 4,21- 4,31- 4,41- 4,51- 4,61- 4,71- 4,81- 4,91-
+
+4,1 4,2 4,3 4,4 4,5 4,6 4,7 4,8 4,9 5,0
+
+Points 2 4 6 8 10 12 14 16 18 20
 
 - certificate confirming the level of foreign language proficiency (if any);
 
-Level Points Level Points
+- Level: B1; Points: 5; Level: C1; Points: 9
 
-B1 5 C1 9
-
-B2 7 C2 10
+- Level: B2; Points: 7; Level: C2; Points: 10
 
 - interview - 5-30 points
 
-- a document certifying the achievements of a postgraduate student/doctoral researcher (publications, conferences, patents and competitions) - 5 points. The maximum number of selection points is 100 points.
+- a document certifying the achievements of a postgraduate student/doctoral
+
+researcher (publications, conferences, patents and competitions) - 5 points.
+
+The maximum number of selection points is 100 points.
 
 ##### 3.1.2. Academic staff should submit the following documents:
 
@@ -253,19 +283,29 @@ B2 7 C2 10
 
 - certificate confirming the level of foreign language proficiency (if any);
 
-Level Points Level Points
+- Level: B1; Points: 5; Level: C1; Points: 15
 
-B1 5 C1 15
+- Level: B2; Points: 10; Level: C2; Points: 20
 
-B2 10 C2 20
+- list of publications in journals included in scientometric databases (for the
 
-- list of publications in journals included in scientometric databases (for the last 2 years); - 15 points
+last 2 years); - 15 points
 
 - list of educational and methodological publications (for the last 2 years); -
 
 ### 10. points
 
-- lecture plan (8 hours) (STA - Staff Mobility for Teaching Agreement) or internship plan (STT - Staff Mobility for Training Agreement) agreed with
+- lecture plan (8 hours) (STA - Staff Mobility for Teaching Agreement) or
+
+internship plan (STT - Staff Mobility for Training Agreement) agreed with
+
+the head of the department / dean of the faculty and agreed with the
+
+representative of the host department / dean of the faculty of the partner
+
+university.
+
+Maximum number of selection points is 70 points.
 
 ##### 3.1.3. Academic staff should submit the following documents:
 
@@ -273,29 +313,51 @@ B2 10 C2 20
 
 - certificate confirming the level of foreign language proficiency (if any);
 
-Level Points Level Points
+- Level: B1; Points: 5; Level: C1; Points: 15
 
-B1 5 C1 15
+- Level: B2; Points: 10; Level: C2; Points: 20
 
-B2 10 C2 20
+- extended training plan (STT - Staff Mobility for Training Agreement)
 
-- extended training plan (STT - Staff Mobility for Training Agreement) signed by the head of the structural unit (head of department, director of the institute) - 15 points; The maximum number of selection points is 50 points.
+signed by the head of the structural unit (head of department, director of the
 
-#### 3.2. Application documents in electronic format should be merged in the listed order and converted in PDF.
+institute) - 15 points;
 
-#### 3.3. Deadline for submitting application documents is determined by the conditions of the program implementation.
+The maximum number of selection points is 50 points.
+
+#### 3.2. Application documents in electronic format should be merged in
+
+the listed order and converted in PDF.
+
+#### 3.3. Deadline for submitting application documents is determined by
+
+the conditions of the program implementation.
 
 ### 4. THE ORDER OF CARRYING OUT SELECTION FOR
 
 INTERNATIONAL CREDIT MOBILITY PROJECT
 
-#### 4.1. The selection of undergraduate/postgraduate/doctoral students to participate in Erasmus+/ “International Credit Mobility (KA171)” Project usually consists of two/ three stages:
+#### 4.1. The selection of undergraduate/postgraduate/doctoral students to
 
-- Stage I - assessment of the application quality by the representatives of the International Relations Department responsible for the implementation of the project;
+participate in Erasmus+/ “International Credit Mobility (KA171)” Project
 
-- Stage II - selection or pre-selection by a competition committee consisting of representatives of the International Relations Department and international academic mobility programme coordinators at the faculties;
+usually consists of two/ three stages:
 
-- Stage III - decision on the number of participants and mobility type by the sending HEI or the receiving foreign HEI.
+- Stage I - assessment of the application quality by the representatives
+
+of the International Relations Department responsible for the
+
+implementation of the project;
+
+- Stage II - selection or pre-selection by a competition committee
+
+consisting of representatives of the International Relations Department and
+
+international academic mobility programme coordinators at the faculties;
+
+- Stage III - decision on the number of participants and mobility type
+
+by the sending HEI or the receiving foreign HEI.
 
 Information on the selection announcement for the relevant specialities is published on the official website of the University, the official pages of the International Relations Department on Facebook, Instagram.
 
