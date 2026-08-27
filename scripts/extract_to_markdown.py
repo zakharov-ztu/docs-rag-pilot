@@ -419,15 +419,23 @@ def strip_boilerplate(text: str) -> str:
 # "и и № листа/сторінки" style garbage in ekolohichna_polityka.md). None
 # of this belongs in the document body.
 RE_TRAILER_SHEET = re.compile(
-    r"аркуш\s+(?:поширення|ознайомлення|обліку\s+змін|реєстраці[її])",
+    r"аркуш\s+(?:поширення|ознайомлення|обліку\s+змін|реєстраці[її])"
+    r"|візи\s*:",
     re.IGNORECASE,
 )
-# A sign-off line names people as "І.ПБ. Прізвище" (two initials, then a
-# capitalized surname) — a shape that essentially never occurs in normal
-# running prose (the cover page's ЗАТВЕРДЖЕНО block, the one place a name
-# is written this way earlier in the document, is already dropped by
-# drop_cover_page before this runs).
-RE_SIGNATURE_NAME = re.compile(r"[А-ЯІЇЄҐ]\.\s?[А-ЯІЇЄҐ]\.\s*[А-ЯІЇЄҐ][а-яіїєґ'’ʼ]{2,}")
+# A sign-off line names people either as "І.ПБ. Прізвище" (two initials,
+# then a capitalized surname) or "Ім'я ПРІЗВИЩЕ" (full given name, then an
+# ALL-CAPS surname — the shape used by the "ВІЗИ:" approvers-list variant
+# of this template). The 5-letter floor on the all-caps form is to steer
+# clear of short institutional acronyms (МОН, ДСТУ, ЗВО) that could
+# otherwise be mistaken for a surname; real surnames run longer. Neither
+# shape occurs in normal running prose (the cover page's ЗАТВЕРДЖЕНО
+# block, the one place a name is written the first way earlier in the
+# document, is already dropped by drop_cover_page before this runs).
+RE_SIGNATURE_NAME = re.compile(
+    r"[А-ЯІЇЄҐ]\.\s?[А-ЯІЇЄҐ]\.\s*[А-ЯІЇЄҐ][а-яіїєґ'’ʼ]{2,}"
+    r"|[А-ЯІЇЄҐ][а-яіїєґ]{2,}\s+[А-ЯІЇЄҐ]{5,}\b"
+)
 
 
 def strip_trailing_administrivia(text: str) -> str:
