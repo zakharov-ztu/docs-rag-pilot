@@ -3,6 +3,11 @@ description: Пілотна RAG-система для нормативних д�
 theme: minima
 baseurl: "/docs-rag-pilot"
 
+# Without this, minima's default header nav auto-lists every Jekyll page —
+# and every file in wiki-pages/ is its own page, so all 185+ document
+# titles showed up as one long unstyled list at the top of every page.
+header_pages: []
+
 defaults:
   - scope:
       path: "wiki-pages"
