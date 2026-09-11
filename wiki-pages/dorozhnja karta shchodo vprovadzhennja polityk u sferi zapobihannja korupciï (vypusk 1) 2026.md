@@ -1,6 +1,6 @@
 ---
 title: ДОРОЖНЯ КАРТА щодо впровадження політик у сфері запобігання корупції
-status: затверджено
+status: невідомо
 order_number: 74/од
 order_date: '2026-04-02'
 source_pdf: dorozhnja karta shchodo vprovadzhennja polityk u sferi zapobihannja korupciï
