@@ -1,14 +1,12 @@
 ---
-title: ПОЛОЖЕННЯ ПРО ПОЧЕСНОГО РЕКТОРА ЖИТОМИРСЬКОЇ ПОЛІТЕХНІКИ
-status: невідомо
+title: ПОЛОЖЕННЯ ПРО ПОЧЕСНОГО РЕКТОРА 
+status: затверджено
 order_number: 99/од
 order_date: '2026-04-27'
 source_pdf: polozhennja pro pochesnoho rektora_2026.pdf
 category: Колегіальні органи
 subgroup: Вчена рада університету
 ---
-
-ЗМІСТ
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ
 
