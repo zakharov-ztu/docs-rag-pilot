@@ -1,7 +1,7 @@
 ---
 title: ПОРЯДОК конкурсного відбору за проєктом «Міжнародна кредитна мобільність/ (КА171)»
-  програми Еразмус+ Державного університету «Житомирська політехніка»
-status: невідомо
+  програми Еразмус+ 
+status: затверджено
 order_number: 48/од
 order_date: '2025-02-24'
 source_pdf: porjadok konkursnoho vidboru za proyektom mizhnarodna kredytna mobilnist
@@ -9,17 +9,12 @@ source_pdf: porjadok konkursnoho vidboru za proyektom mizhnarodna kredytna mobil
 category: Міжнародна діяльність
 ---
 
-ЗМІСТ
-
-### 2. Вимоги та критерії відбору для участі у проєкті міжнародної
-
-### 4. Порядок проведення відбору для участі у проєкті міжнародної
 
 ### 1. ЗАГАЛЬНІ ПОЛОЖЕННЯ
 
 #### 1.1. Порядок конкурсного відбору за проєктом «Міжнародна кредитна мобільність/ (КА171)» програми Еразмус+ Державного університету «Житомирська політехніка» (далі – Порядок) є нормативним документом, що регулює питання конкурсного відбору студентів/аспірантів/докторантів, науково-педагогічних та адміністративних працівників за проєктом «Міжнародна кредитна мобільність/ (КА171)» програми Еразмус+ у Державному університеті «Житомирська політехніка» (далі – Університет).
 
-#### 1.2. Порядок розроблено відповідно до Закону України «Про вищу освіту», [Положення про організацію освітнього процесу у Державному університеті «Житомирська політехніка»](/docs-rag-pilot/wiki-pages/polozhennja_pro_orhanizaciju_osvitnoho_procesu%20%287%29.html), Положення про порядок реалізації права на академічну мобільність у Державному університеті «Житомирська політехніка».
+#### 1.2. Порядок розроблено відповідно до Закону України «Про вищу освіту», Положення про організацію освітнього процесу у Державному університеті «Житомирська політехніка», Положення про порядок реалізації права на академічну мобільність у Державному університеті «Житомирська політехніка».
 
 #### 1.3. У конкурсі на участь у програмі міжнародної академічної мобільності, проєкті – Erasmus+/«Міжнародна кредитна мобільність» – можуть брати участь:
 
@@ -303,4 +298,4 @@ The place and date of the interview is declared in the selection announcement po
 
 #### 4.2. The selection of academic and administrative staff to participate in the international academic mobility project is based on an assessment of the quality of the application documents by the International Relations Department representatives and subsequent discussion and agreement on the programme of the visit with the representatives of international departments and faculties of hosting institutions regarding the teaching or training plan in the form of correspondence or through remote communication platforms such as Google Meets, Microsoft Teams, Zoom, etc.
 
-Information on the selection announcement for the relevant specialities is published on the official website of the University, the official pages of the International Relations Department on Facebook, Instagram. Координатор Програми Еразмус+ Проєкту «Міжнародна кредитна мобільність»
+Information on the selection announcement for the relevant specialities is published on the official website of the University, the official pages of the International Relations Department on Facebook, Instagram. 
