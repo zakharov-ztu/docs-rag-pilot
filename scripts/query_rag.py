@@ -27,7 +27,9 @@ def main() -> None:
     parser.add_argument("--k", type=int, default=5, help="Number of chunks to return")
     args = parser.parse_args()
 
-    model = SentenceTransformer(MODEL_NAME)
+    # Forced to CPU — see build_index.py for why (MPS gave wrong embeddings
+    # for short query strings with this model on this machine).
+    model = SentenceTransformer(MODEL_NAME, device="cpu")
     client = chromadb.PersistentClient(path=str(DB_DIR))
     collection = client.get_collection(COLLECTION_NAME)
 

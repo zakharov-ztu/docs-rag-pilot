@@ -35,7 +35,13 @@ def main() -> None:
     print(f"Loaded {len(chunks)} chunks from {CHUNKS_PATH.relative_to(REPO_ROOT)}")
 
     print(f"Loading model {MODEL_NAME} (local, first run downloads it once)...")
-    model = SentenceTransformer(MODEL_NAME)
+    # Forced to CPU: PyTorch's MPS (Apple GPU) backend produced measurably
+    # wrong embeddings for short strings with this model on this machine —
+    # verified by comparing a query embedded on MPS vs CPU against the
+    # same stored passage embedding (0.75 vs the correct 0.86 cosine
+    # similarity). The model is small enough that CPU costs nothing that
+    # matters for a corpus this size.
+    model = SentenceTransformer(MODEL_NAME, device="cpu")
 
     client = chromadb.PersistentClient(path=str(DB_DIR))
     try:
