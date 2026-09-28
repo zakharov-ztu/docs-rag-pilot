@@ -122,7 +122,9 @@ def _judge_pair(model: str, meta_a: dict, text_a: str, meta_b: dict, text_b: str
         with urllib.request.urlopen(req, timeout=120) as resp:
             body = json.loads(resp.read().decode("utf-8"))
         content = body["message"]["content"]
-    except (urllib.error.URLError, KeyError, json.JSONDecodeError):
+    # OSError covers URLError and a read timeout (TimeoutError) — one slow
+    # pair shouldn't abort a whole multi-minute judging run.
+    except (OSError, KeyError, json.JSONDecodeError):
         return "ПОМИЛКА", "не вдалося отримати відповідь від Ollama"
 
     verdict_match = re.search(r"ВЕРДИКТ:\s*(\S+)", content)

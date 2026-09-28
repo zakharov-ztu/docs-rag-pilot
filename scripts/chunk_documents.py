@@ -27,6 +27,9 @@ HEADING_RE = re.compile(r"^(#{2,4})\s+(.*\S)\s*$")
 # A leaf section shorter than this (no sub-heading text of its own) gets
 # merged into the next sibling instead of becoming a noise-chunk on its own.
 MIN_CHUNK_CHARS = 40
+# Longer heading lines (numbered пункти, whose heading line is the пункт
+# text itself) are cut to this length in breadcrumbs.
+BREADCRUMB_TITLE_MAX_CHARS = 80
 # A leaf section longer than this gets split further at paragraph breaks.
 MAX_CHUNK_CHARS = 2500
 # Target size used when splitting headingless documents into paragraph groups.
@@ -97,16 +100,44 @@ class Section:
         self.text_lines: list[str] = []
         self.children: list["Section"] = []
 
+    def short_title(self) -> str:
+        """A numbered пункт's heading line *is* its text ("1.1. Юридична
+        клініка є структурним підрозділом ..."), which can run to hundreds
+        of characters — too long to repeat in every descendant's
+        breadcrumb. Cut it at a word boundary."""
+        if len(self.title) <= BREADCRUMB_TITLE_MAX_CHARS:
+            return self.title
+        cut = self.title.rfind(" ", 0, BREADCRUMB_TITLE_MAX_CHARS)
+        return self.title[: cut if cut > 0 else BREADCRUMB_TITLE_MAX_CHARS] + "…"
+
     def breadcrumb(self) -> str:
         parts = []
         node = self
         while node is not None and node.level > 0:
-            parts.append(node.title)
+            parts.append(node.short_title())
             node = node.parent
         return " > ".join(reversed(parts))
 
     def own_text(self) -> str:
-        return "\n".join(self.text_lines).strip()
+        """The section's direct text, led by its heading line whenever the
+        heading carries content of its own: a пункт's heading line is its
+        first (often only) sentence, so leaving it to the breadcrumb alone
+        drops it from the chunk text — or, for a пункт with no further
+        lines, drops the пункт from the index entirely. A purely
+        structural heading ("1. ЗАГАЛЬНІ ПОЛОЖЕННЯ") with only sub-points
+        below it stays in the breadcrumb only — unless it's too long to
+        survive there uncut ("3. Функції Відповідно до завдань ...
+        покладаються такі функції:")."""
+        body = "\n".join(self.text_lines).strip()
+        if self.level == 0:
+            return body
+        if (
+            body
+            or len(self.title) > BREADCRUMB_TITLE_MAX_CHARS
+            or (not self.children and len(self.title) >= MIN_CHUNK_CHARS)
+        ):
+            return f"{self.title}\n\n{body}".strip()
+        return body
 
     def leaves(self):
         """Yield (breadcrumb, text) for every section that has direct text,
