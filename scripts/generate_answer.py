@@ -120,7 +120,10 @@ def main() -> None:
     print("Використані фрагменти:")
     for i, c in enumerate(chunks, 1):
         m = c["meta"]
-        print(f"  [{i}] {m['title']} — {m['wiki_page']} (similarity {c['similarity']:.3f})")
+        section = m["section_path"] or "—"
+        print(f"  [{i}] {m['title']}")
+        print(f"      Пункт: {section}")
+        print(f"      №{m['order_number'] or '—'} від {m['order_date'] or '—'} | {m['wiki_page']} (similarity {c['similarity']:.3f})")
 
 
 if __name__ == "__main__":
