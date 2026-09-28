@@ -28,15 +28,11 @@ category: Міжнародна діяльність
 
  докторанти.
 
- науково-педагогічні працівники – з метою викладання /
-
-стажування;
+ науково-педагогічні працівники – з метою викладання / стажування;
 
  адміністративні працівники – з метою стажування.
 
-### 2. ВИМОГИ ТА КРИТЕРІЇ ВІДБОРУ ДЛЯ УЧАСТІ У
-
-ПРОЄКТІ МІЖНАРОДНОЇ КРЕДИТНОЇ МОБІЛЬНОСТІ
+### 2. ВИМОГИ ТА КРИТЕРІЇ ВІДБОРУ ДЛЯ УЧАСТІ У ПРОЄКТІ МІЖНАРОДНОЇ КРЕДИТНОЇ МОБІЛЬНОСТІ
 
 #### 2.1. Вимоги та критерії відбору для студентів, аспірантів та докторантів:
 
@@ -106,9 +102,7 @@ B2 10 C2 20
 
 - список публікацій у журналах, що входять в наукометричні бази (за останні 2 роки) – 15 балів;
 
-- список навчально-методичних публікацій (за останні 2 роки) –
-
-### 10. балів;
+- список навчально-методичних публікацій (за останні 2 роки) – 10. балів;
 
 - план лекцій (8 годин) (STA – Staff Mobility for Teaching Agreement) або план стажування (STT – Staff Mobility for Training Agreement), узгоджений із завідувачем кафедри/деканом факультету та погоджений представником приймаючої кафедри/деканом факультету ЗВО-партнера – 10 балів.
 
@@ -134,9 +128,7 @@ B2 10 C2 20
 
 #### 3.3. Термін подачі документів для участі в конкурсі визначається умовами реалізації програми.
 
-### 4. ПОРЯДОК ПРОВЕДЕННЯ ВІДБОРУ ДЛЯ УЧАСТІ У
-
-ПРОЄКТІ МІЖНАРОДНОЇ КРЕДИТНОЇ МОБІЛЬНОСТІ
+### 4. ПОРЯДОК ПРОВЕДЕННЯ ВІДБОРУ ДЛЯ УЧАСТІ У ПРОЄКТІ МІЖНАРОДНОЇ КРЕДИТНОЇ МОБІЛЬНОСТІ
 
 #### 4.1. Відбір студентів, аспірантів та докторантів для участі в проєкті міжнародної академічної мобільності – Еразмус+/ «Міжнародна кредитна мобільність» проходить у три етапи:
 
@@ -186,11 +178,7 @@ CONTENT
 
  administrative staff-for the purpose of training
 
-### 2. REQUIREMENTS AND SELECTION CRITERIA FOR
-
-PARTICIPATION IN THE “INTERNATIONAL CREDIT
-
-MOBILITY (KA171)” PROJECT
+### 2. REQUIREMENTS AND SELECTION CRITERIA FOR PARTICIPATION IN THE “INTERNATIONAL CREDIT MOBILITY (KA171)” PROJECT
 
 #### 2.1. Requirements and selection criteria for undergraduate, postgraduate and doctoral students are listed below:
 
@@ -256,9 +244,7 @@ B2 10 C2 20
 
 - list of publications in journals included in scientometric databases (for the last 2 years); - 15 points
 
-- list of educational and methodological publications (for the last 2 years); -
-
-### 10. points
+- list of educational and methodological publications (for the last 2 years); - 10. points
 
 - lecture plan (8 hours) (STA - Staff Mobility for Teaching Agreement) or internship plan (STT - Staff Mobility for Training Agreement) agreed with
 
@@ -280,9 +266,7 @@ B2 10 C2 20
 
 #### 3.3. Deadline for submitting application documents is determined by the conditions of the program implementation.
 
-### 4. THE ORDER OF CARRYING OUT SELECTION FOR
-
-INTERNATIONAL CREDIT MOBILITY PROJECT
+### 4. THE ORDER OF CARRYING OUT SELECTION FOR INTERNATIONAL CREDIT MOBILITY PROJECT
 
 #### 4.1. The selection of undergraduate/postgraduate/doctoral students to participate in Erasmus+/ “International Credit Mobility (KA171)” Project usually consists of two/ three stages:
 

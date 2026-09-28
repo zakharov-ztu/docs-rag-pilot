@@ -86,9 +86,7 @@ SOURCE DOCUMENTS FOR GENDER EQUALITY PLAN OF ZHYTOMYR POLYTECHNIC STATE UNIVERSI
 
 analysis of data collected by the University in the area of HR and employment; e Zhytomyr Polytechnic State University strategy.
 
-FINANCIAL RESOURCES FOR THE IMPLEMENTATION OF SYSTEMIC MEASURES
-
-within the framework of the implementation of the Gender Equality Plan of Zhytomyr Polytechnic State University 2022-2025: e external grants, state strategies and regional programs;
+FINANCIAL RESOURCES FOR THE IMPLEMENTATION OF SYSTEMIC MEASURES within the framework of the implementation of the Gender Equality Plan of Zhytomyr Polytechnic State University 2022-2025: e external grants, state strategies and regional programs;
 
 e sources of Zhytomyr Polytechnic State University.
 
@@ -122,9 +120,7 @@ Adaptation processes for recruits — ex-combatants.
 
 Person in charge of promoting and monitoring the implementation of gender equality and equal opportunities at ZPSU.
 
-Monitoring and evaluation of gender segregated
-
-data (for university and faculties)
+Monitoring and evaluation of gender segregated data (for university and faculties)
 
 - Number of full-time and part-time jobs (full- time and part-time, depending on the scope)
 
@@ -208,9 +204,7 @@ Regularly, once a year Monitoring and evaluation of gender pay
 
 Evaluation of publications, participation in scientific teams and projects, participation in patents, etc. using gender-segregated data
 
-Gender assessment of career growth (number of
-
-new PhD, Assoc., Prof., etc.)
+Gender assessment of career growth (number of new PhD, Assoc., Prof., etc.)
 
 Number of trips/mobilities (proportion of women/men)
 
@@ -224,13 +218,9 @@ Implementation into the ZPSU Strategy Regularly, while developing Strategy
 
 Regularly
 
-Ensuring awareness of the gender dimension in research and education through seminars |Organisation of a seminars/webinars on gender
+Ensuring awareness of the gender dimension in research and education through seminars |Organisation of a seminars/webinars on gender and training.
 
-and training.
-
-Implementation of gender themes/data/dimensions in the content of final student theses
-
-and research projects.
+Implementation of gender themes/data/dimensions in the content of final student theses and research projects.
 
 ### 3. Popularisation researches (gender context) Information and promotional activities on the Presentation of researches results (internet, social networks and in the media University’s website, social media pages, etc.
 
