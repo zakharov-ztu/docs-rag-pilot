@@ -6,3 +6,4 @@ _site/
 .jekyll-cache/
 wiki-pages/.Rhistory
 data/chroma_db/
+data/contradiction_candidates.md
