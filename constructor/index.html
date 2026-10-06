@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Конструктор положень</title>
+<!--
+  In-browser constructor: load a wiki-pages .md, fill in the ISO form
+  details (the `print:` frontmatter block), preview and download the PDF and
+  the updated .md. The PDF is compiled right here by Typst (WebAssembly)
+  from the same templates/iso_document.typ the CLI (scripts/render_pdf.py)
+  uses — so the form and the .md parsing exist in exactly one place.
+-->
+<style>
+  :root {
+    --bg: #f5f6f8; --panel: #ffffff; --text: #1d2330; --muted: #5f6878;
+    --line: #dde1e8; --accent: #1f5fbf; --accent-text: #ffffff;
+    --danger: #b3261e; --ok: #1e7a3c; --field: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14171c; --panel: #1c2027; --text: #e6e9ee; --muted: #9aa3b2;
+      --line: #2e343e; --accent: #6ea2ff; --accent-text: #0d1320;
+      --danger: #ff8a80; --ok: #7bd88f; --field: #161a20;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14171c; --panel: #1c2027; --text: #e6e9ee; --muted: #9aa3b2;
+    --line: #2e343e; --accent: #6ea2ff; --accent-text: #0d1320;
+    --danger: #ff8a80; --ok: #7bd88f; --field: #161a20;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  header {
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+    padding: 14px 20px; border-bottom: 1px solid var(--line); background: var(--panel);
+  }
+  header h1 { font-size: 18px; margin: 0; }
+  header p { margin: 0; color: var(--muted); font-size: 13px; }
+  main { display: grid; grid-template-columns: minmax(340px, 460px) 1fr; height: calc(100vh - 54px); }
+  @media (max-width: 860px) {
+    main { grid-template-columns: 1fr; height: auto; }
+    #preview-pane { height: 80vh; }
+  }
+  #form-pane { overflow-y: auto; padding: 16px 20px 40px; border-right: 1px solid var(--line); }
+  #preview-pane { display: flex; flex-direction: column; min-height: 0; }
+  #drop {
+    border: 2px dashed var(--line); border-radius: 10px; padding: 18px; text-align: center;
+    color: var(--muted); cursor: pointer; background: var(--panel);
+  }
+  #drop.over { border-color: var(--accent); color: var(--text); }
+  #drop strong { color: var(--text); }
+  #doc-name { margin-top: 8px; font-size: 13px; color: var(--muted); word-break: break-all; }
+  fieldset { border: 0; padding: 0; margin: 18px 0 0; }
+  legend { font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: 6px; }
+  label { display: block; font-size: 13px; margin: 8px 0 3px; }
+  input[type=text], input[type=number], input[type=date], textarea {
+    width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: 6px;
+    background: var(--field); color: var(--text); font: inherit;
+  }
+  textarea { resize: vertical; min-height: 56px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .person { display: grid; grid-template-columns: 1.6fr 1fr auto; gap: 6px; margin-top: 6px; }
+  .radio { display: flex; gap: 16px; margin-top: 6px; font-size: 14px; }
+  .radio label { display: flex; gap: 6px; align-items: center; margin: 0; }
+  button {
+    font: inherit; border-radius: 6px; padding: 7px 12px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--panel); color: var(--text);
+  }
+  button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+  button:disabled { opacity: .5; cursor: default; }
+  button.icon { padding: 4px 9px; }
+  .add { margin-top: 6px; font-size: 13px; }
+  #toolbar {
+    display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    padding: 10px 14px; border-bottom: 1px solid var(--line); background: var(--panel);
+  }
+  #status { font-size: 13px; color: var(--muted); margin-left: auto; }
+  #status.err { color: var(--danger); }
+  #status.ok { color: var(--ok); }
+  #pdf { flex: 1; width: 100%; border: 0; background: var(--bg); }
+  #placeholder { flex: 1; display: grid; place-items: center; color: var(--muted); padding: 24px; text-align: center; }
+  #error { white-space: pre-wrap; font: 12px/1.4 ui-monospace, Menlo, monospace; color: var(--danger); padding: 0 14px; }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Конструктор положень</h1>
+  <p>Завантажте .md документа, заповніть реквізити бланка — отримайте PDF на підпис і оновлений .md для GitHub.</p>
+</header>
+<main>
+  <section id="form-pane">
+    <div id="drop" tabindex="0">
+      <strong>Перетягніть .md файл сюди</strong><br>або натисніть, щоб вибрати
+      <input id="file" type="file" accept=".md,.markdown,text/markdown" hidden>
+    </div>
+    <div id="doc-name"></div>
+
+    <form id="form" autocomplete="off">
+      <fieldset>
+        <legend>Документ</legend>
+        <label for="official_title">Повна назва (на титулі)</label>
+        <textarea id="official_title" rows="2"></textarea>
+        <label for="doc_code">Шифр документа</label>
+        <input id="doc_code" type="text" placeholder="П-21.01-01.03-01-2019">
+        <div class="row">
+          <div><label for="issue">Випуск</label><input id="issue" type="number" min="1" value="1"></div>
+          <div><label for="changes">Зміни</label><input id="changes" type="number" min="0" value="0"></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Затвердження</legend>
+        <div class="row">
+          <div><label for="order_number">№ наказу</label><input id="order_number" type="text" placeholder="300/од"></div>
+          <div><label for="order_date">Дата наказу</label><input id="order_date" type="date"></div>
+        </div>
+        <div class="row">
+          <div><label for="approver_position">Посада</label><input id="approver_position" type="text" value="Ректор"></div>
+          <div><label for="approver_name">ПІБ</label><input id="approver_name" type="text" placeholder="В.В. Євдокимов"></div>
+        </div>
+        <label for="council_approval">Погоджено (Вченою радою…)</label>
+        <textarea id="council_approval" rows="2" placeholder="Вченою радою Державного університету «Житомирська політехніка» від 30.09.2019 р., протокол № 10"></textarea>
+        <div class="hint">Порожнє поле — блок «Погоджено» на титулі не друкується.</div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Розробники</legend>
+        <div id="developers"></div>
+        <button type="button" class="add" data-add="developers">+ Додати розробника</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>Погоджено (в кінці документа)</legend>
+        <div id="agreed"></div>
+        <button type="button" class="add" data-add="agreed">+ Додати</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>Цей примірник</legend>
+        <div class="row">
+          <div><label for="copy">Екземпляр №</label><input id="copy" type="number" min="1" value="1"></div>
+          <div>
+            <label>Тип</label>
+            <div class="radio">
+              <label><input type="radio" name="controlled" value="true" checked> Контрольний</label>
+              <label><input type="radio" name="controlled" value="false"> Врахований</label>
+            </div>
+          </div>
+        </div>
+        <div class="hint">Друкується лише в PDF, у .md не зберігається.</div>
+      </fieldset>
+    </form>
+  </section>
+
+  <section id="preview-pane">
+    <div id="toolbar">
+      <button id="dl-pdf" class="primary" disabled>Завантажити PDF</button>
+      <button id="dl-md" disabled>Завантажити .md</button>
+      <span id="status">Завантаження Typst…</span>
+    </div>
+    <div id="error"></div>
+    <div id="placeholder">Тут з'явиться попередній перегляд PDF.</div>
+    <iframe id="pdf" title="Попередній перегляд PDF" hidden></iframe>
+  </section>
+</main>
+
+<script type="module">
+import yaml from "https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.mjs";
+import "https://cdn.jsdelivr.net/npm/@myriaddreamin/typst.ts@0.7.0/dist/esm/contrib/all-in-one-lite.bundle.js";
+
+const TYPST_VER = "0.7.0";
+const TINOS = "https://cdn.jsdelivr.net/npm/@expo-google-fonts/tinos@0.4.2/";
+const $typst = window.$typst;
+$typst.setCompilerInitOptions({
+  getModule: () =>
+    `https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-web-compiler@${TYPST_VER}/pkg/typst_ts_web_compiler_bg.wasm`,
+});
+$typst.use(
+  window.TypstSnippet.disableDefaultFontAssets(),
+  window.TypstSnippet.preloadFonts([
+    TINOS + "400Regular/Tinos_400Regular.ttf",
+    TINOS + "400Regular_Italic/Tinos_400Regular_Italic.ttf",
+    TINOS + "700Bold/Tinos_700Bold.ttf",
+    TINOS + "700Bold_Italic/Tinos_700Bold_Italic.ttf",
+  ]),
+);
+
+const $ = (id) => document.getElementById(id);
+const statusEl = $("status");
+const setStatus = (text, cls = "") => { statusEl.textContent = text; statusEl.className = cls; };
+
+let template = null;          // templates/iso_document.typ source
+let doc = null;               // { name, meta, body }
+let lastPdf = null;
+let pdfUrl = null;
+
+// ---- people lists (розробники / погоджено) ---------------------------------
+function addPerson(listId, person = { position: "", name: "" }) {
+  const row = document.createElement("div");
+  row.className = "person";
+  row.innerHTML = `
+    <input type="text" placeholder="Посада" data-k="position">
+    <input type="text" placeholder="ПІБ" data-k="name">
+    <button type="button" class="icon" title="Видалити">×</button>`;
+  row.querySelector('[data-k="position"]').value = person.position ?? "";
+  row.querySelector('[data-k="name"]').value = person.name ?? "";
+  row.querySelector("button").onclick = () => { row.remove(); schedule(); };
+  $(listId).append(row);
+}
+function readPeople(listId) {
+  return [...$(listId).querySelectorAll(".person")]
+    .map((r) => ({
+      position: r.querySelector('[data-k="position"]').value.trim(),
+      name: r.querySelector('[data-k="name"]').value.trim(),
+    }))
+    .filter((p) => p.position || p.name);
+}
+document.querySelectorAll("[data-add]").forEach((b) => {
+  b.onclick = () => { addPerson(b.dataset.add); };
+});
+
+// ---- .md <-> form ------------------------------------------------------------
+function splitFrontmatter(text) {
+  text = text.replace(/\r\n/g, "\n");
+  if (!text.startsWith("---\n")) return { meta: {}, body: text };
+  const end = text.indexOf("\n---\n", 4);
+  if (end < 0) return { meta: {}, body: text };
+  // CORE_SCHEMA keeps dates like 2019-09-30 as plain strings.
+  const meta = yaml.load(text.slice(4, end), { schema: yaml.CORE_SCHEMA }) || {};
+  return { meta, body: text.slice(end + 5) };
+}
+
+function fillForm(meta) {
+  const pr = meta.print || {};
+  $("official_title").value = pr.official_title ?? meta.title ?? "";
+  $("doc_code").value = pr.doc_code ?? "";
+  $("issue").value = pr.issue ?? 1;
+  $("changes").value = pr.changes ?? 0;
+  $("order_number").value = meta.order_number ?? "";
+  $("order_date").value = /^\d{4}-\d{2}-\d{2}$/.test(meta.order_date ?? "") ? meta.order_date : "";
+  $("approver_position").value = pr.approver?.position ?? "Ректор";
+  $("approver_name").value = pr.approver?.name ?? "";
+  $("council_approval").value = pr.council_approval ?? "";
+  for (const id of ["developers", "agreed"]) {
+    $(id).replaceChildren();
+    (pr[id] || []).forEach((p) => addPerson(id, p));
+  }
+  if (!$("developers").children.length) addPerson("developers");
+}
+
+// The .md with the form's values written back into its frontmatter. The
+// body is passed through untouched; other frontmatter keys keep their order.
+function buildMarkdown() {
+  const meta = { ...doc.meta };
+  const v = (id) => $(id).value.trim();
+  meta.order_number = v("order_number");
+  meta.order_date = v("order_date");
+  const pr = {
+    doc_code: v("doc_code"),
+    issue: Number(v("issue") || 1),
+    changes: Number(v("changes") || 0),
+    official_title: v("official_title"),
+    approver: { position: v("approver_position"), name: v("approver_name") },
+    council_approval: v("council_approval"),
+    developers: readPeople("developers"),
+    agreed: readPeople("agreed"),
+  };
+  for (const [k, val] of Object.entries(pr)) {
+    if (val === "" || (Array.isArray(val) && !val.length)) delete pr[k];
+  }
+  if (!pr.approver.name) delete pr.approver;
+  meta.print = pr;
+  // Default schema on dump quotes date-like strings ('2019-09-30'), so the
+  // Python side (yaml.safe_load in chunk_documents.py) still reads strings.
+  const fm = yaml.dump(meta, { lineWidth: -1, noRefs: true });
+  return `---\n${fm}---\n${doc.body}`;
+}
+
+// ---- compile -------------------------------------------------------------------
+let timer = null;
+let running = false;
+let pending = false;
+function schedule() {
+  if (!doc || !template) return;
+  clearTimeout(timer);
+  timer = setTimeout(compile, 600);
+}
+
+async function compile() {
+  if (running) { pending = true; return; }
+  running = true;
+  setStatus("Формую PDF…");
+  $("error").textContent = "";
+  try {
+    const md = buildMarkdown();
+    await $typst.mapShadow("/doc.md", new TextEncoder().encode(md));
+    await $typst.addSource("/main.typ", template);
+    const controlled = document.querySelector('input[name="controlled"]:checked').value;
+    const pdf = await $typst.pdf({
+      mainFilePath: "/main.typ",
+      inputs: { doc: "/doc.md", copy: String($("copy").value || 1), controlled, font: "Tinos" },
+    });
+    if (!pdf) throw new Error("Typst не повернув PDF");
+    lastPdf = pdf;
+    if (pdfUrl) URL.revokeObjectURL(pdfUrl);
+    pdfUrl = URL.createObjectURL(new Blob([pdf], { type: "application/pdf" }));
+    $("pdf").src = pdfUrl;
+    $("pdf").hidden = false;
+    $("placeholder").hidden = true;
+    $("dl-pdf").disabled = false;
+    $("dl-md").disabled = false;
+    setStatus("Готово", "ok");
+  } catch (e) {
+    setStatus("Помилка", "err");
+    $("error").textContent = String(e?.message ?? e);
+  } finally {
+    running = false;
+    if (pending) { pending = false; schedule(); }
+  }
+}
+
+// ---- file loading ----------------------------------------------------------------
+async function loadFile(file) {
+  const text = await file.text();
+  const { meta, body } = splitFrontmatter(text);
+  doc = { name: file.name, meta, body };
+  $("doc-name").textContent = `${file.name}${meta.title ? " — " + meta.title : ""}`;
+  fillForm(meta);
+  compile();
+}
+const drop = $("drop");
+drop.onclick = () => $("file").click();
+drop.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") $("file").click(); };
+$("file").onchange = (e) => e.target.files[0] && loadFile(e.target.files[0]);
+drop.ondragover = (e) => { e.preventDefault(); drop.classList.add("over"); };
+drop.ondragleave = () => drop.classList.remove("over");
+drop.ondrop = (e) => {
+  e.preventDefault(); drop.classList.remove("over");
+  if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+};
+$("form").addEventListener("input", schedule);
+$("form").addEventListener("change", schedule);
+
+// ---- downloads ----------------------------------------------------------------------
+function download(data, name, type) {
+  const url = URL.createObjectURL(new Blob([data], { type }));
+  const a = Object.assign(document.createElement("a"), { href: url, download: name });
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+const stem = () => doc.name.replace(/\.(md|markdown)$/i, "");
+$("dl-pdf").onclick = () => lastPdf && download(lastPdf, stem() + ".pdf", "application/pdf");
+$("dl-md").onclick = () => doc && download(buildMarkdown(), stem() + ".md", "text/markdown;charset=utf-8");
+
+// ---- startup ------------------------------------------------------------------------
+try {
+  const res = await fetch("../templates/iso_document.typ", { cache: "no-cache" });
+  if (!res.ok) throw new Error(`шаблон не знайдено (${res.status})`);
+  template = await res.text();
+  setStatus("Готово до роботи — завантажте .md");
+  schedule();
+} catch (e) {
+  setStatus("Не вдалося завантажити шаблон: " + e.message, "err");
+}
+</script>
+</body>
+</html>

@@ -1,13 +1,78 @@
-// The university's ISO-9001 document form. Content comes from
-// scripts/render_pdf.py as JSON (sys.inputs.data): the .md frontmatter
-// (`meta`, with form details under `meta.print`) and the body as a flat
-// list of blocks. Nothing here is specific to one document.
+// The university's ISO-9001 document form, filled from one wiki-pages .md
+// file (sys.inputs.doc): form details come from its frontmatter (`print:`
+// block, plus order_number/order_date), the body is parsed here into
+// sections / paragraphs / bullets / tables. Used both by
+// scripts/render_pdf.py (CLI) and constructor/index.html (in the browser),
+// so the form and the .md parsing live only in this file.
 
-#let data = json(sys.inputs.at("data"))
-#let meta = data.meta
-#let pr = meta.at("print", default: (:))
+#let src = read(sys.inputs.at("doc"))
+#let (meta, body) = if src.starts-with("---\n") {
+  let end = src.slice(4).position("\n---\n")
+  (yaml(bytes(src.slice(4, 4 + end))), src.slice(4 + end + 5))
+} else {
+  ((:), src)
+}
+#let meta = if meta == none { (:) } else { meta }
+#let pr = meta.at("print", default: none)
+#let pr = if pr == none { (:) } else { pr }
 #let copy-no = sys.inputs.at("copy", default: "1")
 #let controlled = sys.inputs.at("controlled", default: "true") == "true"
+
+// ---- .md body -> blocks ------------------------------------------------------
+#let re-heading = regex("^(#{2,6})\\s+(.*\\S)\\s*$")
+// Bullet glyphs seen in the corpus, incl. U+F0B7 (Symbol-font bullet that
+// Word embeds as a private-use codepoint) and the various dashes.
+#let re-bullet = regex("^(?:[\u{f0b7}•●▪]\\s*|[*\\-−–—‒˗]\\s+)")
+#let re-link = regex("\\[([^\\]]*)\\]\\([^)]*\\)")
+#let re-table-sep = regex("^\\|[\\s:|-]+\\|?$")
+// A heading line that is a whole sentence ("### 1. Згідно з Законом ...")
+// is a numbered пункт, not a section title, and is printed as a paragraph.
+#let section-title-max-chars = 160
+
+#let inline(text) = {
+  let t = text.replace(re-link, m => m.captures.at(0))
+  t = t.replace("**", "").replace("\\.", ".")
+  t.trim()
+}
+
+#let parse-blocks(body) = {
+  let blocks = ()
+  for raw in body.split("\n") {
+    let line = raw.trim()
+    if line == "" { continue }
+    if line.starts-with("|") {
+      if line.match(re-table-sep) != none { continue }
+      let cells = line.trim("|").split("|").map(inline)
+      if blocks.len() > 0 and blocks.last().type == "table" {
+        let last = blocks.pop()
+        last.rows.push(cells)
+        blocks.push(last)
+      } else {
+        blocks.push((type: "table", rows: (cells,)))
+      }
+      continue
+    }
+    let m = line.match(re-heading)
+    if m != none {
+      let text = inline(m.captures.at(1))
+      let is-title = (
+        m.captures.at(0).len() <= 3
+          and text.clusters().len() <= section-title-max-chars
+          and not text.ends-with(".")
+          and not text.ends-with(";")
+      )
+      blocks.push((type: if is-title { "section" } else { "para" }, text: text))
+      continue
+    }
+    let b = line.match(re-bullet)
+    if b != none and line.len() > b.end {
+      blocks.push((type: "bullet", text: inline(line.slice(b.end))))
+      continue
+    }
+    blocks.push((type: "para", text: inline(line)))
+  }
+  blocks
+}
 
 #let institution = "Державний університет «Житомирська політехніка»"
 #let institution-gen = "Державного університету «Житомирська політехніка»"
@@ -18,7 +83,10 @@
   "січня", "лютого", "березня", "квітня", "травня", "червня",
   "липня", "серпня", "вересня", "жовтня", "листопада", "грудня",
 )
-#let order-date = str(meta.at("order_date", default: ""))
+#let order-date = {
+  let d = meta.at("order_date", default: none)
+  if d == none { "" } else { str(d) }
+}
 #let fmt-date(iso) = {
   if iso.len() < 10 { return iso }
   let (y, m, d) = iso.split("-")
@@ -54,7 +122,9 @@
   header: stamp,
   header-ascent: 6mm,
 )
-#set text(font: "Times New Roman", size: 14pt, lang: "uk")
+// The in-browser constructor passes font=Tinos, the open, metric-compatible
+// Times New Roman clone (TNR itself can't be shipped to the browser).
+#set text(font: sys.inputs.at("font", default: "Times New Roman"), size: 14pt, lang: "uk")
 #set par(justify: true, leading: 0.55em, spacing: 0.55em, first-line-indent: (amount: 1.25cm, all: true))
 #set list(marker: [●], indent: 1.25cm, body-indent: 0.6em)
 #show heading: it => {
@@ -114,7 +184,7 @@
 
 #{
   let pending-bullets = ()
-  for b in data.blocks + ((type: "end"),) {
+  for b in parse-blocks(body) + ((type: "end"),) {
     if b.type != "bullet" and pending-bullets.len() > 0 {
       list(..pending-bullets)
       pending-bullets = ()
