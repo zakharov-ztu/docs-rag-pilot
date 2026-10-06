@@ -7,3 +7,4 @@ _site/
 wiki-pages/.Rhistory
 data/chroma_db/
 data/contradiction_candidates.md
+build/
