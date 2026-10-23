@@ -1,7 +1,0 @@
-pdfplumber
-pdf2image
-pytesseract
-python-docx
-PyYAML
-sentence-transformers
-chromadb

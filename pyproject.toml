@@ -1,0 +1,18 @@
+[project]
+name = "docs-rag-pilot"
+version = "0.1.0"
+description = "Local RAG pilot over the regulations of Zhytomyr Polytechnic State University"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "chromadb",
+    "pdf2image",
+    "pdfplumber",
+    "pytesseract",
+    "python-docx",
+    "pyyaml",
+    "scikit-learn",
+    "sentence-transformers",
+]
+
+[tool.uv]
+package = false
