@@ -31,20 +31,18 @@ import hashlib
 import json
 import re
 import subprocess
+import sys
 from collections import defaultdict
 from datetime import date
 from pathlib import Path
 
-import chromadb
 import yaml
-from sentence_transformers import SentenceTransformer
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from rag.config import CHUNKS_PATH, EMBEDDING_MODEL, REPO_ROOT  # noqa: E402
+from rag.retrieval import Retriever  # noqa: E402
+
 QUESTIONS_PATH = REPO_ROOT / "eval" / "questions.yaml"
-CHUNKS_PATH = REPO_ROOT / "data" / "chunks.jsonl"
-DB_DIR = REPO_ROOT / "data" / "chroma_db"
-COLLECTION_NAME = "ztu_docs"
-MODEL_NAME = "intfloat/multilingual-e5-base"
 RESULTS_PATH = REPO_ROOT / "eval" / "results.md"
 RUNS_DIR = REPO_ROOT / "eval" / "runs"
 K = 10
@@ -67,16 +65,15 @@ def normalize(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
-def retrieve(model: SentenceTransformer, collection, question: str) -> list[dict]:
-    query_embedding = model.encode(["query: " + question], normalize_embeddings=True)
-    results = collection.query(
-        query_embeddings=query_embedding.tolist(),
-        n_results=K,
-        include=["documents", "metadatas", "distances"],
-    )
+def retrieve(retriever: Retriever, question: str) -> list[dict]:
     return [
-        {"doc_id": meta["doc_id"], "title": meta["title"], "text": normalize(doc), "similarity": 1 - dist}
-        for doc, meta, dist in zip(results["documents"][0], results["metadatas"][0], results["distances"][0])
+        {
+            "doc_id": c["meta"]["doc_id"],
+            "title": c["meta"]["title"],
+            "text": normalize(c["text"]),
+            "similarity": c["similarity"],
+        }
+        for c in retriever.search(question, K)
     ]
 
 
@@ -128,7 +125,7 @@ def save_run(label: str, rows: list[dict], summary: dict, n_questions: int) -> N
     questions_hash = hashlib.sha256(QUESTIONS_PATH.read_bytes()).hexdigest()[:8]
     commit = git_commit()
     today = date.today().isoformat()
-    setup = f"{MODEL_NAME}, Chroma, top {K}"
+    setup = f"{EMBEDDING_MODEL}, Chroma, top {K}"
 
     if commit.endswith("-dirty"):
         print("warning: uncommitted changes; the saved commit does not fully describe this run")
@@ -171,15 +168,13 @@ def main() -> None:
 
     questions = yaml.safe_load(QUESTIONS_PATH.read_text(encoding="utf-8"))
 
-    # Forced to CPU — see scripts/build_index.py for why.
-    model = SentenceTransformer(MODEL_NAME, device="cpu")
-    collection = chromadb.PersistentClient(path=str(DB_DIR)).get_collection(COLLECTION_NAME)
+    retriever = Retriever()
 
     with CHUNKS_PATH.open(encoding="utf-8") as f:
         chunk_count = sum(1 for _ in f)
-    if collection.count() != chunk_count:
+    if retriever.collection.count() != chunk_count:
         print(
-            f"warning: the index has {collection.count()} chunks but {CHUNKS_PATH.name} has {chunk_count}; "
+            f"warning: the index has {retriever.collection.count()} chunks but {CHUNKS_PATH.name} has {chunk_count}; "
             "rebuild it with scripts/build_index.py\n"
         )
 
@@ -187,7 +182,7 @@ def main() -> None:
     unanswerable_top: list[float] = []
     print(f"{'id':<5} {'type':<12} {'rank':>4}  {'doc':>3}  question")
     for q in questions:
-        results = retrieve(model, collection, q["question"])
+        results = retrieve(retriever, q["question"])
         if q["type"] == "unanswerable":
             unanswerable_top.append(results[0]["similarity"])
             continue

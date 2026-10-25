@@ -12,6 +12,7 @@ dependencies = [
     "pyyaml",
     "scikit-learn",
     "sentence-transformers",
+    "streamlit>=1.66.1",
 ]
 
 [tool.uv]

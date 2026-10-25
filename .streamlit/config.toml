@@ -1,0 +1,11 @@
+[server]
+# Streamlit's file watcher inspects every imported module to find source files
+# to watch. On transformers (loaded by sentence-transformers) that triggers lazy
+# imports of optional vision models and floods the console with
+# "No module named 'torchvision'" tracebacks. The demo doesn't need live
+# reload; for development run with --server.fileWatcherType auto and ignore them.
+fileWatcherType = "none"
+
+# Only reachable from this machine; by default Streamlit listens on every
+# network interface, i.e. anyone on the same network could open the demo.
+address = "localhost"

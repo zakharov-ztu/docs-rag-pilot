@@ -25,16 +25,15 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import json
 import re
-import urllib.error
-import urllib.request
+import sys
 from pathlib import Path
 
-import chromadb
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from rag.config import DEFAULT_LLM, REPO_ROOT  # noqa: E402
+from rag.llm import OllamaError, chat  # noqa: E402
+from rag.retrieval import open_collection  # noqa: E402
 
-OLLAMA_URL = "http://localhost:11434/api/chat"
-DEFAULT_OLLAMA_MODEL = "qwen2.5:7b"
 JUDGE_SYSTEM_PROMPT = """Ти аналізуєш два фрагменти з різних офіційних документів університету, які обрані автоматично через семантичну схожість і можуть стосуватися однієї теми чи процедури.
 
 Визнач одне з трьох:
@@ -73,9 +72,6 @@ def _same_template(title_a: str, title_b: str, jaccard_threshold: float = 0.55) 
     union = len(sig_a | sig_b)
     return (overlap / union) >= jaccard_threshold if union else False
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-DB_DIR = REPO_ROOT / "data" / "chroma_db"
-COLLECTION_NAME = "ztu_docs"
 OUT_PATH = REPO_ROOT / "data" / "contradiction_candidates.md"
 
 DEFAULT_THRESHOLD = 0.90
@@ -104,27 +100,10 @@ def _judge_pair(model: str, meta_a: dict, text_a: str, meta_b: dict, text_b: str
         f"[Фрагмент B] Документ: {meta_b['title']} (розділ {meta_b['section_path'] or '—'})\n"
         f"{text_b[:800]}"
     )
-    payload = {
-        "model": model,
-        "messages": [
-            {"role": "system", "content": JUDGE_SYSTEM_PROMPT},
-            {"role": "user", "content": user},
-        ],
-        "stream": False,
-    }
-    req = urllib.request.Request(
-        OLLAMA_URL,
-        data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
     try:
-        with urllib.request.urlopen(req, timeout=120) as resp:
-            body = json.loads(resp.read().decode("utf-8"))
-        content = body["message"]["content"]
-    # OSError covers URLError and a read timeout (TimeoutError) — one slow
-    # pair shouldn't abort a whole multi-minute judging run.
-    except (OSError, KeyError, json.JSONDecodeError):
+        content = chat(model, JUDGE_SYSTEM_PROMPT, user, timeout=120)
+    # One slow or failed pair shouldn't abort a whole multi-minute judging run.
+    except OllamaError:
         return "ПОМИЛКА", "не вдалося отримати відповідь від Ollama"
 
     verdict_match = re.search(r"ВЕРДИКТ:\s*(\S+)", content)
@@ -162,7 +141,7 @@ def main() -> None:
         "candidates into a short, curated shortlist instead of a list to read by hand.",
     )
     parser.add_argument("--no-judge", dest="judge", action="store_false")
-    parser.add_argument("--judge-model", default=DEFAULT_OLLAMA_MODEL)
+    parser.add_argument("--judge-model", default=DEFAULT_LLM)
     parser.add_argument(
         "--limit",
         type=int,
@@ -172,8 +151,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    client = chromadb.PersistentClient(path=str(DB_DIR))
-    collection = client.get_collection(COLLECTION_NAME)
+    collection = open_collection()
 
     all_chunks = collection.get(include=["embeddings", "metadatas", "documents"])
     ids = all_chunks["ids"]

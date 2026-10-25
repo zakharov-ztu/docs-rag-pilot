@@ -11,7 +11,7 @@ The POC runs on one laptop (MacBook M4 Max, 48 GB) and demonstrates:
 1. **Finding documents**: "which regulation covers X", with filters by
    category.
 2. **Answers over the documents**: a question in Ukrainian, an answer with
-   citations to the exact document and пункт, compared across two local LLMs.
+   citations to the exact document and пункт, from a choice of local LLMs.
 3. **Contradiction detection**: as an example of a further use, pairs of
    пункти from different documents that may contradict each other.
 4. **Document generation**: drafting a new document from a university
@@ -37,7 +37,7 @@ owns its own part of the document base.
 | Retrieval stays as it is (e5-base + Chroma) | Metadata, hybrid search and reranking are deferred to Part 2 |
 | Demo interface: a Streamlit app | One small Python app on top of the same code as the CLI |
 | Evaluation set of 50+ questions | The administration will ask "how well does it work"; the answer must be numbers |
-| LLMs compared: Gemma and MamayLM 12B | Speed is not a criterion for the demo |
+| Models shown: Gemma and MamayLM 12B, side by side in the app | No formal LLM comparison in the POC; speed is not a criterion for the demo |
 
 ## Current state
 
@@ -180,6 +180,15 @@ copies.
 generation; models loaded once. The CLI scripts, the eval scripts and the app
 call it.
 
+**Note.** Chroma's search (HNSW) is approximate, and every rebuild of the index
+builds a slightly different search graph. Rebuilding the index with no other
+change moved one eval question (A05: its document went from outside the top 10
+to rank 4). So eval numbers can shift by a question or two after a rebuild
+alone. With ~6,400 chunks exact search costs milliseconds; switching to it
+(or raising Chroma's search breadth to cover the whole index) would make the
+numbers change only when something real changed. Not done yet; if done, save
+the baseline again.
+
 **Done when:** the CLI and eval scripts use the module and the baseline numbers
 are unchanged.
 
@@ -205,23 +214,7 @@ work from Part 2; until then superseded documents appear next to current ones.
 **Done when:** the right document is in the top 5 for most eval questions and
 the filters work.
 
-### 6. LLM comparison
-
-**Issue.** `qwen2.5:7b` struggles with the strict citation and contradiction
-rules in Ukrainian legal text.
-
-**Development.**
-
-| Task | Details |
-|---|---|
-| Candidates | Gemma 4 (~31B), `MamayLM-Gemma-3-12B`, `qwen2.5:7b` as the baseline. Check the exact Ollama tags; MamayLM probably has to be imported as a GGUF from Hugging Face. Check the licenses |
-| Hardware | 48 GB of unified memory fits a ~30B model at 4-bit (~20 GB) together with the embedding model |
-| Compare | `eval/run_answers.py` with each model on the same retrieval output: correctness, citation accuracy, refusals, Ukrainian quality. Record memory use and time per answer as input for hardware sizing (Part 3), even though speed is not a demo criterion |
-| Prompt | One system prompt for all models; cite by fragment number so citations can be checked automatically |
-
-**Done when:** the comparison table is in `eval/results.md`.
-
-### 7. Demo app
+### 6. Demo app
 
 **Issue.** Everything is CLI only; that cannot be shown to the administration.
 
@@ -229,23 +222,24 @@ rules in Ukrainian legal text.
 
 - **Documents**: document search from item 5;
 - **Ask**: the answer, streamed, with citations linked to the document pages
-  on the site; a model selector, and an option to show two models' answers
-  side by side;
-- **Contradictions**: item 8;
-- **Generate**: items 9 and 10.
+  on the site; a selector of the models available in Ollama (e.g. Gemma and
+  `MamayLM-Gemma-3-12B`, which probably has to be imported as a GGUF from
+  Hugging Face), and an option to show two models' answers side by side;
+- **Contradictions**: item 7;
+- **Generate**: items 8 and 9.
 
 A note in the interface: answers are not authoritative; check the linked
 original.
 
 **Done when:** the whole demo can be run from the app.
 
-### 8. Contradiction detection
+### 7. Contradiction detection
 
 **Issue.** Contradictions and outdated duplicates between documents are a
 likely use of the system, but the current shortlist is a one-off Markdown file
 judged by `qwen2.5:7b`.
 
-**Development.** Rerun `find_contradictions.py` with the chosen model and show
+**Development.** Rerun `find_contradictions.py` with a stronger model and show
 the shortlist in the app: both пункти side by side with the model's reasoning,
 clearly labelled as **candidates for a person to check**. The point of the
 demo is to show the use case, not to claim precision.
@@ -266,7 +260,7 @@ the shortlist catches them:
 **Done when:** the shortlist is visible in the app and a few clear examples are
 picked for the demo.
 
-### 9. Document generation from templates
+### 8. Document generation from templates
 
 **Issue.** The constructor only formats documents that already exist. Drafting
 new documents from templates and the current regulations is the use that shows
@@ -285,7 +279,7 @@ what the LLM adds.
 **Done when:** a correctly formatted draft of the chosen type can be generated
 from the app and cites the regulations it relied on.
 
-### 10. Constructor
+### 9. Constructor
 
 **Issue.** The constructor exists (`render_pdf.py`, `constructor/`), but has not
 been checked as a demo item.
@@ -295,7 +289,7 @@ breaks, link it from the Generate tab, prepare one example.
 
 **Done when:** the demo example renders correctly.
 
-### 11. Demo and findings for the administration
+### 10. Demo and findings for the administration
 
 **Issue.** The POC is only useful if it leads to decisions.
 
@@ -303,7 +297,7 @@ breaks, link it from the Generate tab, prepare one example.
 
 - A demo script: 5–10 questions that show strengths (including an identifier
   question and an unanswerable one) and an honest weak case.
-- The evaluation numbers from items 1 and 6.
+- The retrieval numbers from item 1.
 - The questions from Part 3, to be answered by the administration.
 
 **Done when:** the demo has been shown and the answers to Part 3 recorded.
@@ -312,15 +306,14 @@ breaks, link it from the Generate tab, prepare one example.
 
 ```
 1 Eval ──► 4 Module ──► 5 Document search ──┐
-2 Source of truth ─┐        │                ├──► 7 App ──► 11 Demo
-3 Text quality ────┘        └──► 6 LLMs ─────┤
-                                 8 Contradictions ┤
-                                 9 Generation ────┤
-                                 10 Constructor ──┘
+2 Source of truth ─┐                         ├──► 6 App ──► 10 Demo
+3 Text quality ────┘     7 Contradictions ───┤
+                         8 Generation ───────┤
+                         9 Constructor ──────┘
 ```
 
 Items 2 and 3 run alongside item 1 and should be finished before the final
-re-index. Items 8–10 can start once item 6 has picked the models.
+re-index. Items 7–9 can run in parallel with the app.
 
 ---
 
@@ -446,7 +439,7 @@ for some offices or roles only?
 
 **Issue.** The POC runs on one laptop for one user.
 
-**Needed.** A server sized from the POC measurements (item 6): memory and time
+**Needed.** A server sized from measurements on the POC laptop: memory and time
 per model, multiplied by the expected load. A rough starting point: one server
 with a 24–48 GB GPU runs a quantized ~30B model for several simultaneous users;
 vLLM instead of Ollama when several people use it at once. Docker Compose for

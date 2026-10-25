@@ -3,25 +3,23 @@ store (Chroma). Everything runs on-device — no chunk text is sent
 anywhere — since part of the corpus is access-restricted internal
 material.
 
-Model: intfloat/multilingual-e5-base. E5 models expect a "query: " /
-"passage: " prefix on the text they embed (asymmetric retrieval) — chunks
-are indexed as passages, questions are embedded as queries at query time
-(see query_rag.py).
+The embedding model and its query/passage prefixes are defined in
+rag/retrieval.py, shared with search, so the index and the queries always
+use the same model.
 """
 
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 import chromadb
-from sentence_transformers import SentenceTransformer
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-CHUNKS_PATH = REPO_ROOT / "data" / "chunks.jsonl"
-DB_DIR = REPO_ROOT / "data" / "chroma_db"
-COLLECTION_NAME = "ztu_docs"
-MODEL_NAME = "intfloat/multilingual-e5-base"
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from rag.config import CHUNKS_PATH, COLLECTION_NAME, DB_DIR, EMBEDDING_MODEL, REPO_ROOT  # noqa: E402
+from rag.retrieval import embed_passages, load_embedding_model  # noqa: E402
+
 BATCH_SIZE = 64
 
 
@@ -34,14 +32,8 @@ def main() -> None:
     chunks = load_chunks()
     print(f"Loaded {len(chunks)} chunks from {CHUNKS_PATH.relative_to(REPO_ROOT)}")
 
-    print(f"Loading model {MODEL_NAME} (local, first run downloads it once)...")
-    # Forced to CPU: PyTorch's MPS (Apple GPU) backend produced measurably
-    # wrong embeddings for short strings with this model on this machine —
-    # verified by comparing a query embedded on MPS vs CPU against the
-    # same stored passage embedding (0.75 vs the correct 0.86 cosine
-    # similarity). The model is small enough that CPU costs nothing that
-    # matters for a corpus this size.
-    model = SentenceTransformer(MODEL_NAME, device="cpu")
+    print(f"Loading model {EMBEDDING_MODEL} (local, first run downloads it once)...")
+    model = load_embedding_model()
 
     client = chromadb.PersistentClient(path=str(DB_DIR))
     try:
@@ -50,7 +42,7 @@ def main() -> None:
         pass
     collection = client.create_collection(COLLECTION_NAME, metadata={"hnsw:space": "cosine"})
 
-    texts = ["passage: " + c["embedding_text"] for c in chunks]
+    texts = [c["embedding_text"] for c in chunks]
     ids = [c["chunk_id"] for c in chunks]
     metadatas = [
         {
@@ -71,10 +63,9 @@ def main() -> None:
     print(f"Embedding {len(texts)} chunks in batches of {BATCH_SIZE}...")
     for start in range(0, len(texts), BATCH_SIZE):
         end = start + BATCH_SIZE
-        embeddings = model.encode(texts[start:end], show_progress_bar=False, normalize_embeddings=True)
         collection.add(
             ids=ids[start:end],
-            embeddings=embeddings.tolist(),
+            embeddings=embed_passages(model, texts[start:end]),
             metadatas=metadatas[start:end],
             documents=documents[start:end],
         )

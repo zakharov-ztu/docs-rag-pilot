@@ -22,7 +22,10 @@ university's ISO form.
 | `wiki-pages/` | Extracted Markdown, one file per document, with YAML frontmatter (title, status, order number/date, category). **Source of truth** — hand-corrected, extraction is no longer re-run over it |
 | `data/chunks.jsonl` | Retrieval chunks produced from `wiki-pages/` |
 | `data/chroma_db/` | Local Chroma vector index (generated, git-ignored) |
+| `rag/` | Shared RAG code used by the scripts and the eval: configuration, embeddings and search, the Ollama client, answer generation |
 | `scripts/` | Pipeline and audit scripts (see below) |
+| `app/` | Streamlit demo app |
+| `eval/` | Evaluation set (`questions.yaml`), its checker, the retrieval evaluation and recorded results |
 | `templates/iso_document.typ` | Typst template for the ISO document form |
 | `constructor/`, `_layouts/`, `_includes/`, `index.md` | Jekyll site |
 
@@ -89,6 +92,17 @@ Retrieval + generated answer with citations (Ollama must be running —
 uv run scripts/generate_answer.py "Як подати апеляцію на результати вступних іспитів?"
 uv run scripts/generate_answer.py "Як подати апеляцію на результати вступних іспитів?" --k 8 --model qwen2.5:14b
 ```
+
+### 3. Demo app
+
+```sh
+uv run streamlit run app/demo.py
+```
+
+Opens in the browser with four tabs: document search, questions with cited
+answers (choose any model pulled into Ollama, or compare two side by side),
+the contradiction shortlist, and a link to the document constructor. Needs
+the index from step 1; answers need Ollama running.
 
 ### Other scripts
 

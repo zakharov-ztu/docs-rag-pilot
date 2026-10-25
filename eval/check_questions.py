@@ -25,9 +25,10 @@ from pathlib import Path
 
 import yaml
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from rag.config import CHUNKS_PATH, REPO_ROOT  # noqa: E402
+
 QUESTIONS_PATH = REPO_ROOT / "eval" / "questions.yaml"
-CHUNKS_PATH = REPO_ROOT / "data" / "chunks.jsonl"
 
 TYPES = ("factual", "identifier", "multi_doc", "unanswerable")
 # Share of the question's content words found in the quote above which the
