@@ -110,40 +110,8 @@ and the `github-pages` gem installed:
 jekyll serve --baseurl /docs-rag-pilot
 ```
 
-## Known issues and concerns
+## Status and limitations
 
-Ranked by how much they block a real deployment.
-
-1. **Possible exposure of restricted documents.** `scripts/build_index.py`
-   states that part of the corpus is access-restricted internal material, yet
-   this repository is **public** and contains `source-pdfs/`, `wiki-pages/`,
-   `data/chunks.jsonl` and a public GitHub Pages site. Keeping inference local
-   does not help if the sources themselves are published. Confirm that every
-   document is meant to be public, or move restricted ones out of the repo
-   (and out of its history).
-2. **No evaluation set.** Nothing measures retrieval or answer quality, so
-   changes to chunking, the embedding model or `k` can only be judged by eye.
-   A set of 30–50 real questions paired with the пункт that answers each one
-   would make tuning measurable.
-3. **Vector search only.** Queries by exact identifiers — order numbers
-   ("наказ №274/од"), document codes ("П-21.01-…") — are poorly served by
-   pure semantic search. Hybrid retrieval (BM25 + vectors) plus a multilingual
-   reranker (e.g. `bge-reranker-v2-m3`) is likely the biggest quality gain.
-4. **No document versioning.** There is no notion of a superseded document:
-   `status` is only `затверджено` or `невідомо`. Old and new versions are
-   indexed side by side (e.g. `alhorytm.pdf` vs `alhorytm zi zminamy.pdf`,
-   files marked "нове" or "випуск N"), so an answer may cite an outdated
-   document. A field such as `superseded_by` / `valid_until`, used as a
-   retrieval filter, is needed.
-5. **Incomplete metadata.** About 31% of chunks have no order number, so many
-   citations read "№— від —"; 13 chunks have no category.
-6. **Uneven chunk sizes.** Median chunk length is ~260 characters and ~570
-   chunks are under 100, which gives the LLM thin context. Retrieving a short
-   chunk together with its parent section would help.
-7. **Small generation model.** `qwen2.5:7b` struggles with the strict citation
-   and contradiction rules in Ukrainian legal text; a larger local model is
-   worth trying. `generate_answer.py` also reloads the embedding model on
-   every call and has no streaming or conversation history.
-8. **No interface or access control.** CLI only; there is no API, web UI or
-   per-user filtering of restricted documents, which a university-wide
-   deployment would need.
+This is a proof of concept. Known issues, the plan to fix them, and what a
+working system would additionally need are in
+[DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md).

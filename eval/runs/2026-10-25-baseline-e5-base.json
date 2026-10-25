@@ -1,0 +1,391 @@
+{
+  "date": "2026-10-25",
+  "label": "baseline e5-base",
+  "setup": "intfloat/multilingual-e5-base, Chroma, top 10",
+  "commit": "2fa194d-dirty",
+  "questions_hash": "2ee16cad",
+  "summary": {
+    "factual": {
+      "n": 28,
+      "hit@5": 0.7857142857142857,
+      "hit@10": 0.8928571428571429,
+      "mrr": 0.6954365079365079,
+      "doc_hit@5": 0.8928571428571429
+    },
+    "identifier": {
+      "n": 8,
+      "hit@5": 0.75,
+      "hit@10": 0.75,
+      "mrr": 0.625,
+      "doc_hit@5": 1.0
+    },
+    "multi_doc": {
+      "n": 8,
+      "hit@5": 0.375,
+      "hit@10": 0.625,
+      "mrr": 0.28348214285714285,
+      "doc_hit@5": 0.875
+    },
+    "all": {
+      "n": 44,
+      "hit@5": 0.7045454545454546,
+      "hit@10": 0.8181818181818182,
+      "mrr": 0.6077290764790765,
+      "doc_hit@5": 0.9090909090909091
+    }
+  },
+  "questions": [
+    {
+      "id": "A01",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8514
+    },
+    {
+      "id": "A02",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "2/2",
+      "top_similarity": 0.8842
+    },
+    {
+      "id": "A03",
+      "type": "factual",
+      "rank": 3,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8559
+    },
+    {
+      "id": "A04",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.843
+    },
+    {
+      "id": "A05",
+      "type": "factual",
+      "rank": null,
+      "doc_rank": null,
+      "found_passages": "0/1",
+      "top_similarity": 0.8548
+    },
+    {
+      "id": "A06",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8773
+    },
+    {
+      "id": "A07",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8699
+    },
+    {
+      "id": "A08",
+      "type": "identifier",
+      "rank": 2,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8967
+    },
+    {
+      "id": "A09",
+      "type": "identifier",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8556
+    },
+    {
+      "id": "A10",
+      "type": "multi_doc",
+      "rank": null,
+      "doc_rank": 2,
+      "found_passages": "0/2",
+      "top_similarity": 0.8458
+    },
+    {
+      "id": "A11",
+      "type": "multi_doc",
+      "rank": 8,
+      "doc_rank": 5,
+      "found_passages": "1/2",
+      "top_similarity": 0.8827
+    },
+    {
+      "id": "B01",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8564
+    },
+    {
+      "id": "B02",
+      "type": "factual",
+      "rank": 9,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8778
+    },
+    {
+      "id": "B03",
+      "type": "factual",
+      "rank": null,
+      "doc_rank": null,
+      "found_passages": "0/1",
+      "top_similarity": 0.8365
+    },
+    {
+      "id": "B04",
+      "type": "factual",
+      "rank": null,
+      "doc_rank": 3,
+      "found_passages": "0/1",
+      "top_similarity": 0.862
+    },
+    {
+      "id": "B05",
+      "type": "factual",
+      "rank": 6,
+      "doc_rank": 6,
+      "found_passages": "1/1",
+      "top_similarity": 0.8354
+    },
+    {
+      "id": "B06",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8742
+    },
+    {
+      "id": "B07",
+      "type": "factual",
+      "rank": 4,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8872
+    },
+    {
+      "id": "B08",
+      "type": "identifier",
+      "rank": null,
+      "doc_rank": 1,
+      "found_passages": "0/1",
+      "top_similarity": 0.8528
+    },
+    {
+      "id": "B09",
+      "type": "identifier",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8848
+    },
+    {
+      "id": "B10",
+      "type": "multi_doc",
+      "rank": 2,
+      "doc_rank": 1,
+      "found_passages": "2/2",
+      "top_similarity": 0.8843
+    },
+    {
+      "id": "B11",
+      "type": "multi_doc",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "3/3",
+      "top_similarity": 0.8819
+    },
+    {
+      "id": "C01",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8528
+    },
+    {
+      "id": "C02",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.9075
+    },
+    {
+      "id": "C03",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8767
+    },
+    {
+      "id": "C04",
+      "type": "factual",
+      "rank": 2,
+      "doc_rank": 1,
+      "found_passages": "2/2",
+      "top_similarity": 0.8683
+    },
+    {
+      "id": "C05",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8644
+    },
+    {
+      "id": "C06",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8701
+    },
+    {
+      "id": "C07",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8776
+    },
+    {
+      "id": "C08",
+      "type": "identifier",
+      "rank": null,
+      "doc_rank": 2,
+      "found_passages": "0/1",
+      "top_similarity": 0.8569
+    },
+    {
+      "id": "C09",
+      "type": "identifier",
+      "rank": 2,
+      "doc_rank": 1,
+      "found_passages": "1/2",
+      "top_similarity": 0.861
+    },
+    {
+      "id": "C10",
+      "type": "multi_doc",
+      "rank": null,
+      "doc_rank": 10,
+      "found_passages": "0/3",
+      "top_similarity": 0.8567
+    },
+    {
+      "id": "C11",
+      "type": "multi_doc",
+      "rank": 2,
+      "doc_rank": 2,
+      "found_passages": "1/3",
+      "top_similarity": 0.8595
+    },
+    {
+      "id": "D01",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8542
+    },
+    {
+      "id": "D02",
+      "type": "factual",
+      "rank": 2,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8642
+    },
+    {
+      "id": "D03",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8338
+    },
+    {
+      "id": "D04",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8535
+    },
+    {
+      "id": "D05",
+      "type": "factual",
+      "rank": 2,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8562
+    },
+    {
+      "id": "D06",
+      "type": "factual",
+      "rank": 9,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8843
+    },
+    {
+      "id": "D07",
+      "type": "factual",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8708
+    },
+    {
+      "id": "D08",
+      "type": "identifier",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.8561
+    },
+    {
+      "id": "D09",
+      "type": "identifier",
+      "rank": 1,
+      "doc_rank": 1,
+      "found_passages": "1/1",
+      "top_similarity": 0.882
+    },
+    {
+      "id": "D10",
+      "type": "multi_doc",
+      "rank": 7,
+      "doc_rank": 1,
+      "found_passages": "1/2",
+      "top_similarity": 0.8949
+    },
+    {
+      "id": "D11",
+      "type": "multi_doc",
+      "rank": null,
+      "doc_rank": 1,
+      "found_passages": "0/2",
+      "top_similarity": 0.8607
+    }
+  ]
+}
